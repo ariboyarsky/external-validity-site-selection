@@ -1,0 +1,98 @@
+\section{Introduction}
+\label{sec:intro}
+
+A multi-site experiment derives its external-validity claim from the
+\emph{cross-site} variation in site-level context: if the treatment effect is
+stable across sites that differ substantially in their moderating attributes, it
+is credible that the effect will transport to a new site whose moderators lie
+within the range observed. Conversely, when the observed sites span only a thin
+slice of the space of site-level moderators, the cross-site moment identity
+$\Sigma\theta + b = 0$ is rank-deficient, and the target-site treatment effect at
+a moderator profile $(t_m,t_r)$ outside the span of observed sites is only
+partially identified, regardless of how large the individual-level samples are
+(Boyarsky, Egami, and Namkoong, 2026).
+
+An investigator facing this situation has two levers. She may \emph{tighten the
+identification set} by imposing additional substantive restrictions
+$r(\theta)\le 0$ (effect-ordering, sign or monotonicity constraints, norm bounds,
+etc.), trading a sharper bound against additional untestable assumptions. Or she
+may \emph{expand the evidence base} by running a new experiment in an additional
+site. The first lever is the subject of Boyarsky et al.\ (2026); this note
+addresses the second.
+
+Specifically, we consider the situation in which the investigator has a small
+pool $\mathcal{K} = \{1, \ldots, K\}$ of \emph{candidate} sites for which the
+site-level context $(C_m^{(k)}, C_r^{(k)})$ is known in advance --- cheaply
+obtained from administrative data, public statistics, a pilot survey, or an
+established literature --- but no individual-level experimental data. Running the
+experiment in any one candidate site carries an investigator-specified cost
+$c_k$ (monetary, logistical, ethical). The question is:
+
+\begin{quote}
+Given the existing pool of $S$ sites and a range $\mathcal{T}$ of target
+profiles to which the investigator wishes to transport the effect, which
+candidate site $k^\star \in \mathcal{K}$ most improves external-validity claims,
+in the sense of most shrinking the partial-identification width over
+$\mathcal{T}$?
+\end{quote}
+
+We cast the problem as a \textbf{minimax design}:
+\[
+k^\star \;\in\; \arg\min_{k\in \mathcal{K}}\; \sup_{(t_m,t_r)\in\mathcal{T}}\;
+w_r\!\bigl(t_m,t_r;\; \Sigma_{\mathcal{S}\cup\{k\}}\bigr),
+\]
+where $w_r(t_m,t_r;\Sigma)$ is the width of the partial-identification interval
+under restriction $r$ evaluated at target $(t_m,t_r)$. The key observation ---
+and what makes this design problem tractable without running the candidate
+experiments --- is that the width $w_r$ depends on the candidate site through
+$\Sigma$, the \emph{design matrix} of the moment condition, which in turn is a
+function of known site-level quantities $(C_m, C_r)$ only. The right-hand side
+$b$ would move once the experiment is run, but the geometry that determines
+whether the width is finite --- and by how much --- is pinned down by the
+site-level context. Selecting a site to add is therefore a design-time problem,
+not a post-hoc one.
+
+\paragraph{Contributions.}
+(1) We formalize the site-selection problem in the partial-identification
+framework of Boyarsky et al.\ (2026) and show that the partial-identification
+width depends on the candidate through a known-ex-ante rank-one-like update of
+$\Sigma$. (2) We establish that, in the unrestricted limit $r \equiv 0$ with mild
+regularization, the minimax criterion collapses to a convex-hull expansion rule
+in the site-level context space: the optimal candidate is the one whose
+$(C_m^{(k)}, C_r^{(k)})$ lies furthest, in a weighted-distance sense, from the
+convex hull of observed sites, with the weighting determined by $\mathcal{T}$.
+(3) Under compact affine restrictions $r(\theta)\le 0$, we derive a tractable
+surrogate --- a finite LP over the candidate pool --- that has the same
+three-regime structure as the leave-one-site-out diagnostic of Boyarsky et al.\
+(2026): candidates are \emph{coverage-expanding} (reduce rank-deficiency),
+\emph{location-improving} (shift the affine subspace at fixed rank), or
+\emph{feasibility-restoring} (make a previously incompatible restriction set
+feasible). (4) We show that the minimax design is \emph{not} automatically
+monotone in site addition: a rank-preserving candidate paired with an outcome
+that conflicts with the existing-pool fit can shift the moment-implied affine
+subspace to a less favorable cross-section of the restriction polyhedron and
+strictly \emph{increase} the worst-case width. We isolate two pre-experiment
+screens --- rank expansion (M1) and outcome-consistency (M2) --- and prove
+(Theorem~\ref{thm:monotone}) that either is sufficient for the worst-case width
+to be monotone-nonincreasing in the augmentation. (5) A synthetic simulation with
+eight existing sites and six candidates, including a deliberately conflicting
+one, confirms both the hull-expansion result and the non-monotonicity (with
+$16\%$ of replicates exhibiting strict worsening from the unscreened candidate,
+and zero from any screened candidate). (6) We sketch extensions to the
+mixed-integer effect-ordering formulation and to cost-weighted objectives, and
+defer complete proofs to Appendix~\ref{sec:appendix}.
+
+\paragraph{Positioning.}
+The site-selection question is the \emph{forward} version of the
+leave-one-site-out diagnostic in Section~4.4 of Boyarsky et al.\ (2026), which
+asks which existing donor sites are load-bearing for a reported bound. Our
+problem inherits the three-regime taxonomy of that diagnostic but evaluates it
+over a \emph{counterfactual} addition rather than a realized removal. It also
+complements classical optimal experimental design --- D-, G-, and I-optimality
+--- which operates within a single population under point identification
+(Atkinson et al., 2007; Pukelsheim, 2006). In our setting the design object is
+not an individual-level allocation of treatment but a site-level choice of
+\emph{context}, and the loss is the width of a partial-identification interval
+rather than the variance of a point estimator. The minimax objective is natural
+here because site selection is a discrete, one-shot decision that should be
+robust to the heterogeneity of target profiles the investigator cares about.

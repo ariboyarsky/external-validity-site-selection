@@ -1,0 +1,222 @@
+\section{Monotonicity: When Adding a Site Can Hurt}
+\label{sec:monotonicity}
+
+The reader could be forgiven for assuming that the minimax design problem
+\eqref{eq:minimax} is \emph{bounded above by the existing-pool width} --- i.e.,
+that
+$\sup_t w_r(t;\Sigma_{\mathcal{S}\cup\{k\}})\le \sup_t w_r(t;\Sigma_\mathcal{S})$
+for every candidate $k$, so that the design problem is merely a question of ``how
+much do we gain''. This is false. Adding a site can strictly \emph{increase} the
+worst-case width, and in some configurations it can render the program
+infeasible. This section traces the failure modes and isolates the conditions
+under which monotone improvement is guaranteed.
+
+\subsection{Why monotone improvement can fail}
+\label{sec:monotone-fail}
+
+Recall from Section~\ref{sec:augmentation} that two things change when a candidate
+site is added: the moment matrix $\Sigma$ acquires a rank-$\le 2$ update
+$\Delta\Sigma_k$ in the row directions spanned by the \emph{residualized} context
+$(u_m^{(k)},u_r^{(k)})$, and the right-hand side $b$ shifts by an
+outcome-dependent amount $\Delta b_k$. The first update is monotone in PSD order:
+$\Sigma_{\mathcal{S}\cup\{k\}} \succeq \Sigma_\mathcal{S}$, so
+$\mathrm{null}(\Sigma_{\mathcal{S}\cup\{k\}})\subseteq
+ \mathrm{null}(\Sigma_\mathcal{S})$. The second is not monotone in any sense.
+Three concrete mechanisms can make the post-addition width larger than the
+pre-addition width:
+
+\paragraph{(F1) Rank-preserving shift.}
+If $(u_m^{(k)},u_r^{(k)})\in \mathrm{range}(\Sigma_\mathcal{S})$, the rank of
+$\Sigma$ does not change, and the new feasible set is \emph{parallel} to the old
+in the sense $\theta'+\mathrm{null}(\Sigma_\mathcal{S})$ for some
+$\theta'\ne\theta_\mathcal{S}^\star$ whenever
+$y_k\ne (u_m^{(k)},u_r^{(k)})^\top \theta_\mathcal{S}^\star$. This parallel slice
+intersects the restriction polyhedron $\mathcal{R}$ at a different polytope, whose
+projection onto the target functional can be longer than the original --- for
+example, when $\mathcal{R}$ is asymmetric around $\theta_\mathcal{S}^\star$ and the
+shift moves the slice into a wider cross-section of $\mathcal{R}$.
+
+\paragraph{(F2) Conditioning dilution under normalized moments.}
+In the BEN formulation, $\Sigma$ is the empirical estimator of
+$\mathbb{E}_X[\mathrm{Cov}(C,C\mid X)]$, computed as a sample average over the
+pooled $(\sum_s n_s + n_k)$ observations. Sample averaging re-weights the
+existing-pool contribution by a factor $n/(n+n_k)$, so the smallest non-trivial
+eigenvalue $\sigma_{\min,+}(\Sigma_{\mathcal{S}\cup\{k\}})$ can be smaller than
+$\sigma_{\min,+}(\Sigma_\mathcal{S})$ when the candidate's residualized context
+concentrates in a direction already well represented. In the LP \eqref{eq:bounds},
+this corresponds to a worsened condition number of the equality-constraint block
+and can enlarge the feasible set in directions where $\mathcal{R}$ does not bite.
+The PSD-monotonicity argument above does \emph{not} apply to the normalized
+estimator.
+
+\paragraph{(F3) Restriction-set conflict.}
+If the candidate's outcome update $\Delta b_k$ shifts the moment-implied affine
+subspace
+$\{\Sigma_{\mathcal{S}\cup\{k\}}\theta = -b_{\mathcal{S}\cup\{k\}}\}$ outside the
+restriction polyhedron $\mathcal{R}$, the LP becomes infeasible and the
+partial-identification interval is empty. This is the feasibility-breaking case
+of regime (C) in Section~\ref{sec:regimes}.
+
+The simulation in Section~\ref{sec:simulation} demonstrates (F1) directly: an
+outcome shock of magnitude $\Delta = 20$ at a rank-preserving candidate $k_5$
+produces a strict increase in the worst-case width in $8/50$ Monte-Carlo
+replicates, with no rank or feasibility change.
+
+\subsection{An explicit counterexample}
+\label{sec:counterexample}
+
+We give a fully worked $D=2$ example, both because the geometry is diagnostic and
+because the same construction lifts to the multivariate simulations of
+Section~\ref{sec:simulation}.
+
+\paragraph{Setup.}
+Take $d_g=2$, $S=1$ existing site with context $c^{(1)}=(1,1)^\top$ and outcome
+$y_1=2$. The simplified moment is
+$\Sigma_\mathcal{S}=c^{(1)}{c^{(1)}}^\top=\bigl(\begin{smallmatrix}1&1\\1&1\end{smallmatrix}\bigr)$
+with $\mathrm{rank}=1$, and $b_\mathcal{S}=-c^{(1)}y_1=(-2,-2)^\top$. The
+moment-implied subspace is $\{(\theta_1,\theta_2):\theta_1+\theta_2=2\}$, a line
+in $\mathbb{R}^2$. Take the (asymmetric) box restriction
+$\mathcal{R}=[0,2]\times[-1,1]$ and the target functional $c(t)=(1,0)^\top$. The
+feasible segment is $\{(\theta_1,2-\theta_1):\theta_1\in[1,2]\}$, with
+$w_r\bigl(t;\Sigma_\mathcal{S},b_\mathcal{S}\bigr)=1$.
+
+\paragraph{Candidate.}
+Add a rank-preserving candidate $k_5$ with $c^{(k_5)}=c^{(1)}=(1,1)^\top$ and
+\emph{conflicting} outcome $y_{k_5}=0\ne 2= c^{(k_5)\top}\theta_\mathcal{S}^\star$,
+where $\theta_\mathcal{S}^\star=(1,1)^\top$ is the minimum-norm solution. Then
+$\Sigma_{\mathcal{S}\cup\{k_5\}}=2\,c^{(1)}{c^{(1)}}^\top$ (still rank 1), and
+$b_{\mathcal{S}\cup\{k_5\}}=b_\mathcal{S}-c^{(k_5)}y_{k_5}=(-2,-2)^\top$, giving
+moment-implied line $\theta_1+\theta_2=1$. The new feasible segment is
+$\{(\theta_1,1-\theta_1):\theta_1\in[0,2]\}$, with
+\[
+w_r\bigl(t;\Sigma_{\mathcal{S}\cup\{k_5\}},
+ b_{\mathcal{S}\cup\{k_5\}}\bigr) \;=\; 2 \;>\; 1
+ \;=\; w_r\bigl(t;\Sigma_\mathcal{S},b_\mathcal{S}\bigr).
+\]
+The width \emph{doubles} despite the rank being preserved and the box being the
+same. Panel (A) of Figure~\ref{fig:fig2} displays the two parallel slices inside
+the box.
+
+The construction generalizes: in dimension $d_g\ge 2$, any rank-preserving
+candidate with outcome $y_k\ne c^{(k)\top}\theta_\mathcal{S}^\star$ produces a
+parallel shift of the moment-implied subspace, and whenever $\mathcal{R}$ is
+\emph{asymmetric} around $\theta_\mathcal{S}^\star$ the shifted slice can cut
+$\mathcal{R}$ at a polytope of larger $t$-extent.
+
+\subsection{Sufficient conditions for monotone improvement}
+\label{sec:sufficient}
+
+We now isolate two assumptions, each of which on its own implies that the
+worst-case width is monotone-nonincreasing in site addition. They are mutually
+independent and either is implementable as a pre-experiment screen on the
+candidate pool.
+
+\paragraph{Assumption (M1) --- Rank-Expansion Screen.}
+\emph{The candidate's residualized context lies outside the row space of the
+existing pool:}
+\begin{equation}
+\label{eq:m1}
+(u_m^{(k)},u_r^{(k)})\;\notin\;\mathrm{range}\bigl(\Sigma_\mathcal{S}\bigr).
+\end{equation}
+
+\paragraph{Assumption (M2) --- Outcome-Consistency Screen.}
+\emph{The candidate's outcome forecast is consistent with the existing pool's
+minimum-norm fit:}
+\begin{equation}
+\label{eq:m2}
+y_k \;=\; (u_m^{(k)},u_r^{(k)})^\top \theta_\mathcal{S}^\star,
+\end{equation}
+\emph{where $\theta_\mathcal{S}^\star$ is the minimum-norm solution to
+$\Sigma_\mathcal{S}\theta = -b_\mathcal{S}$.}
+
+Both screens are checkable before the candidate experiment is run: (M1) is a rank
+test on $(u_m^{(k)},u_r^{(k)})$ against the existing-pool SVD, and (M2) is the
+existing-pool OLS prediction at the candidate context (it does not require the
+candidate's experimental data). The two imply different \emph{consequences}: (M1)
+strictly reduces the null space and hence width on any target that loaded the
+resolved null direction, while (M2) leaves the moment-implied affine subspace
+untouched and prevents the feasibility-breaking shifts of
+Section~\ref{sec:monotone-fail}.
+
+\begin{theorem}[Monotone improvement under (M1) or (M2)]
+\label{thm:monotone}
+Under either Assumption (M1) or Assumption (M2), and assuming
+$b_\mathcal{S}\in\mathrm{range}(\Sigma_\mathcal{S})$ (consistency of the existing
+moment), the feasible set of the partial-identification LP at augmentation
+$\mathcal{S}\cup\{k\}$ is a subset of the existing-pool feasible set:
+\[
+\mathcal{F}_{\mathcal{S}\cup\{k\}}
+ \;:=\; \{\theta\in\mathcal{R}:\Sigma_{\mathcal{S}\cup\{k\}}\theta
+  = -b_{\mathcal{S}\cup\{k\}}\}
+ \;\subseteq\;
+ \{\theta\in\mathcal{R}:\Sigma_\mathcal{S}\theta = -b_\mathcal{S}\}
+ \;=:\; \mathcal{F}_\mathcal{S}.
+\]
+Consequently, for every target $t$,
+\[
+w_r\bigl(t;\Sigma_{\mathcal{S}\cup\{k\}},b_{\mathcal{S}\cup\{k\}}\bigr)
+ \;\le\; w_r\bigl(t;\Sigma_\mathcal{S},b_\mathcal{S}\bigr),
+\]
+and a fortiori the worst-case width
+$\sup_{t\in\mathcal{T}} w_r(t;\Sigma_{\mathcal{S}\cup\{k\}},b_{\mathcal{S}\cup\{k\}})
+ \le \sup_{t\in\mathcal{T}} w_r(t;\Sigma_\mathcal{S},b_\mathcal{S})$. The
+inequality is strict on targets $t$ for which $c(t)$ has a non-zero component in
+the resolved direction (under (M1)) or for which the restriction polyhedron
+$\mathcal{R}$ binds in a direction newly excluded by the augmented moment (under
+(M2) with rank expansion).
+\end{theorem}
+
+Theorem~\ref{thm:monotone} is proved in Appendix~\ref{sec:proof-thm1}; the key
+step is the algebraic identity \eqref{eq:identity} showing that
+$\Sigma_{\mathcal{S}\cup\{k\}}\theta+b_{\mathcal{S}\cup\{k\}}=
+ \Sigma_\mathcal{S}\theta+b_\mathcal{S}+u\cdot(u^\top\theta-y_k)$, together with
+the consistency hypothesis $b_\mathcal{S}\in\mathrm{range}(\Sigma_\mathcal{S})$.
+
+\paragraph{Remark (Practical use).}
+The pair (M1, M2) is \emph{not} exhaustive --- a candidate failing both can still
+improve the width --- but it provides a finite, computable screen. In practice we
+recommend: \emph{(i)} run the SVD-based test \eqref{eq:m1} on every candidate;
+mark those that pass as \textbf{safe rank-expanders}; \emph{(ii)} among the
+rank-preserving candidates, check \eqref{eq:m2} against the existing-pool OLS
+prediction; mark those that pass as \textbf{safe consistent candidates};
+\emph{(iii)} report the minimax \eqref{eq:minimax} only over the safe subset of
+the candidate pool, or report the unsafe candidates separately as
+``diagnostic-only'' sites whose addition could be informative but whose
+worst-case width is not guaranteed to improve.
+
+\paragraph{Remark (Cost-aware extension).}
+When candidates carry a cost $c_k$, the safe-subset screening of (i)--(iii) above
+is composed with the Lagrangian \eqref{eq:lagrangian}, and the optimal candidate
+is the cheapest member of the safe subset that achieves the minimax target.
+Unsafe candidates can be admitted only with an explicit risk premium
+$\rho_k\ge 0$ added to their cost, calibrated to the upper bound on
+$w_r(\cdot;\Sigma_{\mathcal{S}\cup\{k\}})- w_r(\cdot;\Sigma_\mathcal{S})$ from the
+perturbation bound \eqref{eq:envelope}.
+
+\subsection{Discussion: why the convex-hull rule is \emph{only} sufficient}
+\label{sec:hull-only-sufficient}
+
+Proposition~\ref{prop:dist} of Section~\ref{sec:hull-distance} said that, in the
+large-$\tau$ unrestricted limit, the optimal candidate is the one whose addition
+minimizes $\sup_{t\in\mathcal{T}}d_{\mathcal{S}\cup\{k\}}(t)$.
+Theorem~\ref{thm:monotone} refines this picture: the convex-hull rule is
+\emph{sufficient} for monotone improvement (it implies (M1)), but it is not
+\emph{necessary}. An interior candidate satisfying (M2) --- i.e., a candidate
+whose context lies inside the hull but whose forecasted outcome matches the OLS
+prediction --- also guarantees no worsening. Conversely, a hull-expander whose
+outcome is adversarial can shift the feasible set badly, exhibiting (F3); the
+(M1) screen is \emph{necessary} in the rank sense but is \emph{not sufficient
+against shifts}.
+
+The cleanest characterization combines both:
+
+\begin{quote}
+A candidate $k$ is \textbf{width-monotone safe} if either (i) its residualized
+context is outside $\mathrm{range}(\Sigma_\mathcal{S})$ \emph{and} the outcome
+shift $\Delta b_k$ is small enough that the hyperplane $u^\top\theta=y_k$
+intersects $\mathcal{R}$ at a non-empty set, or (ii) its context is inside the
+existing range \emph{and} its outcome matches the existing OLS prediction (modulo
+tolerance).
+\end{quote}
+
+This is the operational characterization we use in Section~\ref{sec:simulation}.

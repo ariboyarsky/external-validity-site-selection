@@ -1,0 +1,325 @@
+\section{Complete Proofs}
+\label{sec:appendix}
+
+We collect rigorous proofs of the propositions stated in
+Sections~\ref{sec:hull}--\ref{sec:monotonicity}. Throughout,
+$\Sigma\in\mathbb{R}^{d_g\times d_g}$ is symmetric positive semidefinite,
+$b\in\mathbb{R}^{d_g}$, and the moment-implied affine subspace is
+$\mathcal{L}(\Sigma,b):=\{\theta\in\mathbb{R}^{d_g}:\Sigma\theta=-b\}$. The
+restriction polyhedron is $\mathcal{R}:=\{\theta:r(\theta)\le 0\}$ --- compact and
+convex unless explicitly stated otherwise. The target functional is
+$c(t)\in\mathbb{R}^{d_g}$, the partial-ID interval at target $t$ has endpoints
+$v_\ell(t),v_u(t)$ given by the LP pair \eqref{eq:bounds}, and the width is
+$w_r(t;\Sigma,b)=v_u(t)-v_\ell(t)$. We assume the consistency condition
+$b\in\mathrm{range}(\Sigma)$ throughout (otherwise
+$\mathcal{L}(\Sigma,b)=\emptyset$).
+
+\subsection{Proof of Proposition~\ref{prop:dichotomy} (unrestricted dichotomy)}
+\label{sec:proof-prop1}
+
+\emph{Claim.} With $\mathcal{R}=\mathbb{R}^{d_g}$ and any
+$b\in\mathrm{range}(\Sigma)$,
+\[
+w_{\rm unr}(t;\Sigma,b) \;=\;
+ \begin{cases} 0, & c(t)\in\mathrm{range}(\Sigma^\top)\\ +\infty,
+ & c(t)\notin\mathrm{range}(\Sigma^\top).\end{cases}
+\]
+
+\begin{proof}
+Let $\theta_0$ be any solution to $\Sigma\theta_0=-b$; such a $\theta_0$ exists by
+the consistency hypothesis. Every solution to $\Sigma\theta=-b$ has the form
+$\theta=\theta_0+\nu$ with $\nu\in\mathrm{null}(\Sigma)$. The linear functional
+evaluates to $c(t)^\top\theta=c(t)^\top\theta_0+c(t)^\top\nu$. Since
+$\mathcal{R}=\mathbb{R}^{d_g}$, $\nu$ ranges over all of $\mathrm{null}(\Sigma)$, a
+linear subspace.
+
+\emph{Case 1: $c(t)\perp\mathrm{null}(\Sigma)$.} Then $c(t)^\top\nu=0$ for every
+$\nu\in\mathrm{null}(\Sigma)$, so $c(t)^\top\theta=c(t)^\top\theta_0$ identically
+and $v_u=v_\ell=c(t)^\top\theta_0$, giving width $0$. By the orthogonal
+decomposition
+$\mathbb{R}^{d_g}=\mathrm{range}(\Sigma^\top)\oplus\mathrm{null}(\Sigma)$ (valid
+for any matrix, here in fact $\mathrm{range}(\Sigma)$ since $\Sigma=\Sigma^\top$),
+this is equivalent to $c(t)\in\mathrm{range}(\Sigma^\top)$.
+
+\emph{Case 2: $c(t)\not\perp\mathrm{null}(\Sigma)$.} Pick
+$\nu_0\in\mathrm{null}(\Sigma)$ with $c(t)^\top\nu_0\ne 0$, and consider the
+one-parameter family $\theta_0+\alpha\nu_0$ for $\alpha\in\mathbb{R}$. Then
+$c(t)^\top(\theta_0+\alpha\nu_0)=c(t)^\top\theta_0+\alpha c(t)^\top\nu_0\to\pm\infty$
+as $\alpha\to\pm\infty$, so $v_u=+\infty$ and $v_\ell=-\infty$. Width is
+$+\infty$.
+\end{proof}
+
+\subsection{Proof of Proposition~\ref{prop:hull}
+(rank-expansion $\Leftrightarrow$ hull-expansion)}
+\label{sec:proof-prop2}
+
+\emph{Claim.} Let $C\in\mathbb{R}^{S\times d_g}$ be the matrix whose rows are the
+existing site-level contexts $c^{(s)}$, and let $\Sigma_\mathcal{S}=C^\top C$ in
+the simplified formulation (the general block form \eqref{eq:dsigma} replaces
+$c^{(s)}c^{(s)\top}$ by the residualized analogue, but the row-space argument is
+identical). Then for a candidate $k$ with context
+$c^{(k)}=u\in\mathbb{R}^{d_g}$,
+\[
+\mathrm{rank}(\Sigma_{\mathcal{S}\cup\{k\}})>\mathrm{rank}(\Sigma_\mathcal{S})
+ \iff u\notin\mathrm{range}(C^\top)
+ \iff u\notin\mathrm{range}(\Sigma_\mathcal{S}),
+\]
+and equivalently
+$(C_m^{(k)},C_r^{(k)})\notin\mathrm{aff}(\mathcal{H}_\mathcal{S})$ in the centered
+version of the same construction.
+
+\begin{proof}
+The matrix $\Sigma_{\mathcal{S}\cup\{k\}}=C^\top C+uu^\top$ has range
+$\mathrm{range}(C^\top C+uu^\top)$. We claim
+$\mathrm{range}(C^\top C+uu^\top)=\mathrm{range}(C^\top)+\mathrm{span}(u)$.
+
+The forward inclusion follows from $C^\top Cx+uu^\top x = C^\top(Cx)+u(u^\top x)$,
+both summands lying in $\mathrm{range}(C^\top)+\mathrm{span}(u)$ for any $x$.
+
+The reverse inclusion uses positive semidefiniteness: pick any
+$v\in\mathrm{range}(C^\top)+\mathrm{span}(u)$. We need to exhibit $x$ with
+$(C^\top C+uu^\top)x=v$. Choose $x_1\in\mathrm{range}(C^\top)$ such that
+$C^\top C x_1$ equals the $\mathrm{range}(C^\top)$-component of $v$ (possible since
+$C^\top C$ is invertible on $\mathrm{range}(C^\top)$), and add a scalar multiple of
+an $x_2$ achieving $uu^\top x_2$ equal to the $\mathrm{span}(u)$-component
+(possible since $u^\top u>0$ when $u\ne 0$). Sum $x=x_1+x_2$ achieves both. The
+two components are not orthogonal in general but the resulting linear system is
+full-rank on the sum of subspaces.
+
+The first equivalence in the claim now follows: rank increases iff
+$\mathrm{span}(u)\not\subseteq\mathrm{range}(C^\top)$, i.e., iff
+$u\notin\mathrm{range}(C^\top)$. The second equivalence
+$\mathrm{range}(C^\top)=\mathrm{range}(\Sigma_\mathcal{S})$ is the standard fact
+$\mathrm{range}(A^\top A)=\mathrm{range}(A^\top)$ for any real matrix $A$. The
+third equivalence --- between rank-expansion and affine-hull membership --- is
+obtained by centering: writing $u=\bar c+\tilde u$ with $\bar c$ the average of
+$c^{(s)}$ and $\tilde u=u-\bar c$, the centered row space of $C$ equals
+$\mathrm{aff}(\mathcal{H}_\mathcal{S})-\bar c$ (the linear subspace parallel to the
+affine hull), and $u\in\mathrm{aff}(\mathcal{H}_\mathcal{S})$ iff $\tilde u$ lies
+in that linear subspace, iff $u$ is in the row span of $C$.
+\end{proof}
+
+\subsection{Proof of Proposition~\ref{prop:dist} (width $=$ distance $\times 2\tau$)}
+\label{sec:proof-prop3}
+
+\emph{Claim.} With the regularized restriction $\|\theta\|_2\le\tau$ and a balanced
+cross-site design with common within-site $X$-distribution,
+\[
+w_r^\tau(t;\Sigma_\mathcal{S},b)
+ \;=\; 2\tau\cdot d_\mathcal{S}(t)\cdot(1+o_\tau(1)),
+\qquad\tau\to\infty,
+\]
+\emph{where $d_\mathcal{S}(t):=\mathrm{dist}\bigl((t_m,t_r),
+ \mathrm{aff}(\mathcal{H}_\mathcal{S})\bigr)$ and the $o_\tau(1)$ term vanishes
+uniformly on compact target regions.}
+
+\begin{proof}
+Decompose $c(t)=c_\parallel(t)+c_\perp(t)$ with
+$c_\parallel(t)\in\mathrm{range}(\Sigma^\top)$ and
+$c_\perp(t)\in\mathrm{null}(\Sigma)$ (using the symmetric SVD of $\Sigma$). For any
+solution $\theta=\theta_0+\nu$ with $\nu\in\mathrm{null}(\Sigma)$,
+$c(t)^\top\theta=c_\parallel(t)^\top\theta_0+c_\perp(t)^\top\nu$, because
+$c_\parallel(t)^\top\nu=0$ and
+$c_\perp(t)^\top\theta_0=c_\perp(t)^\top(\theta_0^\parallel+0)$ vanishes if we pick
+$\theta_0$ to be the minimum-norm particular solution (i.e.,
+$\theta_0\in\mathrm{range}(\Sigma^\top)$, so $\theta_0^\perp=0$).
+
+Therefore
+\[
+v_u^\tau(t)-v_\ell^\tau(t)
+ \;=\; \sup_{\nu}\,c_\perp(t)^\top\nu - \inf_\nu c_\perp(t)^\top\nu,
+\qquad
+\nu\in\mathrm{null}(\Sigma)\cap\{\theta_0+\nu:\|\theta_0+\nu\|_2\le\tau\}.
+\]
+For large $\tau$ (specifically $\tau\ge\|\theta_0\|_2+M$ for any compact $M$), the
+constraint $\|\theta_0+\nu\|_2\le\tau$ allows $\nu$ to range over a ball of radius
+$\tau-\|\theta_0\|_2$ inside $\mathrm{null}(\Sigma)$, i.e., over a ball of effective
+radius $\tau(1-\|\theta_0\|_2/\tau)$, which converges to a ball of radius $\tau$ at
+rate $O(1/\tau)$.
+
+The supremum of $c_\perp(t)^\top\nu$ over the radius-$\rho$ ball in
+$\mathrm{null}(\Sigma)$ is $\rho\cdot\|c_\perp(t)\|_2$ by the Cauchy--Schwarz
+inequality with equality at $\nu=\rho\,c_\perp(t)/\|c_\perp(t)\|_2$. The infimum is
+its negative. Hence
+$w_r^\tau(t;\Sigma,b)=2\rho\|c_\perp(t)\|_2=2\tau\|c_\perp(t)\|_2(1+O(1/\tau))$,
+which matches the asymptotic form claimed.
+
+It remains to identify $\|c_\perp(t)\|_2$ with $d_\mathcal{S}(t)$, the Euclidean
+distance from $(t_m,t_r)$ to $\mathrm{aff}(\mathcal{H}_\mathcal{S})$. Under the
+balanced design with common $X$-distribution, the residualized context appearing
+in the block formula \eqref{eq:dsigma} reduces (up to a positive multiplicative
+constant absorbed into $\tau$) to the centered raw context. The target direction
+$c(t)$, by Equation~\eqref{eq:rep}, is the moderating-direction vector for the
+target profile, which up to that same constant is $(t_m,t_r)-\bar c$. The
+orthogonal complement of $\mathrm{range}(\Sigma^\top)$ inside the centered context
+space is the orthogonal complement of $\mathrm{aff}(\mathcal{H}_\mathcal{S})$, so
+the norm of the orthogonal-complement projection of $c(t)$ equals
+$d_\mathcal{S}(t)$, as required. Strict monotonicity follows because the target
+distance $d_\mathcal{S}(t)$ is a sub-additive function of the candidate-pool
+augmentation: $d_{\mathcal{S}\cup\{k\}}(t)\le d_\mathcal{S}(t)$ with equality iff
+$c(t)$'s null-space component is unaffected by the augmentation, which by
+Proposition~\ref{prop:hull} is iff $u\in\mathrm{range}(\Sigma_\mathcal{S})$.
+\end{proof}
+
+\subsection{Proof of Theorem~\ref{thm:monotone}
+(monotone improvement under (M1) or (M2))}
+\label{sec:proof-thm1}
+
+We first establish the algebraic identity that drives the proof. Let
+$u:=(u_m^{(k)},u_r^{(k)})$ be the residualized context of the candidate and $y_k$
+its scalar outcome forecast. Then, in the simplified moment formulation
+$\Sigma_{\mathcal{S}\cup\{k\}}=\Sigma_\mathcal{S}+uu^\top$ and
+$b_{\mathcal{S}\cup\{k\}}=b_\mathcal{S}-u y_k$, we have for every $\theta$:
+\begin{equation}
+\label{eq:identity}
+\Sigma_{\mathcal{S}\cup\{k\}}\theta+b_{\mathcal{S}\cup\{k\}}
+ \;=\; \Sigma_\mathcal{S}\theta+b_\mathcal{S}
+ \;+\; u\cdot(u^\top\theta-y_k).
+\end{equation}
+Direct verification:
+$\Sigma_{\mathcal{S}\cup\{k\}}\theta=\Sigma_\mathcal{S}\theta+u(u^\top\theta)$ and
+$b_{\mathcal{S}\cup\{k\}}=b_\mathcal{S}-uy_k$; summing gives \eqref{eq:identity}.
+
+\begin{proof}[Proof of Theorem~\ref{thm:monotone} under (M1)]
+Suppose $u\notin\mathrm{range}(\Sigma_\mathcal{S})$. Let $P$ be the orthogonal
+projector onto $\mathrm{range}(\Sigma_\mathcal{S})$ and $P^\perp:=I-P$ its
+orthogonal complement onto $\mathrm{null}(\Sigma_\mathcal{S})$. Then
+$u_\perp:=P^\perp u\ne 0$. By the consistency hypothesis
+$b_\mathcal{S}\in\mathrm{range}(\Sigma_\mathcal{S})$, so for every $\theta$,
+$\Sigma_\mathcal{S}\theta+b_\mathcal{S}\in\mathrm{range}(\Sigma_\mathcal{S})$.
+Applying $P^\perp$ to both sides of \eqref{eq:identity},
+\[
+P^\perp\bigl[\Sigma_{\mathcal{S}\cup\{k\}}\theta+b_{\mathcal{S}\cup\{k\}}\bigr]
+ \;=\; P^\perp[u]\cdot(u^\top\theta-y_k)
+ \;=\; u_\perp\cdot(u^\top\theta-y_k).
+\]
+For $\theta\in\mathcal{F}_{\mathcal{S}\cup\{k\}}$, the left-hand side is zero, and
+$u_\perp\ne 0$, so the scalar coefficient vanishes: $u^\top\theta=y_k$.
+Substituting this back into \eqref{eq:identity} yields
+$\Sigma_\mathcal{S}\theta+b_\mathcal{S}=0$, i.e.,
+$\theta\in\mathcal{L}(\Sigma_\mathcal{S},b_\mathcal{S})$. Together with
+$\theta\in\mathcal{R}$, this gives
+$\theta\in\mathcal{F}_\mathcal{S}\cap\{u^\top\theta=y_k\}\subseteq\mathcal{F}_\mathcal{S}$,
+as required. Pointwise width follows: for any target $t$,
+\[
+w_r(t;\Sigma_{\mathcal{S}\cup\{k\}},b_{\mathcal{S}\cup\{k\}})
+ = \sup_{\mathcal{F}_{\mathcal{S}\cup\{k\}}} c(t)^\top\theta-
+   \inf_{\mathcal{F}_{\mathcal{S}\cup\{k\}}} c(t)^\top\theta
+ \le \sup_{\mathcal{F}_\mathcal{S}} c(t)^\top\theta -
+     \inf_{\mathcal{F}_\mathcal{S}} c(t)^\top\theta
+ = w_r(t;\Sigma_\mathcal{S},b_\mathcal{S}),
+\]
+and strictly so when $c(t)$ has a non-zero component along $u_\perp$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:monotone} under (M2)]
+Suppose $y_k=u^\top\theta_\mathcal{S}^\star$ for the minimum-norm solution
+$\theta_\mathcal{S}^\star$.
+
+Fix any $\theta\in\mathcal{F}_\mathcal{S}$. Then
+$\Sigma_\mathcal{S}\theta+b_\mathcal{S}=0$. Write
+$\theta=\theta_\mathcal{S}^\star+\nu$ with $\nu\in\mathrm{null}(\Sigma_\mathcal{S})$.
+Compute:
+\[
+u^\top\theta-y_k
+ \;=\; u^\top(\theta_\mathcal{S}^\star+\nu)-u^\top\theta_\mathcal{S}^\star
+ \;=\; u^\top\nu.
+\]
+\emph{Case (i): $u\in\mathrm{range}(\Sigma_\mathcal{S})$.} Then
+$u\perp\mathrm{null}(\Sigma_\mathcal{S})$, so $u^\top\nu=0$. Substituting into
+\eqref{eq:identity},
+$\Sigma_{\mathcal{S}\cup\{k\}}\theta+b_{\mathcal{S}\cup\{k\}}=0$, i.e.,
+$\theta\in\mathcal{L}(\Sigma_{\mathcal{S}\cup\{k\}},b_{\mathcal{S}\cup\{k\}})$. In
+the rank-preserving case the two affine subspaces coincide \emph{exactly} when
+(M2) holds because both contain $\theta_\mathcal{S}^\star$ (by (M2)) and both have
+the same direction subspace
+$\mathrm{null}(\Sigma_\mathcal{S})=\mathrm{null}(\Sigma_{\mathcal{S}\cup\{k\}})$
+(by $u\in\mathrm{range}(\Sigma_\mathcal{S})$, which gives no rank change).
+Equality of two affine subspaces with the same direction follows from sharing one
+point. Hence
+$\mathcal{L}(\Sigma_\mathcal{S},b_\mathcal{S})=\mathcal{L}(\Sigma_{\mathcal{S}\cup\{k\}},b_{\mathcal{S}\cup\{k\}})$,
+intersecting with $\mathcal{R}$ preserves equality, and the width is unchanged
+target by target.
+
+\emph{Case (ii): $u\notin\mathrm{range}(\Sigma_\mathcal{S})$ (i.e., (M1) also
+holds).} Then the proof under (M1) above applies, and additionally (M2) ensures
+the hyperplane $u^\top\theta=y_k$ passes through $\theta_\mathcal{S}^\star$, hence
+intersects $\mathcal{F}_\mathcal{S}$ non-trivially. So
+$\mathcal{F}_{\mathcal{S}\cup\{k\}}$ is non-empty (no feasibility break) and is a
+strict subset of $\mathcal{F}_\mathcal{S}$, yielding the same pointwise width
+inequality with strictness on targets loading the new direction.
+
+Taking the supremum over $t\in\mathcal{T}$ in either case proves
+$\sup_{t\in\mathcal{T}}w_r(t;\Sigma_{\mathcal{S}\cup\{k\}},b_{\mathcal{S}\cup\{k\}})
+ \le\sup_{t\in\mathcal{T}}w_r(t;\Sigma_\mathcal{S},b_\mathcal{S})$.
+\end{proof}
+
+\subsection{Proof of Proposition~\ref{prop:envelope} (rank-2 envelope)}
+\label{sec:proof-prop4}
+
+Proposition~\ref{prop:envelope} is a special case of the Bonnans--Shapiro
+directional derivative theorem for the value function of a perturbed convex
+program; we sketch the specialization to \eqref{eq:bounds} to make the constants
+explicit.
+
+\emph{Setup.} Define the parametric LP
+\[
+v_u(h):=\max_\theta\bigl\{c(t)^\top\theta:(\Sigma_\mathcal{S}+h_\Sigma)\theta
+ =-(b_\mathcal{S}+h_b),\;r(\theta)\le 0\bigr\},
+\]
+with perturbation $h=(h_\Sigma,h_b)$. At $h=0$, let
+$(\theta^\star,\lambda^\star,\nu^\star)$ be a KKT triple with $\lambda^\star$ the
+equality multipliers (Lagrange multipliers on $\Sigma\theta+b=0$) and
+$\nu^\star\ge 0$ the inequality multipliers on $r(\theta)\le 0$. Stationarity reads
+$c(t)=\Sigma\lambda^\star+\partial r(\theta^\star)\nu^\star$.
+
+\emph{Directional derivative.} Under Robinson's constraint qualification
+(Assumption~6 of Boyarsky et al.\ 2026), the value function $v_u(\cdot)$ is
+directionally differentiable at $h=0$ with derivative given by
+\[
+\frac{d v_u}{dh}\Bigl|_{h=0}\cdot h
+ \;=\; -\lambda^{\star\top}\bigl(h_\Sigma\theta^\star+h_b\bigr),
+\]
+where $\lambda^\star$ is chosen as the minimum-norm element of the set of optimal
+multipliers (a singleton under strict complementarity). This is Theorem~4.24 of
+\citet{bonnans2013perturbation}; the form is standard for parametric LPs and
+follows from the envelope theorem applied to the Lagrangian
+$L(\theta,\lambda;h)=c(t)^\top\theta-\lambda^\top[(\Sigma+h_\Sigma)\theta+b+h_b]$.
+
+\emph{Application to site augmentation.} Set
+$h_\Sigma=\Delta\Sigma_k,\;h_b=\Delta b_k$. Then the first-order change in $v_u$ is
+$\Delta v_u\approx -\lambda^{\star\top}(\Delta\Sigma_k\theta^\star+\Delta b_k)$,
+which is \eqref{eq:envelope}. The same identity with the $v_\ell$-multiplier
+$\lambda^{\ell,\star}$ yields the change in $v_\ell$, and subtracting gives the
+width formula in the statement of Proposition~\ref{prop:envelope}.
+
+\emph{Rank-2 reduction.} By \eqref{eq:dsigma}, $\Delta\Sigma_k$ has rank at most
+$2$ and factors as $\Delta\Sigma_k=U_k\Lambda_k U_k^\top$ with $U_k$ a
+$d_g\times 2$ block of residualized contexts. The product
+$\Delta\Sigma_k\theta^\star=U_k(\Lambda_k U_k^\top\theta^\star)$ is a linear
+combination of the two columns of $U_k$, and the inner product with $\lambda^\star$
+reduces to two scalar products $\lambda^{\star\top}U_k$. The minimax
+\eqref{eq:minimax} over $k\in\mathcal{K}$ therefore reduces to evaluating two
+scalars per candidate after the existing-pool LP has been solved once; this is the
+$O(|\mathcal{T}|K)$ cost claimed in Section~\ref{sec:surrogate}.
+
+\subsection{Extension to the block (BEN) moment}
+\label{sec:proof-block}
+
+The proofs of Appendix~\ref{sec:proof-prop1}, \ref{sec:proof-prop2}, and
+\ref{sec:proof-thm1} use only the symmetric PSD structure of $\Sigma$, the
+consistency hypothesis $b\in\mathrm{range}(\Sigma)$, and the algebraic identity
+\eqref{eq:identity}. In the full BEN formulation of Equation~(A.9) of Boyarsky et
+al.\ (2026), $\Sigma$ is a $d_g\times d_g$ block matrix with $d_g=2(d_M+d_I)$ and
+block-rank update $\Delta\Sigma_k$ given by \eqref{eq:dsigma}. The same identity
+\eqref{eq:identity} holds with $u$ replaced by the block-residualized context
+vector $u_k:=(u_m^{(k)},u_r^{(k)})\otimes(\cdot)$ appearing in the block
+factorization of $\Delta\Sigma_k$, and with the scalar $y_k-u^\top\theta$ replaced
+by the corresponding block-residualized moment quantity. The (M1)/(M2) screens
+generalize to the block-residualized context (replacing the $\mathrm{range}$ test
+of \eqref{eq:m1} by a rank test on the block matrix), and
+Theorem~\ref{thm:monotone} carries over verbatim. The only non-trivial change is
+that the rank of $\Delta\Sigma_k$ is at most $2$ in the block formulation, so the
+screens may strengthen in the sense that two coordinates of the candidate context
+need to fall outside the existing row space simultaneously; this is a strictly
+weaker monotone-improvement condition than (M1) for the simplified moment.

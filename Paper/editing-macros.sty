@@ -1,0 +1,58 @@
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\purple}[1]{\textcolor{purple}{#1}}
+\definecolor{innerboxcolor}{rgb}{.9,.95,1}
+\definecolor{outerlinecolor}{rgb}{.6,0,.2}
+\definecolor{outerlinecoloreb}{rgb}{0,1,0}
+\definecolor{innerboxcoloreb}{rgb}{1,1,1}
+
+\newcommand{\sylong}[1]{\fcolorbox{outerlinecolor}{innerboxcolor}{
+    \begin{minipage}{.9\textwidth}
+      \red{\bf SY:} {#1}
+  \end{minipage}} \\
+}
+
+\newcommand\sy[1]{\textcolor{red}{[SY: #1]}}
+
+\newcommand{\hnlong}[1]{\fcolorbox{outerlinecolor}{innerboxcolor}{
+    \begin{minipage}{.9\textwidth}
+      \red{\bf HN:} {#1}
+  \end{minipage}} \\
+}
+
+\makeatletter
+\newcommand{\ablong}{\@ifstar{\ablong@hide}{\ablong@show}}
+
+\newcommand{\ablong@show}[1]{%
+  \par\noindent%
+  \fcolorbox{outerlinecolor}{innerboxcolor}{%
+    \begin{minipage}{.9\textwidth}%
+      \red{\bfseries Ari:}~#1%
+    \end{minipage}%
+  }%
+  \par\medskip%
+}
+
+\newcommand{\ablong@hide}[1]{%
+  \ignorespaces% swallow argument, produce nothing
+}
+\makeatother
+
+% \newif\ifabshow
+% \abshowtrue            % set \abshowfalse to hide ALL Ari boxes globally
+
+% \NewDocumentCommand{\ablong}{O{} m}{%
+%   \ifabshow
+%     \ifstrequal{#1}{hide}{}{%
+%       \par\noindent
+%       \fcolorbox{outerlinecolor}{innerboxcolor}{%
+%         \begin{minipage}{\linewidth}
+%           \purple{\bfseries Ari:}~#2
+%         \end{minipage}}%
+%       \par
+%     }%
+%   \fi
+% }
+
+\newcommand\hn[1]{\textcolor{red}{[HN: #1]}}
+\newcommand\ab[1]{\textcolor{purple}{[AB: #1]}}
+

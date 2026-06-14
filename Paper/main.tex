@@ -1,0 +1,63 @@
+%% =====================================================================
+%%  Where to Go Next: A Minimax Site-Selection Criterion
+%%  for External Validity
+%%
+%%  Main file.  Body sections live in sections/, proofs in appendix/.
+%%  Style is inherited from the External Validity helper packages
+%%  (formatting.sty, statistics-macros.sty, editing-macros.sty).
+%% =====================================================================
+\documentclass[11pt]{article}
+
+%% ---- Core typesetting ------------------------------------------------
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{graphicx}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{etoolbox}
+\usepackage{ifthen}
+\usepackage{xifthen}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{enumitem}
+
+%% ---- Citations (loaded before formatting.sty, which patches natbib) --
+\usepackage{natbib}
+
+%% ---- Project style helpers (order matters) --------------------------
+\usepackage{statistics-macros}
+\usepackage{formatting}
+\usepackage{editing-macros}
+
+%% ---- Cross-references (last) ----------------------------------------
+\usepackage[colorlinks=true,allcolors=NavyBlue]{hyperref}
+
+\graphicspath{{figures/}}
+
+\title{\bf Where to Go Next:\\ A Minimax Site-Selection Criterion for
+External Validity}
+\date{Draft --- April 2026}
+
+\begin{document}
+\maketitle
+
+\input{sections/abstract}
+
+\input{sections/introduction}
+\input{sections/preliminaries}
+\input{sections/site-selection-problem}
+\input{sections/convex-hull}
+\input{sections/affine-restrictions}
+\input{sections/monotonicity}
+\input{sections/simulation}
+\input{sections/extensions}
+
+\appendix
+\input{appendix/appendix-proofs}
+
+% Works in the draft's reference list that are not \cite-d in the body:
+\nocite{bareinboim2016causal,manski2026copinginductiverisktheories}
+
+\bibliographystyle{plainnat}
+\bibliography{external_validity}
+
+\end{document}

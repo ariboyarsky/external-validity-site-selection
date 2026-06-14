@@ -1,0 +1,37 @@
+\begin{thebibliography}{5}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Bareinboim and Pearl(2016)]{bareinboim2016causal}
+Elias Bareinboim and Judea Pearl.
+\newblock Causal inference and the data-fusion problem.
+\newblock \emph{Proceedings of the National Academy of Sciences}, 113\penalty0
+  (27):\penalty0 7345--7352, 2016.
+
+\bibitem[Bonnans and Shapiro(2013)]{bonnans2013perturbation}
+J~Fr{\'e}d{\'e}ric Bonnans and Alexander Shapiro.
+\newblock \emph{Perturbation analysis of optimization problems}.
+\newblock Springer Science \& Business Media, 2013.
+
+\bibitem[Jeong and Namkoong(2020)]{jeong2020assessing}
+Sookyo Jeong and Hongseok Namkoong.
+\newblock Assessing external validity over worst-case subpopulations.
+\newblock \emph{arXiv preprint arXiv:2007.02411}, 2020.
+
+\bibitem[Manski(2026)]{manski2026copinginductiverisktheories}
+Charles~F. Manski.
+\newblock Coping with inductive risk when theories are underdetermined:
+  Decision making with partial identification, 2026.
+\newblock URL \url{https://arxiv.org/abs/2602.00355}.
+
+\bibitem[Meager(2019)]{meager2019understanding}
+Rachael Meager.
+\newblock Understanding the average impact of microcredit expansions: A
+  bayesian hierarchical analysis of seven randomized experiments.
+\newblock \emph{American Economic Journal: Applied Economics}, 11\penalty0
+  (1):\penalty0 57--91, 2019.
+
+\end{thebibliography}

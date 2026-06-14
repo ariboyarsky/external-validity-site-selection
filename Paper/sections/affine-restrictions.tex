@@ -1,0 +1,125 @@
+\section{The Minimax Criterion under Affine Restrictions}
+\label{sec:restrictions}
+
+Compact affine restrictions $\mathcal{R} = \{\theta : r(\theta)\le 0\}$ ---
+e.g., box constraints, effect-ordering, sign/monotonicity --- replace the
+unbounded-in-the-null-space behavior of Proposition~\ref{prop:dichotomy} with a
+finite LP whose width we can compute and optimize.
+
+\subsection{A tractable surrogate}
+\label{sec:surrogate}
+
+Fix a candidate $k$ and a target $(t_m, t_r)$. The width is the value of the LP
+pair \eqref{eq:bounds} with $\Sigma \leftarrow \Sigma_{\mathcal{S}\cup\{k\}}$.
+Because $\Delta\Sigma_k$ has rank at most $2$, the candidate's effect on the
+feasible set is a \emph{rank-2 perturbation} of the affine subspace
+$\{\Sigma_\mathcal{S}\theta = -b\}$. Under Assumption~6 of Boyarsky et al.\
+(2026) (Robinson constraint qualification) the LP values are Lipschitz in
+$\Sigma$, and we obtain a first-order surrogate:
+
+\begin{proposition}[Rank-2 envelope]
+\label{prop:envelope}
+Let $(\theta_\mathcal{S}^\star, \lambda_\mathcal{S}^\star,
+\nu_\mathcal{S}^\star)$ be a KKT triple at $\Sigma_\mathcal{S}$ for a target
+$(t_m, t_r)$, with minimum-norm multiplier $\lambda_\mathcal{S}^\star$. Then
+\begin{equation}
+\label{eq:envelope}
+v_u\bigl(\gamma_{\mathcal{S}\cup\{k\}}\bigr) - v_u\bigl(\gamma_\mathcal{S}\bigr)
+ \;\approx\;
+ - \lambda_\mathcal{S}^{\star\top}\bigl(\Delta\Sigma_k\,
+ \theta_{\mathcal{S}}^\star + \Delta b_k\bigr),
+\end{equation}
+and analogously for $v_\ell$. The first-order change in the width is
+$\Delta w_k \approx - (\lambda_\mathcal{S}^{u,\star} - \lambda_\mathcal{S}^{\ell,\star})^\top
+ (\Delta\Sigma_k\,\theta^\star_{\mathcal{S}} + \Delta b_k)$.
+\end{proposition}
+
+Proposition~\ref{prop:envelope} is the Bonnans--Shapiro directional derivative of
+the constrained-value map, specialized to the finite-dimensional rank-2
+site-update direction $(h_\Sigma, h_b) = (\Delta\Sigma_k/\|\Delta\Sigma_k\|,
+\Delta b_k)$. The formula \eqref{eq:envelope} coincides with Equation~(1.3) of
+Boyarsky et al.\ (2026), evaluated at the site-augmentation direction. It gives a
+\emph{linear-in-$k$} surrogate for the width change, so the minimax selection
+\eqref{eq:minimax} reduces to a finite computation:
+\begin{equation}
+\label{eq:surrogate}
+k^\star_{\rm surr}\;\in\;\arg\min_{k\in\mathcal{K}}\;
+ \sup_{(t_m,t_r)\in\mathcal{T}}\;
+ \Bigl|\,\lambda_\mathcal{S}^{u,\star}(t)^\top
+  \Delta\Sigma_k\,\theta^\star_\mathcal{S}(t)
+  - \lambda_\mathcal{S}^{\ell,\star}(t)^\top
+  \Delta\Sigma_k\,\theta^\star_\mathcal{S}(t)\,\Bigr|,
+\end{equation}
+after taking a sup over the unknown $\Delta b_k$ in the prior ball $\mathcal{B}$,
+which is handled by a standard dual-norm bound and is additive in the candidate.
+Computing \eqref{eq:surrogate} requires solving the LP pair \eqref{eq:bounds} at
+$\Sigma_\mathcal{S}$ once per target and a finite-dimensional matrix-vector
+product per candidate, total cost $O(|\mathcal{T}|\cdot K)$.
+
+\subsection{Three regimes}
+\label{sec:regimes}
+
+The linearization \eqref{eq:envelope} inherits the three-regime taxonomy of the
+LOO diagnostic of Boyarsky et al.\ (2026, \S4.4), now read in reverse:
+
+\begin{itemize}
+\item \textbf{(A) Coverage-expanding candidate.} If $(C_m^{(k)}, C_r^{(k)})
+  \notin \mathrm{aff}(\mathcal{H}_\mathcal{S})$, then
+  $\mathrm{null}(\Sigma_{\mathcal{S}\cup\{k\}}) \subsetneq
+  \mathrm{null}(\Sigma_\mathcal{S})$. Proposition~\ref{prop:envelope} detects
+  this as a first-order contraction of the width whenever the binding recession
+  direction at target $t$ lies along the newly-resolved null-space direction. In
+  the unrestricted limit this regime \emph{collapses} infinite widths to finite
+  ones.
+
+\item \textbf{(B) Location-improving candidate.} If $(C_m^{(k)}, C_r^{(k)}) \in
+  \mathrm{aff}(\mathcal{H}_\mathcal{S})$ but outside the convex hull, the rank of
+  $\Sigma$ does not change but $\Delta b_k$ translates the moment-implied affine
+  subspace. The binding vertex of the LP can shift, yielding a first-order width
+  change of either sign. This is the regime in which a new site \emph{improves
+  overlap} at the target without adding a new identification direction.
+
+\item \textbf{(C) Feasibility-restoring (or -breaking) candidate.} If
+  $\{\theta : \Sigma_\mathcal{S}\theta = -b_\mathcal{S}\}\cap \mathcal{R} =
+  \emptyset$ --- an infeasibility signaled by the Farkas alternative of Boyarsky
+  et al.\ (2026, \S4.4 (c)) --- a candidate $k$ can restore feasibility if its
+  site-update direction pushes the affine subspace back into $\mathcal{R}$.
+  Conversely, a candidate whose direction is incompatible with the existing
+  restriction set can break feasibility, which is diagnostic information rather
+  than a reason to exclude the candidate.
+\end{itemize}
+
+The minimax selection \eqref{eq:minimax} therefore does not reduce to a single
+geometric quantity in general; the convex-hull rule is exact in regime (A) and
+the unrestricted limit, and is a useful first screen that should be refined by
+\eqref{eq:surrogate} when the restriction set is binding.
+
+\subsection{Handling the unknown \texorpdfstring{$\Delta b_k$}{Delta b\_k}}
+\label{sec:unknown-b}
+
+The right-hand-side update $\Delta b_k$ depends on the candidate site's future
+outcomes. Three prior choices are natural:
+
+\begin{enumerate}
+\item \textbf{Uninformative ball.} $\Delta b_k \in \{b : \|b\|_2 \le B\}$. Yields
+  a worst-case width via dual-norm bound, but can dominate $\Delta\Sigma_k$ at
+  small candidate sample sizes. Conservative.
+
+\item \textbf{Meta-analytic prior.} Use the existing-pool estimates as a prior on
+  the candidate's $(Y, A)$ conditional means, and propagate through the
+  expression for $b$ in Equation~(A.7) of Boyarsky et al.\ (2026). This is a
+  structural Bayesian design; under a flat prior on $\theta$ it recovers a
+  Bayesian D-optimality criterion, and the minimax and Bayesian selections agree
+  in the large-candidate-sample limit.
+
+\item \textbf{Adversarial $b$.} $\Delta b_k \in \mathcal{B}$ chosen to maximize
+  the width. This is the robust-optimization analogue of (1) with an ellipsoidal
+  $\mathcal{B}$; Sion-minimax arguments give a tractable saddle-point
+  representation.
+\end{enumerate}
+
+In our simulation (Section~\ref{sec:simulation}) we adopt (1) with $B$ calibrated
+from the existing-pool residual variance; the three variants agree on the
+minimax-optimal candidate in all our runs, which is unsurprising given that the
+rank update in \eqref{eq:dsigma} dominates the first-order width change in the
+regimes where candidates are materially distinguishable.

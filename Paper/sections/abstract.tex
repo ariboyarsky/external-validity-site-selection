@@ -1,0 +1,41 @@
+\begin{abstract}
+Multi-site experiments anchor external-validity claims through a cross-site
+moment identity $\Sigma\theta + b = 0$ that, when the number of sites $S$ is
+small relative to the site-level covariate dimension, is rank-deficient and
+leaves the target-site treatment effect only partially identified. Boyarsky,
+Egami, and Namkoong (2026) formalize this partial identification and derive
+debiased bounds on $\psi(\theta;\gamma)$ at a user-chosen target profile
+$(t_m,t_r)$ under analyst-specified affine restrictions $r(\theta)\le 0$. In
+this note we study the \emph{inverse} design question: given a pool of candidate
+sites with known site-level context $(C_m^{(k)},C_r^{(k)})$ but no experimental
+data, which site should an investigator actually go and run, in order to most
+strengthen external-validity claims about a population of target profiles? We
+formulate the problem as a minimax design over the width of the
+partial-identification region, establish a sharp geometric characterization
+that, in the absence of restrictions, reduces to an
+\emph{expand-the-convex-hull} rule for the site-level context vectors, and derive
+a tractable surrogate under compact affine restrictions. The criterion inherits
+the three-regime structure of the leave-one-site-out diagnostic of Boyarsky et
+al.\ (2026): candidate sites either (i) strictly reduce the null space of
+$\Sigma$ and can collapse unbounded widths to finite ones, (ii) translate the
+moment-implied affine subspace closer to the target profile at fixed rank, or
+(iii) restore feasibility of substantive restrictions that were incompatible with
+the existing pool. We then turn to a subtler point: because the moment matrix
+$\Sigma$ is a function of the conditional-on-$X$ covariance of the site-level
+context, and the right-hand side $b$ is a function of the candidate's outcomes,
+adding a site can in principle \emph{worsen} the partial-identification width ---
+either by shifting the moment-implied affine subspace into a less favorable
+cross-section of the restriction polyhedron, or by diluting an
+already-identifying direction of $\Sigma$ under normalization. We isolate two
+pre-experiment screens --- rank expansion (M1) and outcome-consistency (M2) ---
+and prove that \emph{either} is sufficient for the worst-case width to be
+monotone-nonincreasing in the augmentation (Theorem~\ref{thm:monotone}). A Python
+simulation on synthetic data with eight existing sites and six candidates
+confirms both directions of the theory: rank-expanding candidates reduce the
+minimax width by roughly eleven percent, an interior candidate with a conflicting
+outcome \emph{increases} it in $16\%$ of replicates, and a candidate satisfying
+both (M1) and (M2) matches the best rank-expander while provably never doing
+harm. Complete proofs and an extension to the block moment of Boyarsky et al.\
+(2026) are deferred to Appendix~\ref{sec:appendix}. We close with extensions to
+the effect-ordering mixed-integer formulation and to cost-weighted selection.
+\end{abstract}

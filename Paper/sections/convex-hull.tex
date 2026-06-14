@@ -1,0 +1,152 @@
+\section{Why Convex-Hull Expansion}
+\label{sec:hull}
+
+The minimax objective \eqref{eq:minimax} inherits a sharp geometric structure in
+the unrestricted limit $\mathcal{R} = \mathbb{R}^{d_g}$ (or equivalently, when the
+restriction set is large enough that no face of $r$ binds at the optimum). In
+this limit the partial-identification width is determined entirely by the
+interaction between the null space of $\Sigma$ and the direction of the target
+functional.
+
+\subsection{Unrestricted dichotomy}
+\label{sec:hull-dichotomy}
+
+Write the linear target functional as $c(t)^\top \theta$ with
+$c(t) := (\tilde c_m(t), \tilde c_r(t), 0, 0)$ (the zeros in the
+$(\gamma_1, \gamma_2)$-coordinates follow because the target functional in
+\eqref{eq:rep} is linear in $(\beta_1, \beta_2)$ only; the constant piece
+$c_0(\gamma)$ shifts the endpoints but leaves the width invariant).
+
+\begin{proposition}[Unrestricted width is $0$ or $\infty$]
+\label{prop:dichotomy}
+Let $\mathcal{R} = \mathbb{R}^{d_g}$. Then for any target direction $c(t)$ and
+any feasible $b$,
+\[
+w_{\rm unr}(t; \Sigma, b) \;=\;
+ \begin{cases}
+  0 & \text{if } c(t)\in \mathrm{range}(\Sigma^\top), \\
+  +\infty & \text{otherwise.}
+ \end{cases}
+\]
+\end{proposition}
+
+\begin{proof-sketch}
+The feasible set $\{\theta : \Sigma\theta = -b\}$ is an affine subspace with
+direction subspace $\mathrm{null}(\Sigma)$. The width of a linear functional over
+an affine subspace is $0$ if the functional is constant on the direction
+subspace, and unbounded otherwise. Constancy is equivalent to
+$c(t) \perp \mathrm{null}(\Sigma)$, which by rank--nullity is
+$c(t) \in \mathrm{range}(\Sigma^\top)$.
+\end{proof-sketch}
+
+\begin{corollary}
+\label{cor:collapse}
+Adding a candidate site $k$ collapses the unrestricted width at target $t$ from
+$\infty$ to $0$ if and only if the residualized context $(u_m^{(k)}, u_r^{(k)})$
+of the candidate is such that
+$c(t) \in \mathrm{range}\!\bigl(\Sigma_\mathcal{S}^\top + \Delta\Sigma_k^\top\bigr)$
+but $c(t) \notin \mathrm{range}(\Sigma_\mathcal{S}^\top)$.
+\end{corollary}
+
+This is the unrestricted version of the \emph{coverage-expanding-donor} regime
+(a) of the leave-one-site-out taxonomy in Boyarsky et al.\ (2026, \S4.4).
+
+\subsection{The convex-hull interpretation}
+\label{sec:hull-interp}
+
+Proposition~\ref{prop:dichotomy} has a clean geometric reading in the site-level
+context space. Let
+\[
+\mathcal{H}_\mathcal{S} \;:=\; \mathrm{conv}\!\bigl\{(C_m^{(s)}, C_r^{(s)})\,:\,
+ s = 1, \ldots, S\bigr\} \;\subseteq\; \mathbb{R}^{d_M+d_I}.
+\]
+Its \emph{affine hull} $\mathrm{aff}(\mathcal{H}_\mathcal{S})$ is a linear
+subspace (after centering) of dimension at most $S-1$. The cross-site moment
+matrix $\Sigma_\mathcal{S}$ has rank at most $\dim\mathrm{aff}(\mathcal{H}_\mathcal{S})
+ \cdot (\text{block factor})$, with equality when the existing sites have
+sufficient overlap in $X$ at the points where their contexts differ.
+
+\begin{proposition}[Hull expansion strictly reduces the null space]
+\label{prop:hull}
+If $(C_m^{(k)}, C_r^{(k)}) \notin \mathrm{aff}(\mathcal{H}_\mathcal{S})$ and the
+candidate site's $X$-distribution has positive density on the individual-level
+support, then
+\[
+\mathrm{rank}\bigl(\Sigma_{\mathcal{S}\cup\{k\}}\bigr)
+ \;>\; \mathrm{rank}\bigl(\Sigma_\mathcal{S}\bigr),
+\quad\Longleftrightarrow\quad
+ \mathrm{null}\bigl(\Sigma_{\mathcal{S}\cup\{k\}}\bigr) \;\subsetneq\;
+ \mathrm{null}\bigl(\Sigma_\mathcal{S}\bigr).
+\]
+\end{proposition}
+
+\begin{proof-sketch}
+The block form \eqref{eq:dsigma} shows $\Delta\Sigma_k$ has row space spanned by
+$(u_m^{(k)}, u_r^{(k)})$. A rank increase occurs iff these rows lie outside the
+existing row space of $\Sigma_\mathcal{S}$, which by the site-level block
+structure is equivalent to $(C_m^{(k)}, C_r^{(k)})$ lying outside
+$\mathrm{aff}(\mathcal{H}_\mathcal{S})$.
+\end{proof-sketch}
+
+Combined with Proposition~\ref{prop:dichotomy}, this yields a
+finite-vs-infinite dichotomy: \emph{under no restriction $r$, the only candidate
+sites that shrink the unrestricted width are those whose context lies outside the
+affine hull of existing sites.} The convex-hull expansion rule is the special
+case in which the target region $\mathcal{T}$ is itself contained in a larger
+convex set whose existing-site coverage is incomplete.
+
+\subsection{Width-as-distance-to-hull}
+\label{sec:hull-distance}
+
+Proposition~\ref{prop:dichotomy}'s dichotomy is discontinuous, which is
+uninformative for comparing two candidates both of which lie outside the hull, or
+both of which lie inside. The correct continuous refinement uses a
+\emph{regularized} width,
+\begin{equation}
+\label{eq:regwidth}
+w_r^\tau(t; \Sigma, b) \;:=\; \max_\theta\{c(t)^\top\theta\} -
+ \min_\theta\{c(t)^\top\theta\}\quad
+\text{s.t.}\quad
+\Sigma\theta+b = 0,\; \|\theta\|_2 \le \tau,
+\end{equation}
+with a large-radius ball as a mild stand-in for a compact restriction set. The
+regularized width admits a closed form:
+\begin{equation}
+\label{eq:distbound}
+w_r^\tau(t; \Sigma, b) \;\le\; 2\tau \cdot \mathrm{dist}\!\bigl(
+ c(t),\; \mathrm{range}(\Sigma^\top)\bigr),
+\end{equation}
+with equality up to a boundary adjustment that vanishes at large $\tau$. The
+distance from $c(t)$ to $\mathrm{range}(\Sigma^\top)$ is precisely the norm of the
+component of $c(t)$ in $\mathrm{null}(\Sigma)$. Geometrically, this distance is a
+monotone function of the distance from the target profile $(t_m, t_r)$ to
+$\mathrm{aff}(\mathcal{H}_\mathcal{S})$, and strictly monotone under the rank
+conditions of Proposition~\ref{prop:hull}. We formalize this in
+Proposition~\ref{prop:dist}.
+
+\begin{proposition}[Width is monotone in distance to the affine hull]
+\label{prop:dist}
+Suppose the cross-site design is balanced and the within-site $X$-distribution is
+the same across existing and candidate sites. Let
+$d_\mathcal{S}(t) := \mathrm{dist}((t_m, t_r), \mathrm{aff}(\mathcal{H}_\mathcal{S}))$.
+Then
+\begin{equation}
+\label{eq:prop3}
+w_r^\tau(t; \Sigma_\mathcal{S}, b) \;=\; 2\tau \cdot d_\mathcal{S}(t) \cdot
+ (1 + o_\tau(1)),
+\end{equation}
+with equality in the limit $\tau\to\infty$. In particular, for two candidates
+$k_1, k_2$ with
+$d_{\mathcal{S}\cup\{k_1\}}(t) < d_{\mathcal{S}\cup\{k_2\}}(t)$ uniformly over
+$t\in\mathcal{T}$, candidate $k_1$ dominates $k_2$ under the minimax criterion
+\eqref{eq:minimax} in the unrestricted limit.
+\end{proposition}
+
+Proposition~\ref{prop:dist} delivers the promised \textbf{convex-hull expansion
+rule}: in the unrestricted (large-$\tau$) limit, the minimax-optimal candidate is
+the one whose addition minimizes $\sup_{t \in \mathcal{T}}
+d_{\mathcal{S}\cup\{k\}}(t)$ --- i.e., the one whose enlarged affine hull leaves
+no target profile in $\mathcal{T}$ far from the span of sites. When $\mathcal{T}$
+is a compact set containing points outside $\mathcal{H}_\mathcal{S}$, this
+objective is exactly \emph{expanding the convex hull} in the direction of the
+target region.
