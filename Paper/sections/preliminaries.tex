@@ -1,7 +1,7 @@
 \section{Preliminaries}
 \label{sec:prelim}
 
-We briefly recap the setup of Boyarsky et al.\ (2026). The hierarchical
+We briefly recap the setup of \citet{boyarsky2026}. The hierarchical
 data-generating process is
 \begin{equation}
 \label{eq:dgp}
@@ -14,7 +14,7 @@ $C_r\in\mathbb{R}^{d_I}$ site-level interaction covariates. The parameter
 $\theta := (\beta_1,\beta_2,\gamma_1,\gamma_2)\in\mathbb{R}^{d_g}$ with
 $d_g = 2(d_M + d_I)$ captures direct and indirect effects.
 
-\paragraph{Proposition 1 of Boyarsky et al.\ (2026).}
+\paragraph{Proposition 1 of \protect\citet{boyarsky2026}.}
 \emph{Under a constant-propensity RCT and mean-zero errors, for a target profile
 $(t_m,t_r)$ with $\mathrm{Pr}[C_m=t_m, C_r=t_r]>0$,}
 \[
@@ -36,13 +36,13 @@ The key structural fact we exploit in this paper is that $\Sigma$ is a linear
 functional of the joint distribution of $(C_m, C_r, X)$, and in particular its
 rank is governed by the rank of the $(S \times (d_M + d_I))$ matrix whose rows
 are the site-level contexts $(C_m^{(s)}, C_r^{(s)})$, weighted by site sample
-sizes and individual covariate overlap. When $S$ is small relative to
-$d_M + d_I$, this matrix --- and hence $\Sigma$ --- is rank-deficient; this is
-precisely why the \citet{meager2019understanding} micro-credit application with
-$S=7$ sites exhibits non-trivial partial identification.
+sizes and individual covariate overlap. When $S$ is small relative to $d_M +
+d_I$, this matrix, and hence $\Sigma$, is rank-deficient. This is precisely why
+the \citet{meager2019understanding} micro-credit application with $S=7$ sites
+has non-trivial partial identification.
 
 \paragraph{Partial-identification bounds.}
-Boyarsky et al.\ (2026) define
+\citet{boyarsky2026} define
 \begin{equation}
 \label{eq:bounds}
 v_{\ell}(\gamma) \;=\; \min_\theta\,\bigl\{\psi(\theta;\gamma)\,:\,
@@ -57,15 +57,15 @@ and the width of the partial-identification interval at target $(t_m,t_r)$ is
 w_r(t_m, t_r; \Sigma, b) \;=\; v_u(\gamma) - v_\ell(\gamma).
 \end{equation}
 We suppress the dependence of $c_0, \tilde c_m, \tilde c_r$ on $\gamma$ when no
-confusion arises; these enter the objective linearly in $\theta$ but do not
-interact with the feasible set, so they do not affect the width --- only the
-endpoints.
+confusion arises. These enter the objective linearly in $\theta$ but do not
+interact with the feasible set, so they affect only the endpoints, not the
+width.
 
 \paragraph{Restrictions.}
 The analyst chooses $r(\theta)\le 0$ from a library of affinely-representable
 restrictions (effect-ordering, sign constraints, norm bounds, monotonicity).
-Throughout this paper we assume $r$ defines a compact polyhedron
-$\mathcal{R} := \{\theta : r(\theta)\le 0\}$; this is the regime where the width
-is finite and the LP/MIP program is well-posed. The extension to relaxed
+Throughout this paper we assume $r$ defines a compact polyhedron $\mathcal{R} :=
+\{\theta : r(\theta)\le 0\}$. This is the regime where the width is finite and
+the LP/MIP program is well-posed. The extension to relaxed
 restriction sets (where unrestricted widths are permitted) is discussed in
 Section~\ref{sec:extensions}.

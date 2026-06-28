@@ -3,44 +3,44 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: main.aux
 The style file: plainnat.bst
 Database file #1: external_validity.bib
-You've used 5 entries,
+You've used 9 entries,
             2773 wiz_defined-function locations,
-            623 strings with 5798 characters,
-and the built_in function-call counts, 1897 in all, are:
-= -- 168
-> -- 83
-< -- 5
-+ -- 29
-- -- 24
-* -- 129
-:= -- 297
-add.period$ -- 15
-call.type$ -- 5
-change.case$ -- 22
-chr.to.int$ -- 5
-cite$ -- 10
-duplicate$ -- 94
-empty$ -- 175
-format.name$ -- 35
-if$ -- 394
+            647 strings with 6505 characters,
+and the built_in function-call counts, 3495 in all, are:
+= -- 307
+> -- 183
+< -- 6
++ -- 63
+- -- 54
+* -- 260
+:= -- 559
+add.period$ -- 29
+call.type$ -- 9
+change.case$ -- 42
+chr.to.int$ -- 9
+cite$ -- 18
+duplicate$ -- 170
+empty$ -- 301
+format.name$ -- 69
+if$ -- 721
 int.to.chr$ -- 1
 int.to.str$ -- 1
-missing$ -- 5
-newline$ -- 33
-num.names$ -- 20
-pop$ -- 50
+missing$ -- 10
+newline$ -- 53
+num.names$ -- 36
+pop$ -- 90
 preamble$ -- 1
-purify$ -- 18
+purify$ -- 36
 quote$ -- 0
-skip$ -- 75
+skip$ -- 129
 stack$ -- 0
-substring$ -- 60
-swap$ -- 5
+substring$ -- 93
+swap$ -- 8
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 50
+type$ -- 84
 warning$ -- 0
-while$ -- 19
+while$ -- 33
 width$ -- 0
-write$ -- 69
+write$ -- 120

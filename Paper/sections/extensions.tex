@@ -2,51 +2,47 @@
 \label{sec:extensions}
 
 \paragraph{Effect-ordering (mixed-integer).}
-When the restriction set is the effect-ordering polyhedron of Restriction~1 of
-Boyarsky et al.\ (2026), the program \eqref{eq:surrogate} becomes a mixed-integer
-LP. The locally-constant integer-solution argument of \S1(ii) in Boyarsky et al.\
-(2026) extends: on a neighborhood of $\gamma_\mathcal{S}$, the optimal sign
-pattern is constant, so the MILP reduces to the LP \eqref{eq:surrogate} after
-fixing integer variables. Selection is then performed by \eqref{eq:surrogate} at
-the fixed pattern; sign flips across candidate sites can be detected by
-re-solving the MILP at the top two or three candidates.
+When the restriction set is the effect-ordering polyhedron of Restriction~1 of \citet{boyarsky2026}, the program \eqref{eq:surrogate} becomes a mixed-integer
+LP. The locally-constant integer-solution argument of \S1(ii) in \citet{boyarsky2026} extends to this case. On a neighborhood of $\gamma_\mathcal{S}$, the
+optimal sign pattern is constant, so the MILP reduces to the LP
+\eqref{eq:surrogate} after fixing integer variables. We then perform selection
+by \eqref{eq:surrogate} at the fixed pattern. Sign flips across candidate sites
+can be detected by re-solving the MILP at the top two or three candidates.
 
 \paragraph{Cost-weighted selection.}
-Adding a cost $c_k$ to the objective \eqref{eq:minimax} is straightforward because
-the cost term is separable in $k$; the minimax-optimal candidate under Lagrangian
-\eqref{eq:lagrangian} is obtained by solving \eqref{eq:surrogate} with an
-additional additive penalty. In our setting an ethicist-flavored version of cost
-might penalize candidates that are demographically similar to existing sites,
-because such sites do little to broaden the external-validity claim despite being
-cheap to reach.
+Adding a cost $c_k$ to the objective \eqref{eq:minimax} is straightforward
+because the cost term is separable in $k$. The minimax-optimal candidate under
+Lagrangian \eqref{eq:lagrangian} is obtained by solving \eqref{eq:surrogate}
+with an additional additive penalty. In our setting a cost based on ethical
+concerns might penalize candidates that are demographically similar to existing
+sites, because such sites do little to broaden the external-validity claim
+despite being cheap to reach.
 
 \paragraph{Multiple candidates at once.}
 The design problem \eqref{eq:minimax} can be posed over a subset
 $\mathcal{J} \subseteq \mathcal{K}$ of candidates to add simultaneously; in this
 case the width surrogate \eqref{eq:surrogate} becomes a set-function in
-$\mathcal{J}$ that is \emph{submodular} in the rank-monotone limit --- in
-precisely the sense that adding the first hull-expander contributes more than
-adding the second. A greedy algorithm attains a $(1 - 1/e)$-approximation under
-mild regularity, matching the classical D-optimality result of Nemhauser et al.\
-(1978).
+$\mathcal{J}$ that is \emph{submodular} in the rank-monotone limit. That is,
+adding the first hull-expander contributes more than adding the second. A greedy
+algorithm attains a $(1 - 1/e)$-approximation under mild regularity, which
+matches the classical D-optimality result of \citet{nemhauser1978analysis}.
 
 \paragraph{Connection to efficient influence functions.}
 The minimum-norm multiplier $\lambda^\star$ that appears in \eqref{eq:envelope}
-is the same object as the Riesz representer in the efficient influence function of
-Boyarsky et al.\ (2026, Eq.~2.9). The minimax design criterion therefore inherits
-inference validity from their debiased cross-fitting: confidence intervals for the
-post-addition width are a standard delta-method computation.
+is the same object as the Riesz representer in the efficient influence function of \citet[Eq.~2.9]{boyarsky2026}. The minimax design criterion therefore gets
+its inference validity from their debiased cross-fitting. Confidence intervals
+for the post-addition width are a standard delta-method computation.
 
 \paragraph{Open questions.}
-Three directions strike us as natural follow-ups. First, the adversarial
-$b$-prior of Section~\ref{sec:unknown-b}(3) admits a saddle-point representation
-but not a closed-form solution; existing interior-point solvers handle small
-instances, but large candidate pools would benefit from a custom Frank--Wolfe
-scheme. Second, in the online-experimentation setting the candidate pool is
-revealed sequentially and the selection must be made without access to the full
-set; adapting \eqref{eq:surrogate} to this regret-minimization formulation is
-open. Third, the assumption that the within-site $X$-distribution at candidate
-sites is known (or informatively prior'd) is strong; a distributionally-robust
-variant that treats $P_X^{(k)}$ as uncertain over a Wasserstein ball would inherit
-the theoretical guarantees of the \citet{jeong2020assessing} worst-case program
-but at the cost of a more conservative selection.
+Three directions are natural follow-ups. First, the adversarial $b$-prior of
+Section~\ref{sec:unknown-b}(3) admits a saddle-point representation but not a
+closed-form solution. Existing interior-point solvers handle small instances,
+but large candidate pools would benefit from a custom Frank--Wolfe scheme.
+Second, in the online-experimentation setting the candidate pool is revealed
+sequentially, and the selection must be made without access to the full set.
+Adapting \eqref{eq:surrogate} to this regret-minimization formulation is open.
+Third, the assumption that the within-site $X$-distribution at candidate sites
+is known (or has an informative prior) is strong. A distributionally-robust
+variant that treats $P_X^{(k)}$ as uncertain over a Wasserstein ball would keep
+the theoretical guarantees of the \citet{jeong2020assessing} worst-case program,
+at the cost of a more conservative selection.

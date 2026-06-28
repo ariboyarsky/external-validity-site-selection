@@ -1,8 +1,8 @@
 \section{Why Convex-Hull Expansion}
 \label{sec:hull}
 
-The minimax objective \eqref{eq:minimax} inherits a sharp geometric structure in
-the unrestricted limit $\mathcal{R} = \mathbb{R}^{d_g}$ (or equivalently, when the
+The minimax objective \eqref{eq:minimax} has a simple geometric structure in the
+unrestricted limit $\mathcal{R} = \mathbb{R}^{d_g}$ (or equivalently, when the
 restriction set is large enough that no face of $r$ binds at the optimum). In
 this limit the partial-identification width is determined entirely by the
 interaction between the null space of $\Sigma$ and the direction of the target
@@ -40,18 +40,18 @@ but $c(t) \notin \mathrm{range}(\Sigma_\mathcal{S}^\top)$.
 \end{corollary}
 
 This is the unrestricted version of the \emph{coverage-expanding-donor} regime
-(a) of the leave-one-site-out taxonomy in Boyarsky et al.\ (2026, \S4.4).
+(a) of the leave-one-site-out taxonomy in \citet[\S4.4]{boyarsky2026}.
 
 \subsection{The convex-hull interpretation}
 \label{sec:hull-interp}
 
-Proposition~\ref{prop:dichotomy} has a clean geometric reading in the site-level
-context space. Let
+Proposition~\ref{prop:dichotomy} has a simple geometric interpretation in the
+site-level context space. Let
 \[
 \mathcal{H}_\mathcal{S} \;:=\; \mathrm{conv}\!\bigl\{(C_m^{(s)}, C_r^{(s)})\,:\,
  s = 1, \ldots, S\bigr\} \;\subseteq\; \mathbb{R}^{d_M+d_I}.
 \]
-Its \emph{affine hull} $\mathrm{aff}(\mathcal{H}_\mathcal{S})$ is a linear
+Its affine hull $\mathrm{aff}(\mathcal{H}_\mathcal{S})$ is a linear
 subspace (after centering) of dimension at most $S-1$. The cross-site moment
 matrix $\Sigma_\mathcal{S}$ has rank at most $\dim\mathrm{aff}(\mathcal{H}_\mathcal{S})
  \cdot (\text{block factor})$, with equality when the existing sites have
@@ -73,9 +73,10 @@ support, then
 
 
 Combined with Proposition~\ref{prop:dichotomy}, this yields a
-finite-vs-infinite dichotomy: \emph{under no restriction $r$, the only candidate
-sites that shrink the unrestricted width are those whose context lies outside the
-affine hull of existing sites.} The convex-hull expansion rule is the special
+finite-versus-infinite dichotomy. Under no restriction $r$, the only
+candidate sites that shrink the unrestricted width are those whose context lies
+outside the affine hull of existing sites. The convex-hull expansion rule is
+the special
 case in which the target region $\mathcal{T}$ is itself contained in a larger
 convex set whose existing-site coverage is incomplete.
 
@@ -126,11 +127,11 @@ $t\in\mathcal{T}$, candidate $k_1$ dominates $k_2$ under the minimax criterion
 \eqref{eq:minimax} in the unrestricted limit.
 \end{proposition}
 
-Proposition~\ref{prop:dist} delivers the promised \textbf{convex-hull expansion
-rule}: in the unrestricted (large-$\tau$) limit, the minimax-optimal candidate is
-the one whose addition minimizes $\sup_{t \in \mathcal{T}}
-d_{\mathcal{S}\cup\{k\}}(t)$ --- i.e., the one whose enlarged affine hull leaves
-no target profile in $\mathcal{T}$ far from the span of sites. When $\mathcal{T}$
+Proposition~\ref{prop:dist} gives the \textbf{convex-hull expansion rule}: in
+the unrestricted (large-$\tau$) limit, the minimax-optimal candidate is the one
+whose addition minimizes $\sup_{t \in \mathcal{T}} d_{\mathcal{S}\cup\{k\}}(t)$.
+That is, it is the candidate whose enlarged affine hull leaves no target profile
+in $\mathcal{T}$ far from the span of sites. When $\mathcal{T}$
 is a compact set containing points outside $\mathcal{H}_\mathcal{S}$, this
-objective is exactly \emph{expanding the convex hull} in the direction of the
+objective is exactly expanding the convex hull in the direction of the
 target region.

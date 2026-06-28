@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Where to Go Next — emphasis (\emph / \textbf) cleanup</title>
+<style>
+  :root{
+    --bg:#f7f7f5; --card:#ffffff; --ink:#1f2328; --muted:#6b6b6b;
+    --line:#e5e3dd; --accent:#3a5a8c;
+    --del-bg:#fcebea; --del-ink:#9b2c2c; --del-line:#f1c9c6;
+    --add-bg:#eaf6ec; --add-ink:#1f6b34; --add-line:#bfe3c6;
+    --chip:#eee9df; --chip-ink:#5a5340;
+    --accepted:#1f6b34; --rejected:#9b2c2c; --modified:#8a5a00; --pending:#8a8a8a;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    font-size:15px;line-height:1.5;}
+  .wrap{max-width:920px;margin:0 auto;padding:24px 18px 120px;}
+  h1{font-size:22px;margin:0 0 4px;}
+  .sub{color:#6b6b6b;margin:0 0 18px;font-size:14px;}
+  .note{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:0 0 18px;font-size:13.5px;color:#444;}
+  .note b{color:var(--ink);}
+
+  .bar{position:sticky;top:0;z-index:5;background:rgba(247,247,245,.92);
+    backdrop-filter:blur(6px);border-bottom:1px solid var(--line);
+    padding:10px 0;margin:-8px 0 16px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+  .stat{font-size:13px;color:#444;margin-right:6px;}
+  .stat b{font-variant-numeric:tabular-nums;}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px;vertical-align:middle;}
+  .dot.a{background:var(--accepted)} .dot.r{background:var(--rejected)}
+  .dot.m{background:var(--modified)} .dot.p{background:var(--pending)}
+  .spacer{flex:1}
+  button{font:inherit;cursor:pointer;border:1px solid var(--line);background:#fff;
+    border-radius:8px;padding:6px 11px;color:var(--ink);}
+  button:hover{border-color:#cfcabf;}
+  .filters button.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .btn-export{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:600;}
+
+  .sec-head{font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:#8a8270;
+    margin:22px 0 10px;font-weight:700;}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;margin:0 0 14px;box-shadow:0 1px 2px rgba(0,0,0,.03);}
+  .card.is-rejected{opacity:.62;}
+  .card-top{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+  .eid{font-weight:700;font-size:13px;color:#444;font-variant-numeric:tabular-nums;}
+  .chip{font-size:11.5px;background:var(--chip);color:var(--chip-ink);border-radius:999px;
+    padding:2px 9px;font-weight:600;}
+  .status{margin-left:auto;font-size:12px;font-weight:700;}
+  .status.accepted{color:var(--accepted)} .status.rejected{color:var(--rejected)}
+  .status.modified{color:var(--modified)} .status.pending{color:var(--pending)}
+
+  .block{border-radius:8px;padding:9px 11px;margin:6px 0;font-size:13.5px;
+    font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap;word-break:break-word;}
+  .label{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin:8px 0 2px;}
+  .label.del{color:var(--del-ink)} .label.add{color:var(--add-ink)}
+  .block.del{background:var(--del-bg);border:1px solid var(--del-line);color:#3a2a2a;}
+  .block.add{background:var(--add-bg);border:1px solid var(--add-line);color:#23332a;}
+  .why{font-size:13px;color:#555;margin:10px 0 2px;}
+  .why b{color:#333;}
+
+  .actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+  .actions button[data-act="accept"].on{background:var(--accepted);color:#fff;border-color:var(--accepted);}
+  .actions button[data-act="reject"].on{background:var(--rejected);color:#fff;border-color:var(--rejected);}
+  .actions button[data-act="edit"].on{background:var(--modified);color:#fff;border-color:var(--modified);}
+
+  .editor{margin-top:10px;display:none;}
+  .editor.show{display:block;}
+  textarea{width:100%;min-height:90px;font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;
+    font-size:13.5px;border:1px solid var(--add-line);border-radius:8px;padding:9px 11px;resize:vertical;background:#fbfffb;}
+  .editor .row{display:flex;gap:8px;margin-top:8px;}
+
+  /* modal */
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center;z-index:20;padding:20px;}
+  .modal.show{display:flex;}
+  .modal-inner{background:#fff;border-radius:12px;max-width:760px;width:100%;max-height:85vh;
+    display:flex;flex-direction:column;overflow:hidden;}
+  .modal-head{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;}
+  .modal-head h2{font-size:16px;margin:0;}
+  .modal-body{padding:14px 16px;overflow:auto;}
+  .modal-body textarea{min-height:48vh;}
+  .pill{font-size:12px;color:#666;}
+  @media (max-width:560px){ .block{font-size:13px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Where to Go Next — emphasis cleanup (\emph / \textbf)</h1>
+  <p class="sub">Proposed removals of decorative italics and bold. <span id="count-line"></span></p>
+
+  <div class="note">
+    <b>How to use this.</b> Each card shows the text with the current emphasis (red) and the same text with that one emphasis removed (green), plus a short reason. Use <b>Accept</b>, <b>Reject</b>, or <b>Edit</b> on each. Choices save in this browser. When done, click <b>Export decisions</b> and paste the result back to me to apply.
+    <br><br>
+    <b>What I left alone (not shown here).</b> I kept emphasis where it earns its place: defined terms on first use (e.g. the three regime names, "residuals", "submodular"); the italic theorem and assumption statements; the run-in proof labels ("Claim.", "Setup.", "Case 1"); genuine logical contrasts ("\emph{not}", "\emph{necessary}" / "\emph{sufficient}"); and bold list-item labels (the candidate $k_i$, the setup terms, the (A)/(B)/(C) regime labels). I also kept the five bold defined-terms (e.g. "minimax design", "convex-hull expansion rule"). Tell me if you want those stripped too.
+  </div>
+
+  <div class="bar">
+    <span class="stat"><span class="dot a"></span>Accepted <b id="c-accepted">0</b></span>
+    <span class="stat"><span class="dot m"></span>Modified <b id="c-modified">0</b></span>
+    <span class="stat"><span class="dot r"></span>Rejected <b id="c-rejected">0</b></span>
+    <span class="stat"><span class="dot p"></span>Pending <b id="c-pending">0</b></span>
+    <span class="spacer"></span>
+    <span class="filters" id="filters">
+      <button data-f="all" class="active">All</button>
+      <button data-f="pending">Pending</button>
+      <button data-f="accepted">Accepted</button>
+      <button data-f="modified">Modified</button>
+      <button data-f="rejected">Rejected</button>
+    </span>
+    <button class="btn-export" id="export-btn">Export decisions</button>
+  </div>
+
+  <main id="cards"></main>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-inner">
+    <div class="modal-head">
+      <h2>Export</h2>
+      <span class="pill" id="export-summary"></span>
+      <span class="spacer" style="flex:1"></span>
+      <button id="copy-btn">Copy</button>
+      <button id="close-btn">Close</button>
+    </div>
+    <div class="modal-body">
+      <textarea id="export-text" readonly></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- ===== EDIT DATA ===== -->
+<div id="data" hidden>
+
+<div class="edit-src" data-id="E1" data-section="Introduction" data-type="Decorative italics">
+<script type="text/plain" class="orig">but a site-level choice of \emph{context}, and the loss is the width of a partial-identification interval</script>
+<script type="text/plain" class="prop">but a site-level choice of context, and the loss is the width of a partial-identification interval</script>
+<script type="text/plain" class="why">Decorative single-word emphasis; "context" does not need italics here.</script>
+</div>
+
+<div class="edit-src" data-id="E2" data-section="Site-Selection Problem" data-type="Decorative italics">
+<script type="text/plain" class="orig">but the \emph{rank-update structure} is always the same.</script>
+<script type="text/plain" class="prop">but the rank-update structure is always the same.</script>
+<script type="text/plain" class="why">Not introducing a defined term, so the italics only add weight.</script>
+</div>
+
+<div class="edit-src" data-id="E3" data-section="Convex-Hull" data-type="Decorative italics">
+<script type="text/plain" class="orig">Its \emph{affine hull} $\mathrm{aff}(\mathcal{H}_\mathcal{S})$ is a linear subspace (after centering) of dimension at most $S-1$.</script>
+<script type="text/plain" class="prop">Its affine hull $\mathrm{aff}(\mathcal{H}_\mathcal{S})$ is a linear subspace (after centering) of dimension at most $S-1$.</script>
+<script type="text/plain" class="why">"affine hull" is a standard term; the italics add no clarity.</script>
+</div>
+
+<div class="edit-src" data-id="E4" data-section="Convex-Hull" data-type="Whole-sentence italics">
+<script type="text/plain" class="orig">\emph{Under no restriction $r$, the only candidate sites that shrink the unrestricted width are those whose context lies outside the affine hull of existing sites.}</script>
+<script type="text/plain" class="prop">Under no restriction $r$, the only candidate sites that shrink the unrestricted width are those whose context lies outside the affine hull of existing sites.</script>
+<script type="text/plain" class="why">Italicizing a whole sentence is heavy. The claim already stands as the stated dichotomy.</script>
+</div>
+
+<div class="edit-src" data-id="E5" data-section="Convex-Hull" data-type="Decorative italics">
+<script type="text/plain" class="orig">this objective is exactly \emph{expanding the convex hull} in the direction of the target region.</script>
+<script type="text/plain" class="prop">this objective is exactly expanding the convex hull in the direction of the target region.</script>
+<script type="text/plain" class="why">Decorative phrase emphasis; the rule has already been named.</script>
+</div>
+
+<div class="edit-src" data-id="E6" data-section="Affine Restrictions" data-type="Decorative italics">
+<script type="text/plain" class="orig">In the unrestricted limit this regime \emph{collapses} infinite widths to finite ones.</script>
+<script type="text/plain" class="prop">In the unrestricted limit this regime collapses infinite widths to finite ones.</script>
+<script type="text/plain" class="why">Italics here just dramatize a verb.</script>
+</div>
+
+<div class="edit-src" data-id="E7" data-section="Affine Restrictions" data-type="Decorative italics">
+<script type="text/plain" class="orig">This is the regime in which a new site \emph{improves overlap} at the target without adding a new identification direction.</script>
+<script type="text/plain" class="prop">This is the regime in which a new site improves overlap at the target without adding a new identification direction.</script>
+<script type="text/plain" class="why">Decorative; the phrase is not a defined term.</script>
+</div>
+
+<div class="edit-src" data-id="E8" data-section="Monotonicity" data-type="Decorative italics">
+<script type="text/plain" class="orig">The width \emph{doubles} despite the rank being preserved and the box being the same.</script>
+<script type="text/plain" class="prop">The width doubles despite the rank being preserved and the box being the same.</script>
+<script type="text/plain" class="why">Italics dramatize the result, which the numbers already show.</script>
+</div>
+
+<div class="edit-src" data-id="E9" data-section="Monotonicity" data-type="Decorative italics">
+<script type="text/plain" class="orig">The two imply different \emph{consequences}.</script>
+<script type="text/plain" class="prop">The two imply different consequences.</script>
+<script type="text/plain" class="why">Decorative single-word emphasis.</script>
+</div>
+
+<div class="edit-src" data-id="E10" data-section="Monotonicity" data-type="Decorative italics">
+<script type="text/plain" class="orig">and \emph{conflicting} outcome $y_{k_5}=0\ne 2= c^{(k_5)\top}\theta_\mathcal{S}^\star$,</script>
+<script type="text/plain" class="prop">and conflicting outcome $y_{k_5}=0\ne 2= c^{(k_5)\top}\theta_\mathcal{S}^\star$,</script>
+<script type="text/plain" class="why">The conflict is already shown by $y_{k_5}=0\ne 2$; the italics add nothing.</script>
+</div>
+
+<div class="edit-src" data-id="E11" data-section="Monotonicity" data-type="Emphasis on &quot;and&quot;">
+<script type="text/plain" class="orig">its residualized context is outside $\mathrm{range}(\Sigma_\mathcal{S})$ \emph{and} the outcome shift $\Delta b_k$ is small enough</script>
+<script type="text/plain" class="prop">its residualized context is outside $\mathrm{range}(\Sigma_\mathcal{S})$ and the outcome shift $\Delta b_k$ is small enough</script>
+<script type="text/plain" class="why">Emphasizing "and" is unusual; the conjunction is already clear.</script>
+</div>
+
+<div class="edit-src" data-id="E12" data-section="Monotonicity" data-type="Emphasis on &quot;and&quot;">
+<script type="text/plain" class="orig">its context is inside the existing range \emph{and} its outcome matches the existing OLS prediction</script>
+<script type="text/plain" class="prop">its context is inside the existing range and its outcome matches the existing OLS prediction</script>
+<script type="text/plain" class="why">Emphasizing "and" is unusual; the conjunction is already clear.</script>
+</div>
+
+<div class="edit-src" data-id="E13" data-section="Simulation" data-type="Decorative italics">
+<script type="text/plain" class="orig">The restriction box $\|\theta\|_\infty\le 5$ is randomly \emph{re-centered} each replicate (within $\pm M/3$)</script>
+<script type="text/plain" class="prop">The restriction box $\|\theta\|_\infty\le 5$ is randomly re-centered each replicate (within $\pm M/3$)</script>
+<script type="text/plain" class="why">Decorative; "re-centered" needs no emphasis.</script>
+</div>
+
+<div class="edit-src" data-id="E14" data-section="Simulation" data-type="Whole-sentence italics">
+<script type="text/plain" class="orig">\emph{On individual replicates the direction of the change cannot be predicted in advance}, which is precisely the failure mode (F1)</script>
+<script type="text/plain" class="prop">On individual replicates the direction of the change cannot be predicted in advance, which is precisely the failure mode (F1)</script>
+<script type="text/plain" class="why">Whole-sentence italics for emphasis; state it plainly.</script>
+</div>
+
+<div class="edit-src" data-id="E15" data-section="Simulation" data-type="Decorative italics">
+<script type="text/plain" class="orig">Second, $k_6$, which passes both (M1) and (M2), achieves \emph{exactly} the width of $k_3$</script>
+<script type="text/plain" class="prop">Second, $k_6$, which passes both (M1) and (M2), achieves exactly the width of $k_3$</script>
+<script type="text/plain" class="why">Decorative; "exactly" is already precise without italics.</script>
+</div>
+
+<div class="edit-src" data-id="E16" data-section="Simulation" data-type="Caption italics">
+<script type="text/plain" class="orig">$k_5$ (rank-preserving with conflicting outcome) sits \emph{above} the rank-expanders $k_3,k_4,k_6$.</script>
+<script type="text/plain" class="prop">$k_5$ (rank-preserving with conflicting outcome) sits above the rank-expanders $k_3,k_4,k_6$.</script>
+<script type="text/plain" class="why">Decorative emphasis in a figure caption.</script>
+</div>
+
+<div class="edit-src" data-id="E17" data-section="Simulation" data-type="Caption italics">
+<script type="text/plain" class="orig">diagonal indicate replicates where adding the candidate \emph{hurt} external validity.</script>
+<script type="text/plain" class="prop">diagonal indicate replicates where adding the candidate hurt external validity.</script>
+<script type="text/plain" class="why">Decorative emphasis in a figure caption.</script>
+</div>
+
+<div class="edit-src" data-id="E18" data-section="Simulation" data-type="Emphasis on &quot;and&quot;">
+<script type="text/plain" class="orig">The candidate $k_6$, which is outside the hull \emph{and} has an OLS-consistent outcome, never does so.</script>
+<script type="text/plain" class="prop">The candidate $k_6$, which is outside the hull and has an OLS-consistent outcome, never does so.</script>
+<script type="text/plain" class="why">Emphasizing "and" is unusual; the conjunction is clear.</script>
+</div>
+
+<div class="edit-src" data-id="E19" data-section="Simulation" data-type="Bold bullet lead">
+<script type="text/plain" class="orig">\textbf{Hull membership is a sharp screen.} Candidates $k_1$ and $k_2$,</script>
+<script type="text/plain" class="prop">Hull membership is a sharp screen. Candidates $k_1$ and $k_2$,</script>
+<script type="text/plain" class="why">The four "what the simulations show" bullets each open with a bold sentence. The bullet already separates the points, so the bold is decorative.</script>
+</div>
+
+<div class="edit-src" data-id="E20" data-section="Simulation" data-type="Bold bullet lead">
+<script type="text/plain" class="orig">\textbf{Among rank-expanding candidates, distance to the hull decides between them.} The $11\%$ reduction</script>
+<script type="text/plain" class="prop">Among rank-expanding candidates, distance to the hull decides between them. The $11\%$ reduction</script>
+<script type="text/plain" class="why">Bold lead-in on a bullet; the list structure already sets the point apart.</script>
+</div>
+
+<div class="edit-src" data-id="E21" data-section="Simulation" data-type="Bold bullet lead">
+<script type="text/plain" class="orig">\textbf{The minimax selection is stable to the choice of prior on $b$.} The three $b$-prior variants</script>
+<script type="text/plain" class="prop">The minimax selection is stable to the choice of prior on $b$. The three $b$-prior variants</script>
+<script type="text/plain" class="why">Bold lead-in on a bullet; the list structure already sets the point apart.</script>
+</div>
+
+<div class="edit-src" data-id="E22" data-section="Simulation" data-type="Bold bullet lead">
+<script type="text/plain" class="orig">\textbf{Non-monotonicity occurs, but the screens of Theorem~\ref{thm:monotone} eliminate it.} The candidate $k_5$</script>
+<script type="text/plain" class="prop">Non-monotonicity occurs, but the screens of Theorem~\ref{thm:monotone} eliminate it. The candidate $k_5$</script>
+<script type="text/plain" class="why">Bold lead-in on a bullet; the list structure already sets the point apart.</script>
+</div>
+
+<div class="edit-src" data-id="E23" data-section="Appendix A (Proofs)" data-type="Decorative italics">
+<script type="text/plain" class="orig">the two affine subspaces coincide \emph{exactly} when (M2) holds</script>
+<script type="text/plain" class="prop">the two affine subspaces coincide exactly when (M2) holds</script>
+<script type="text/plain" class="why">Decorative; "exactly" is already precise.</script>
+</div>
+
+</div>
+<!-- ===== END DATA ===== -->
+
+<script>
+(function(){
+  "use strict";
+  var KEY = "wtgn_emph_v1";
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch(e){ state = {}; }
+
+  var srcs = Array.prototype.slice.call(document.querySelectorAll(".edit-src"));
+  var edits = srcs.map(function(el){
+    function grab(cls){ var s = el.querySelector("script."+cls); return s ? s.textContent.replace(/^\n/,"").replace(/\n$/,"") : ""; }
+    return {
+      id: el.getAttribute("data-id"),
+      section: el.getAttribute("data-section"),
+      type: el.getAttribute("data-type"),
+      orig: grab("orig"),
+      prop: grab("prop"),
+      why: grab("why")
+    };
+  });
+
+  edits.forEach(function(e){
+    if(!state[e.id]) state[e.id] = { status:"pending", text:e.prop };
+    if(typeof state[e.id].text !== "string") state[e.id].text = e.prop;
+  });
+
+  var cardsEl = document.getElementById("cards");
+  var currentFilter = "all";
+  var cl = document.getElementById("count-line");
+  if(cl) cl.textContent = edits.length + " proposed removals.";
+
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+  function statusLabel(s){
+    return s==="accepted"?"Accepted":s==="rejected"?"Rejected":s==="modified"?"Modified (edited)":"Pending";
+  }
+
+  function render(){
+    cardsEl.innerHTML = "";
+    var lastSection = null, shown = 0;
+    edits.forEach(function(e){
+      var st = state[e.id];
+      if(currentFilter!=="all" && st.status!==currentFilter) return;
+      shown++;
+      if(e.section !== lastSection){
+        var h = document.createElement("div");
+        h.className = "sec-head"; h.textContent = e.section;
+        cardsEl.appendChild(h); lastSection = e.section;
+      }
+      var card = document.createElement("div");
+      card.className = "card" + (st.status==="rejected"?" is-rejected":"");
+      var top = document.createElement("div"); top.className = "card-top";
+      var eid = document.createElement("span"); eid.className="eid"; eid.textContent = e.id;
+      var chip = document.createElement("span"); chip.className="chip"; chip.textContent = e.type;
+      var stat = document.createElement("span"); stat.className="status "+st.status; stat.textContent = statusLabel(st.status);
+      top.appendChild(eid); top.appendChild(chip); top.appendChild(stat); card.appendChild(top);
+
+      var l1 = document.createElement("div"); l1.className="label del"; l1.textContent="Current";
+      var b1 = document.createElement("div"); b1.className="block del"; b1.textContent = e.orig;
+      card.appendChild(l1); card.appendChild(b1);
+
+      var l2 = document.createElement("div"); l2.className="label add";
+      l2.textContent = st.status==="modified" ? "Proposed (your edit)" : "Proposed";
+      var b2 = document.createElement("div"); b2.className="block add"; b2.textContent = st.text;
+      card.appendChild(l2); card.appendChild(b2);
+
+      var why = document.createElement("div"); why.className="why";
+      var wb = document.createElement("b"); wb.textContent = "Why: ";
+      why.appendChild(wb); why.appendChild(document.createTextNode(e.why));
+      card.appendChild(why);
+
+      var actions = document.createElement("div"); actions.className="actions";
+      var bAcc = mkBtn("Accept","accept", st.status==="accepted");
+      var bRej = mkBtn("Reject","reject", st.status==="rejected");
+      var bEdit = mkBtn("Edit","edit", st.status==="modified");
+      actions.appendChild(bAcc); actions.appendChild(bRej); actions.appendChild(bEdit);
+      card.appendChild(actions);
+
+      var ed = document.createElement("div"); ed.className="editor";
+      var ta = document.createElement("textarea"); ta.value = st.text;
+      var row = document.createElement("div"); row.className="row";
+      var saveBtn = document.createElement("button"); saveBtn.textContent="Save edit";
+      var resetBtn = document.createElement("button"); resetBtn.textContent="Reset to proposed";
+      var cancelBtn = document.createElement("button"); cancelBtn.textContent="Cancel";
+      row.appendChild(saveBtn); row.appendChild(resetBtn); row.appendChild(cancelBtn);
+      ed.appendChild(ta); ed.appendChild(row); card.appendChild(ed);
+
+      bAcc.onclick = function(){ st.status="accepted"; st.text=e.prop; save(); render(); };
+      bRej.onclick = function(){ st.status="rejected"; save(); render(); };
+      bEdit.onclick = function(){ ed.classList.toggle("show"); if(ed.classList.contains("show")) ta.focus(); };
+      saveBtn.onclick = function(){ st.text = ta.value; st.status="modified"; save(); render(); };
+      resetBtn.onclick = function(){ ta.value = e.prop; };
+      cancelBtn.onclick = function(){ ed.classList.remove("show"); ta.value = st.text; };
+
+      cardsEl.appendChild(card);
+    });
+    if(shown===0){
+      var none = document.createElement("div"); none.className="note";
+      none.textContent = "No edits in this view."; cardsEl.appendChild(none);
+    }
+    updateCounts();
+  }
+
+  function mkBtn(text, act, on){
+    var b = document.createElement("button");
+    b.textContent = text; b.setAttribute("data-act",act);
+    if(on) b.classList.add("on");
+    return b;
+  }
+  function updateCounts(){
+    var c = {accepted:0,rejected:0,modified:0,pending:0};
+    edits.forEach(function(e){ c[state[e.id].status]++; });
+    document.getElementById("c-accepted").textContent = c.accepted;
+    document.getElementById("c-rejected").textContent = c.rejected;
+    document.getElementById("c-modified").textContent = c.modified;
+    document.getElementById("c-pending").textContent = c.pending;
+  }
+
+  Array.prototype.slice.call(document.querySelectorAll("#filters button")).forEach(function(btn){
+    btn.onclick = function(){
+      currentFilter = btn.getAttribute("data-f");
+      Array.prototype.slice.call(document.querySelectorAll("#filters button")).forEach(function(b){ b.classList.remove("active"); });
+      btn.classList.add("active"); render();
+    };
+  });
+
+  var modal = document.getElementById("modal");
+  document.getElementById("export-btn").onclick = function(){
+    var lines = [];
+    lines.push("# Where to Go Next — emphasis cleanup — decisions");
+    lines.push("");
+    var c = {accepted:0,rejected:0,modified:0,pending:0};
+    edits.forEach(function(e){ c[state[e.id].status]++; });
+    lines.push("Accepted: "+c.accepted+"  |  Modified: "+c.modified+"  |  Rejected: "+c.rejected+"  |  Pending: "+c.pending);
+    lines.push("");
+    lines.push("Apply the edits marked APPLY below. For each, replace ORIGINAL with FINAL.");
+    lines.push("");
+    edits.forEach(function(e){
+      var st = state[e.id];
+      var apply = (st.status==="accepted" || st.status==="modified");
+      lines.push("----------------------------------------");
+      lines.push("["+e.id+"] "+e.section+" — "+e.type+"  ::  "+st.status.toUpperCase()+(apply?"  (APPLY)":"  (skip)"));
+      if(apply){
+        lines.push("ORIGINAL:"); lines.push(e.orig);
+        lines.push("FINAL:");    lines.push(st.text);
+      }
+    });
+    lines.push("----------------------------------------");
+    var txt = lines.join("\n");
+    document.getElementById("export-text").value = txt;
+    document.getElementById("export-summary").textContent =
+      c.accepted+" accept, "+c.modified+" modified, "+c.rejected+" reject, "+c.pending+" pending";
+    modal.classList.add("show");
+  };
+  document.getElementById("close-btn").onclick = function(){ modal.classList.remove("show"); };
+  modal.onclick = function(ev){ if(ev.target===modal) modal.classList.remove("show"); };
+  document.getElementById("copy-btn").onclick = function(){
+    var ta = document.getElementById("export-text");
+    ta.select();
+    try { document.execCommand("copy"); } catch(e){}
+    if(navigator.clipboard){ try{ navigator.clipboard.writeText(ta.value); }catch(e){} }
+    var b = document.getElementById("copy-btn"); var old=b.textContent; b.textContent="Copied"; setTimeout(function(){ b.textContent=old; }, 1200);
+  };
+
+  render();
+})();
+</script>
+</body>
+</html>

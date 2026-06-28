@@ -10,14 +10,14 @@ $\mathcal{D}_\mathcal{S} = \{(Y_i, A_i, X_i, C_{m,i}, C_{r,i})\}_{i=1}^n$. A
 prospective sites for which the site-level context $(C_m^{(k)}, C_r^{(k)})$ is
 observed but no individual-level data has been collected. For each candidate we
 assume the investigator knows (or can assume a prior on) the within-site
-distribution of the individual-level covariates $X$ --- this is the ``some prior
-on $X$'' in our motivating question and is necessary because $\Sigma$ depends on
-$\mathbb{E}_X[\mathrm{Cov}(C_\bullet, C_\bullet \mid X)]$. In the simplest case,
-the investigator assumes $X$ at candidate site $k$ is drawn from the same
-distribution as at an existing reference site; in the most refined case, a
-calibrated demographic prior is used. This additional input is analogous to the
-pre-registered prior used in two-stage adaptive designs; it is an assumption, not
-a free parameter.
+distribution of the individual-level covariates $X$. This is the ``some prior on
+$X$'' in our motivating question, and it is necessary because $\Sigma$ depends
+on $\mathbb{E}_X[\mathrm{Cov}(C_\bullet, C_\bullet \mid X)]$. In the simplest
+case, the investigator assumes $X$ at candidate site $k$ is drawn from the same
+distribution as at an existing reference site. In the most refined case, the
+investigator uses a demographic prior fitted to data. This additional input is
+similar to the pre-registered prior used in two-stage adaptive designs. It is an
+assumption, not a free parameter.
 
 The investigator also specifies:
 \begin{itemize}
@@ -39,7 +39,7 @@ $\Sigma_{\mathcal{S}\cup\{k\}}
  = \Sigma_{\mathcal{S}} + \Delta\Sigma_k(C_m^{(k)}, C_r^{(k)}; P_X^{(k)})$,
 where $\Delta\Sigma_k$ depends on the candidate's site-level context and on the
 investigator's assumed within-site $X$-distribution but \emph{not} on its
-outcomes. Using the block form of Equation~(A.9) of Boyarsky et al.\ (2026), one
+outcomes. Using the block form of Equation~(A.9) of \citet{boyarsky2026}, one
 verifies
 \begin{equation}
 \label{eq:dsigma}
@@ -54,21 +54,22 @@ verifies
 \qquad
 (u_m, u_r) := \bigl(C_m^{(k)}, C_r^{(k)}\bigr) - \bar C_X^{(k)},
 \end{equation}
-where $\bar C_X^{(k)} = \mathbb{E}_{P_X^{(k)}}[(C_m, C_r) \mid X]$ --- that is,
-$u_m, u_r$ are the \emph{residuals} of the site-level context after projecting out
-the individual-level covariate dependence at the candidate site, and $n_k$ is the
-planned sample size at the candidate site. The exact expression in
+where $\bar C_X^{(k)} = \mathbb{E}_{P_X^{(k)}}[(C_m, C_r) \mid X]$. That is,
+$u_m, u_r$ are the \emph{residuals} of the site-level context after projecting
+out the individual-level covariate dependence at the candidate site, and $n_k$
+is the planned sample size at the candidate site. The exact expression in
 \eqref{eq:dsigma} depends on how the candidate site is pooled with the existing
-sites in the conditional-moment estimator, but the \emph{rank-update structure}
-is universal: $\Delta\Sigma_k$ has rank at most $2$, with left/right directions
-spanned by the residualized context $(u_m, u_r)$ of the new site.
+sites in the conditional-moment estimator, but the rank-update structure
+is always the same. $\Delta\Sigma_k$ has rank at most $2$, and its left and
+right directions are spanned by the residualized context $(u_m, u_r)$ of the new
+site.
 
 The right-hand side $b$ also updates, from $b_\mathcal{S}$ to
 $b_{\mathcal{S}\cup\{k\}}$, but the new right-hand side depends on the candidate
 site's \emph{outcomes} and is therefore unknown until the experiment is run. We
-return to this in Section~\ref{sec:unknown-b}; for most of our analysis the width
-depends on $b$ only through a compact-translation argument that does not affect
-the first-order ranking of candidates.
+return to this in Section~\ref{sec:unknown-b}. For most of our analysis the
+width depends on $b$ only through a compact-translation argument that does not
+affect the first-order ranking of candidates.
 
 \subsection{The minimax design problem}
 \label{sec:minimax-problem}
@@ -95,7 +96,7 @@ to \eqref{eq:lagrangian} because the cost term is separable in $k$.
 Because $b$ is not known before the candidate experiment is run, we evaluate the
 width in \eqref{eq:minimax} at a \emph{robustified} $b$ that maximizes the width
 over a compact uncertainty set $\mathcal{B}$ consistent with the investigator's
-prior beliefs about candidate-site outcomes. In the simplest and cleanest case
---- and the one we focus on from here --- $\mathcal{B}$ is a symmetric norm ball
-around the existing-pool $b$; this nests the ``no-information'' prior and is what
-we use in our simulations.
+prior beliefs about candidate-site outcomes. In the simplest case, which we
+focus on from here, $\mathcal{B}$ is a symmetric norm ball around the
+existing-pool $b$. This includes the ``no-information'' prior and is what we use
+in our simulations.

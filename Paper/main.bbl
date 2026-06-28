@@ -1,9 +1,14 @@
-\begin{thebibliography}{5}
+\begin{thebibliography}{9}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Atkinson et~al.(2007)Atkinson, Donev, and Tobias]{atkinson2007optimum}
+Anthony~C. Atkinson, Alexander~N. Donev, and Randall~D. Tobias.
+\newblock \emph{Optimum Experimental Designs, with {SAS}}.
+\newblock Oxford Statistical Science Series. Oxford University Press, 2007.
 
 \bibitem[Bareinboim and Pearl(2016)]{bareinboim2016causal}
 Elias Bareinboim and Judea Pearl.
@@ -15,6 +20,11 @@ Elias Bareinboim and Judea Pearl.
 J~Fr{\'e}d{\'e}ric Bonnans and Alexander Shapiro.
 \newblock \emph{Perturbation analysis of optimization problems}.
 \newblock Springer Science \& Business Media, 2013.
+
+\bibitem[Boyarsky et~al.(2026)Boyarsky, Egami, and Namkoong]{boyarsky2026}
+Ari Boyarsky, Naoki Egami, and Hongseok Namkoong.
+\newblock A sensitivity framework for external validity of {A/B} tests.
+\newblock Working paper, Columbia University, 2026.
 
 \bibitem[Jeong and Namkoong(2020)]{jeong2020assessing}
 Sookyo Jeong and Hongseok Namkoong.
@@ -33,5 +43,19 @@ Rachael Meager.
   bayesian hierarchical analysis of seven randomized experiments.
 \newblock \emph{American Economic Journal: Applied Economics}, 11\penalty0
   (1):\penalty0 57--91, 2019.
+
+\bibitem[Nemhauser et~al.(1978)Nemhauser, Wolsey, and
+  Fisher]{nemhauser1978analysis}
+George~L. Nemhauser, Laurence~A. Wolsey, and Marshall~L. Fisher.
+\newblock An analysis of approximations for maximizing submodular set
+  functions---{I}.
+\newblock \emph{Mathematical Programming}, 14\penalty0 (1):\penalty0 265--294,
+  1978.
+
+\bibitem[Pukelsheim(2006)]{pukelsheim2006optimal}
+Friedrich Pukelsheim.
+\newblock \emph{Optimal Design of Experiments}.
+\newblock Classics in Applied Mathematics. Society for Industrial and Applied
+  Mathematics, 2006.
 
 \end{thebibliography}

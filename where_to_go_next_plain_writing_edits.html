@@ -1,0 +1,905 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Where to Go Next — plain-writing edits</title>
+<style>
+  :root{
+    --bg:#f7f7f5; --card:#ffffff; --ink:#1f2328; --muted:#6b6b6b;
+    --line:#e5e3dd; --accent:#3a5a8c;
+    --del-bg:#fcebea; --del-ink:#9b2c2c; --del-line:#f1c9c6;
+    --add-bg:#eaf6ec; --add-ink:#1f6b34; --add-line:#bfe3c6;
+    --chip:#eee9df; --chip-ink:#5a5340;
+    --accepted:#1f6b34; --rejected:#9b2c2c; --modified:#8a5a00; --pending:#8a8a8a;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    font-size:15px;line-height:1.5;}
+  .wrap{max-width:920px;margin:0 auto;padding:24px 18px 120px;}
+  h1{font-size:22px;margin:0 0 4px;}
+  .sub{color:#6b6b6b;margin:0 0 18px;font-size:14px;}
+  .note{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:0 0 18px;font-size:13.5px;color:#444;}
+  .note b{color:var(--ink);}
+
+  .bar{position:sticky;top:0;z-index:5;background:rgba(247,247,245,.92);
+    backdrop-filter:blur(6px);border-bottom:1px solid var(--line);
+    padding:10px 0;margin:-8px 0 16px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+  .stat{font-size:13px;color:#444;margin-right:6px;}
+  .stat b{font-variant-numeric:tabular-nums;}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px;vertical-align:middle;}
+  .dot.a{background:var(--accepted)} .dot.r{background:var(--rejected)}
+  .dot.m{background:var(--modified)} .dot.p{background:var(--pending)}
+  .spacer{flex:1}
+  button{font:inherit;cursor:pointer;border:1px solid var(--line);background:#fff;
+    border-radius:8px;padding:6px 11px;color:var(--ink);}
+  button:hover{border-color:#cfcabf;}
+  .filters button.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .btn-export{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:600;}
+
+  .sec-head{font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:#8a8270;
+    margin:22px 0 10px;font-weight:700;}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 16px;margin:0 0 14px;box-shadow:0 1px 2px rgba(0,0,0,.03);}
+  .card.is-rejected{opacity:.62;}
+  .card-top{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+  .eid{font-weight:700;font-size:13px;color:#444;font-variant-numeric:tabular-nums;}
+  .chip{font-size:11.5px;background:var(--chip);color:var(--chip-ink);border-radius:999px;
+    padding:2px 9px;font-weight:600;}
+  .status{margin-left:auto;font-size:12px;font-weight:700;}
+  .status.accepted{color:var(--accepted)} .status.rejected{color:var(--rejected)}
+  .status.modified{color:var(--modified)} .status.pending{color:var(--pending)}
+
+  .block{border-radius:8px;padding:9px 11px;margin:6px 0;font-size:13.5px;
+    font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap;word-break:break-word;}
+  .label{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin:8px 0 2px;}
+  .label.del{color:var(--del-ink)} .label.add{color:var(--add-ink)}
+  .block.del{background:var(--del-bg);border:1px solid var(--del-line);color:#3a2a2a;}
+  .block.add{background:var(--add-bg);border:1px solid var(--add-line);color:#23332a;}
+  .why{font-size:13px;color:#555;margin:10px 0 2px;}
+  .why b{color:#333;}
+
+  .actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+  .actions button[data-act="accept"].on{background:var(--accepted);color:#fff;border-color:var(--accepted);}
+  .actions button[data-act="reject"].on{background:var(--rejected);color:#fff;border-color:var(--rejected);}
+  .actions button[data-act="edit"].on{background:var(--modified);color:#fff;border-color:var(--modified);}
+
+  .editor{margin-top:10px;display:none;}
+  .editor.show{display:block;}
+  textarea{width:100%;min-height:90px;font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;
+    font-size:13.5px;border:1px solid var(--add-line);border-radius:8px;padding:9px 11px;resize:vertical;background:#fbfffb;}
+  .editor .row{display:flex;gap:8px;margin-top:8px;}
+
+  /* modal */
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center;z-index:20;padding:20px;}
+  .modal.show{display:flex;}
+  .modal-inner{background:#fff;border-radius:12px;max-width:760px;width:100%;max-height:85vh;
+    display:flex;flex-direction:column;overflow:hidden;}
+  .modal-head{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;}
+  .modal-head h2{font-size:16px;margin:0;}
+  .modal-body{padding:14px 16px;overflow:auto;}
+  .modal-body textarea{min-height:48vh;}
+  .pill{font-size:12px;color:#666;}
+  @media (max-width:560px){ .block{font-size:13px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Where to Go Next — plain-writing edits</h1>
+  <p class="sub">Whole paper: abstract, all body sections, and the appendix proofs. <span id="count-line"></span></p>
+
+  <div class="note">
+    <b>How to use this.</b> Each card shows the original text in red and a proposed rewrite in green, with a short reason. Use <b>Accept</b>, <b>Reject</b>, or <b>Edit</b> (to change the proposed wording) on each one. Your choices are saved in this browser automatically. When you are done, click <b>Export decisions</b> at the bottom right and paste the result back to me so I can apply the accepted edits to the <code>.tex</code> files.
+    <br><br>
+    <b>Scope.</b> These touch prose only. No equations, symbols, equation labels, or citations were changed, with two exceptions flagged as <b>Precision</b> cards where the prose itself was mathematically loose. Author-name dashes (e.g. Bonnans&ndash;Shapiro, Cauchy&ndash;Schwarz, Frank&ndash;Wolfe), numbered ranges (e.g. Sections 2&ndash;3, (i)&ndash;(iii)), and the em dashes used as paragraph labels (e.g. "Assumption (M1) --- Rank-Expansion Screen", "$k_5$ --- rank-preserving...") were left alone, since they are standard in the paper.
+  </div>
+
+  <div class="bar">
+    <span class="stat"><span class="dot a"></span>Accepted <b id="c-accepted">0</b></span>
+    <span class="stat"><span class="dot m"></span>Modified <b id="c-modified">0</b></span>
+    <span class="stat"><span class="dot r"></span>Rejected <b id="c-rejected">0</b></span>
+    <span class="stat"><span class="dot p"></span>Pending <b id="c-pending">0</b></span>
+    <span class="spacer"></span>
+    <span class="filters" id="filters">
+      <button data-f="all" class="active">All</button>
+      <button data-f="pending">Pending</button>
+      <button data-f="accepted">Accepted</button>
+      <button data-f="modified">Modified</button>
+      <button data-f="rejected">Rejected</button>
+    </span>
+    <button class="btn-export" id="export-btn">Export decisions</button>
+  </div>
+
+  <main id="cards"></main>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-inner">
+    <div class="modal-head">
+      <h2>Export</h2>
+      <span class="pill" id="export-summary"></span>
+      <span class="spacer" style="flex:1"></span>
+      <button id="copy-btn">Copy</button>
+      <button id="close-btn">Close</button>
+    </div>
+    <div class="modal-body">
+      <textarea id="export-text" readonly></textarea>
+    </div>
+  </div>
+</div>
+
+<!-- ===== EDIT DATA (raw text, read by JS) ===== -->
+<div id="data" hidden>
+<div class="edit-src" data-id="AB1" data-section="Abstract" data-type="Stilted / Run-on">
+<script type="text/plain" class="orig">Multi-site experiments anchor external-validity claims through a cross-site moment identity $\Sigma\theta + b = 0$ that, when the number of sites $S$ is small relative to the site-level covariate dimension, is rank-deficient and leaves the target-site treatment effect only partially identified.</script>
+<script type="text/plain" class="prop">A multi-site experiment supports its external-validity claim through a cross-site moment identity $\Sigma\theta + b = 0$. When the number of sites $S$ is small relative to the site-level covariate dimension, this identity is rank-deficient and leaves the target-site treatment effect only partially identified.</script>
+<script type="text/plain" class="why">"anchor ... through" is a fancy verb with an inanimate subject, and the rank-deficiency condition is buried in a mid-sentence clause. Use "supports" and split into two sentences.</script>
+</div>
+
+<div class="edit-src" data-id="AB2" data-section="Abstract" data-type="Colon splice">
+<script type="text/plain" class="orig">In this work we study the \emph{inverse} design question: given a pool of candidate sites with known site-level context $(C_m^{(k)},C_r^{(k)})$ but no experimental data, which site should an investigator actually go and run, in order to most strengthen external-validity claims about a population of target profiles?</script>
+<script type="text/plain" class="prop">In this work we study the \emph{inverse} design question. Given a pool of candidate sites with known site-level context $(C_m^{(k)},C_r^{(k)})$ but no experimental data, which site should an investigator go and run to most strengthen external-validity claims about a population of target profiles?</script>
+<script type="text/plain" class="why">The colon joins two full clauses. Split it, drop the filler "actually", and change "in order to" to "to".</script>
+</div>
+
+<div class="edit-src" data-id="AB3" data-section="Abstract" data-type="Three-part series">
+<script type="text/plain" class="orig">We formulate the problem as a minimax design over the width of the partial-identification region, establish a sharp geometric characterization that, in the absence of restrictions, reduces to an ``expand-the-convex-hull'' rule for the site-level context vectors, and derive a tractable surrogate under compact affine restrictions.</script>
+<script type="text/plain" class="prop">We formulate the problem as a minimax design over the width of the partial-identification region. We establish a geometric characterization that, without restrictions, reduces to an ``expand-the-convex-hull'' rule for the site-level context vectors. Under compact affine restrictions, we derive a tractable surrogate.</script>
+<script type="text/plain" class="why">One sentence lists three contributions joined by commas. Split into three sentences. "in the absence of restrictions" to "without restrictions", and drop "sharp".</script>
+</div>
+
+<div class="edit-src" data-id="AB4" data-section="Abstract" data-type="Inanimate subject">
+<script type="text/plain" class="orig">The criterion inherits the three-regime structure of the leave-one-site-out diagnostic of Boyarsky et al.\ (2026): candidate sites either (i) strictly reduce the null space of $\Sigma$ and can collapse unbounded widths to finite ones, (ii) translate the moment-implied affine subspace closer to the target profile at fixed rank, or (iii) restore feasibility of substantive restrictions that were incompatible with the existing pool.</script>
+<script type="text/plain" class="prop">The criterion has the same three-regime structure as the leave-one-site-out diagnostic of Boyarsky et al.\ (2026): candidate sites either (i) strictly reduce the null space of $\Sigma$ and can collapse unbounded widths to finite ones, (ii) translate the moment-implied affine subspace closer to the target profile at fixed rank, or (iii) restore feasibility of substantive restrictions that were incompatible with the existing pool.</script>
+<script type="text/plain" class="why">"inherits ... structure" gives an inanimate subject an action. Change to "has the same ... as". The colon introduces a list, so it stays.</script>
+</div>
+
+<div class="edit-src" data-id="AB5" data-section="Abstract" data-type="Precision">
+<script type="text/plain" class="orig">We also give sufficient conditions for when adding a site will be monotone-non-increasing in the augmentation to the worst-case width.</script>
+<script type="text/plain" class="prop">We also give sufficient conditions under which adding a site does not increase the worst-case width.</script>
+<script type="text/plain" class="why">The sentence is garbled: "adding a site will be monotone-non-increasing in the augmentation to the worst-case width" attaches "monotone-non-increasing" to the wrong subject. State the claim plainly.</script>
+</div>
+
+<div class="edit-src" data-id="AB6" data-section="Abstract" data-type="Colon splice">
+<script type="text/plain" class="orig">We provide an example of our findings using synthetic data: candidate sites that satisfy our conditions reduce the minimax width in simulations.</script>
+<script type="text/plain" class="prop">We illustrate these findings on synthetic data. In our simulations, candidate sites that satisfy our conditions reduce the minimax width.</script>
+<script type="text/plain" class="why">The colon joins two full clauses. Split into two sentences and tighten "provide an example of our findings using".</script>
+</div>
+
+<div class="edit-src" data-id="AB7" data-section="Abstract" data-type="Puffery">
+<script type="text/plain" class="orig">In all, we provide practitioners a powerful heuristic for choosing the next site which better bolsters the external-validity of experimental findings.</script>
+<script type="text/plain" class="prop">Together, these results give practitioners a simple rule for choosing the next site to strengthen the external validity of experimental findings.</script>
+<script type="text/plain" class="why">"powerful heuristic" is puffery and "bolsters" is a fancy word. "which better bolsters" is also awkward. State it plainly.</script>
+</div>
+
+<div class="edit-src" data-id="I1" data-section="Introduction" data-type="Colon splice">
+<script type="text/plain" class="orig">A multi-site experiment derives its external-validity claim from the \emph{cross-site} variation in site-level context: if the treatment effect is stable across sites that differ substantially in their moderating attributes, it is credible that the effect will transport to a new site whose moderators lie within the range observed.</script>
+<script type="text/plain" class="prop">A multi-site experiment supports its external-validity claim through the \emph{cross-site} variation in site-level context. If the treatment effect is stable across sites that differ substantially in their moderating attributes, then it is credible that the effect will transport to a new site whose moderators lie within the observed range.</script>
+<script type="text/plain" class="why">"derives ... from" is a fancy verb, and the colon joins two full clauses. Use "supports ... through" and split into two sentences.</script>
+</div>
+
+<div class="edit-src" data-id="I2" data-section="Introduction" data-type="Imagery">
+<script type="text/plain" class="orig">Conversely, when the observed sites span only a thin slice of the space of site-level moderators, the cross-site moment identity $\Sigma\theta + b = 0$ is rank-deficient, and the target-site treatment effect at a moderator profile $(t_m,t_r)$ outside the span of observed sites is only partially identified, regardless of how large the individual-level samples are (Boyarsky, Egami, and Namkoong, 2026).</script>
+<script type="text/plain" class="prop">Conversely, when the observed sites cover only a small part of the space of site-level moderators, the cross-site moment identity $\Sigma\theta + b = 0$ is rank-deficient. The target-site treatment effect at a moderator profile $(t_m,t_r)$ outside the span of observed sites is then only partially identified, no matter how large the individual-level samples are (Boyarsky, Egami, and Namkoong, 2026).</script>
+<script type="text/plain" class="why">"span only a thin slice of" is imagery. Use "cover only a small part of", split the long sentence, and change "regardless of how large" to "no matter how large".</script>
+</div>
+
+<div class="edit-src" data-id="I3" data-section="Introduction" data-type="Imagery / Run-on">
+<script type="text/plain" class="orig">An investigator facing this situation has two levers. She may \emph{tighten the identification set} by imposing additional substantive restrictions $r(\theta)\le 0$ (effect-ordering, sign or monotonicity constraints, norm bounds, etc.), trading a sharper bound against additional untestable assumptions.</script>
+<script type="text/plain" class="prop">An investigator facing this situation has two options. She may \emph{tighten the identification set} by imposing additional substantive restrictions $r(\theta)\le 0$ (effect-ordering, sign or monotonicity constraints, norm bounds, etc.). This trades a sharper bound for additional untestable assumptions.</script>
+<script type="text/plain" class="why">"levers" is a metaphor for choices; use "options". The "-ing" tail "trading..." tacks on a second idea, so give it its own sentence.</script>
+</div>
+
+<div class="edit-src" data-id="I4" data-section="Introduction" data-type="Run-on">
+<script type="text/plain" class="orig">The first lever is the subject of Boyarsky et al.\ (2026); in this paper we will address the second.</script>
+<script type="text/plain" class="prop">The first option is the subject of Boyarsky et al.\ (2026). In this paper we address the second.</script>
+<script type="text/plain" class="why">Match "levers" to "options", split the semicolon, and drop "will".</script>
+</div>
+
+<div class="edit-src" data-id="I5" data-section="Introduction" data-type="Em dash">
+<script type="text/plain" class="orig">Specifically, we consider the situation in which the investigator has a small pool $\mathcal{K} = \{1, \ldots, K\}$ of \emph{candidate} sites for which the site-level context $(C_m^{(k)}, C_r^{(k)})$ is known in advance --- cheaply obtained from administrative data, public statistics, a pilot survey, or an established literature --- but no individual-level experimental data.</script>
+<script type="text/plain" class="prop">Specifically, we consider the situation in which the investigator has a small pool $\mathcal{K} = \{1, \ldots, K\}$ of \emph{candidate} sites. For each candidate site the investigator knows the site-level context $(C_m^{(k)}, C_r^{(k)})$ in advance, cheaply obtained from administrative data, public statistics, a pilot survey, or an established literature, but has no individual-level experimental data.</script>
+<script type="text/plain" class="why">The em dashes insert a long parenthetical into an already long sentence. Split into two sentences and replace the dashes with commas.</script>
+</div>
+
+<div class="edit-src" data-id="I6" data-section="Introduction" data-type="Em dash">
+<script type="text/plain" class="orig">The key observation --- and what makes this design problem tractable without running the candidate experiments --- is that the width $w_r$ depends on the candidate site through $\Sigma$, the \emph{design matrix} of the moment condition, which in turn is a function of known site-level quantities $(C_m, C_r)$ only.</script>
+<script type="text/plain" class="prop">The key observation is that the width $w_r$ depends on the candidate site through $\Sigma$, the \emph{design matrix} of the moment condition, and $\Sigma$ is a function of known site-level quantities $(C_m, C_r)$ only. This is what makes the design problem tractable without running the candidate experiments.</script>
+<script type="text/plain" class="why">The em dashes hold a clause that is really the point of the sentence. Pull it out into its own sentence and remove the dashes.</script>
+</div>
+
+<div class="edit-src" data-id="I7" data-section="Introduction" data-type="Em dash">
+<script type="text/plain" class="orig">The right-hand side $b$ would move once the experiment is run, but the geometry that determines whether the width is finite --- and by how much --- is pinned down by the site-level context.</script>
+<script type="text/plain" class="prop">The right-hand side $b$ would move once the experiment is run. But whether the width is finite, and by how much, is determined by the site-level context.</script>
+<script type="text/plain" class="why">Remove the em dashes, split the sentence, and change "pinned down by" to "determined by".</script>
+</div>
+
+<div class="edit-src" data-id="I8" data-section="Introduction" data-type="Precision">
+<script type="text/plain" class="orig">We formalize the site-selection problem in the partial-identification framework of Boyarsky et al.\ (2026) and show that the partial-identification width depends on the candidate through a known-ex-ante rank-one-like update of $\Sigma$.</script>
+<script type="text/plain" class="prop">We formalize the site-selection problem in the partial-identification framework of Boyarsky et al.\ (2026). We show that the partial-identification width depends on the candidate through a low-rank update of $\Sigma$ (rank at most two) that is known before the experiment is run.</script>
+<script type="text/plain" class="why">"rank-one-like" is imprecise; the update is rank at most two (Section 3.2). "known-ex-ante" is Latin jargon. State the rank precisely and say "known before the experiment is run".</script>
+</div>
+
+<div class="edit-src" data-id="I9" data-section="Introduction" data-type="Jargon / Colon">
+<script type="text/plain" class="orig">We establish that, in the unrestricted limit $r \equiv 0$ with mild regularization, the minimax criterion collapses to a convex-hull expansion rule in the site-level context space: the optimal candidate is the one whose $(C_m^{(k)}, C_r^{(k)})$ lies furthest, in a weighted-distance sense, from the convex hull of observed sites, with the weighting determined by $\mathcal{T}$.</script>
+<script type="text/plain" class="prop">We establish that, in the unrestricted limit $r \equiv 0$ with mild regularization, the minimax criterion reduces to a convex-hull expansion rule in the site-level context space. The optimal candidate is the one whose $(C_m^{(k)}, C_r^{(k)})$ lies furthest from the convex hull of observed sites in a weighted distance, where the weighting is determined by $\mathcal{T}$.</script>
+<script type="text/plain" class="why">"collapses to" is vivid jargon; use "reduces to". The colon joins two full clauses, so split. "in a weighted-distance sense" to "in a weighted distance".</script>
+</div>
+
+<div class="edit-src" data-id="I10" data-section="Introduction" data-type="Em dash">
+<script type="text/plain" class="orig">Under compact affine restrictions $r(\theta)\le 0$, we derive a tractable surrogate --- a finite LP over the candidate pool --- that has the same three-regime structure as the leave-one-site-out diagnostic of Boyarsky et al.\ (2026): candidates are \emph{coverage-expanding} (reduce rank-deficiency), \emph{location-improving} (shift the affine subspace at fixed rank), or \emph{feasibility-restoring} (make a previously incompatible restriction set feasible).</script>
+<script type="text/plain" class="prop">Under compact affine restrictions $r(\theta)\le 0$, we derive a tractable surrogate, a finite LP over the candidate pool, that has the same three-regime structure as the leave-one-site-out diagnostic of Boyarsky et al.\ (2026): candidates are \emph{coverage-expanding} (reduce rank-deficiency), \emph{location-improving} (shift the affine subspace at fixed rank), or \emph{feasibility-restoring} (make a previously incompatible restriction set feasible).</script>
+<script type="text/plain" class="why">Replace the em dashes around the appositive with commas. The colon introduces a list, so it stays.</script>
+</div>
+
+<div class="edit-src" data-id="I11" data-section="Introduction" data-type="Colon splice">
+<script type="text/plain" class="orig">We show that the minimax design is \emph{not} automatically monotone in site addition: a rank-preserving candidate paired with an outcome that conflicts with the existing-pool fit can shift the moment-implied affine subspace to a less favorable cross-section of the restriction polyhedron and strictly \emph{increase} the worst-case width.</script>
+<script type="text/plain" class="prop">We show that the minimax design is \emph{not} automatically monotone in site addition. A rank-preserving candidate whose outcome conflicts with the existing-pool fit can shift the moment-implied affine subspace to a less favorable cross-section of the restriction polyhedron, and it can strictly \emph{increase} the worst-case width.</script>
+<script type="text/plain" class="why">The colon joins two full clauses; split into two sentences. "paired with an outcome that conflicts" to "whose outcome conflicts".</script>
+</div>
+
+<div class="edit-src" data-id="I12" data-section="Introduction" data-type="Em dash">
+<script type="text/plain" class="orig">We isolate two pre-experiment screens --- rank expansion (M1) and outcome-consistency (M2) --- and prove (Theorem~\ref{thm:monotone}) that either is sufficient for the worst-case width to be monotone-nonincreasing in the augmentation.</script>
+<script type="text/plain" class="prop">We isolate two pre-experiment screens, rank expansion (M1) and outcome-consistency (M2), and prove (Theorem~\ref{thm:monotone}) that either one is sufficient for the worst-case width to be monotone-nonincreasing in the augmentation.</script>
+<script type="text/plain" class="why">Replace the em dashes around the appositive with commas.</script>
+</div>
+
+<div class="edit-src" data-id="I13" data-section="Introduction" data-type="Word choice">
+<script type="text/plain" class="orig">A synthetic simulation with eight existing sites and six candidates, including a deliberately conflicting one, confirms both the hull-expansion result and the non-monotonicity (with $16\%$ of replicates exhibiting strict worsening from the unscreened candidate, and zero from any screened candidate).</script>
+<script type="text/plain" class="prop">A synthetic simulation with eight existing sites and six candidates, including a deliberately conflicting one, confirms both the hull-expansion result and the non-monotonicity (with $16\%$ of replicates showing strict worsening from the unscreened candidate, and none from any screened candidate).</script>
+<script type="text/plain" class="why">"exhibiting" to "showing" and "zero" to "none".</script>
+</div>
+
+<div class="edit-src" data-id="I14" data-section="Introduction" data-type="Imagery">
+<script type="text/plain" class="orig">The site-selection question is the \emph{forward} version of the leave-one-site-out diagnostic in Section~4.4 of Boyarsky et al.\ (2026), which asks which existing donor sites are load-bearing for a reported bound.</script>
+<script type="text/plain" class="prop">The site-selection question is the \emph{forward} version of the leave-one-site-out diagnostic in Section~4.4 of Boyarsky et al.\ (2026), which asks which existing donor sites are essential to a reported bound.</script>
+<script type="text/plain" class="why">"load-bearing" is a metaphor; use "essential to".</script>
+</div>
+
+<div class="edit-src" data-id="I15" data-section="Introduction" data-type="Inanimate subject">
+<script type="text/plain" class="orig">Our problem inherits the three-regime taxonomy of that diagnostic but evaluates it over a \emph{counterfactual} addition rather than a realized removal.</script>
+<script type="text/plain" class="prop">Our problem has the same three-regime taxonomy as that diagnostic, but we apply it to a \emph{counterfactual} addition rather than a realized removal.</script>
+<script type="text/plain" class="why">"inherits ... but evaluates" gives the inanimate "problem" two actions. Make "we" the actor.</script>
+</div>
+
+<div class="edit-src" data-id="I16" data-section="Introduction" data-type="Em dash">
+<script type="text/plain" class="orig">It also complements classical optimal experimental design --- D-, G-, and I-optimality --- which operates within a single population under point identification (Atkinson et al., 2007; Pukelsheim, 2006).</script>
+<script type="text/plain" class="prop">It also complements classical optimal experimental design (D-, G-, and I-optimality), which operates within a single population under point identification (Atkinson et al., 2007; Pukelsheim, 2006).</script>
+<script type="text/plain" class="why">Replace the em dashes around the appositive with parentheses.</script>
+</div>
+
+<div class="edit-src" data-id="I17" data-section="Introduction" data-type="Jargon">
+<script type="text/plain" class="orig">The minimax objective is natural here because site selection is a discrete, one-shot decision that should be robust to the heterogeneity of target profiles the investigator cares about.</script>
+<script type="text/plain" class="prop">The minimax objective is natural here because site selection is a discrete, one-time decision that should do well across the different target profiles the investigator cares about.</script>
+<script type="text/plain" class="why">"one-shot" to "one-time", and "robust to the heterogeneity of target profiles" to "do well across the different target profiles".</script>
+</div>
+
+<div class="edit-src" data-id="P1" data-section="Preliminaries" data-type="Em dash">
+<script type="text/plain" class="orig">When $S$ is small relative to $d_M + d_I$, this matrix --- and hence $\Sigma$ --- is rank-deficient; this is precisely why the \citet{meager2019understanding} micro-credit application with $S=7$ sites exhibits non-trivial partial identification.</script>
+<script type="text/plain" class="prop">When $S$ is small relative to $d_M + d_I$, this matrix, and hence $\Sigma$, is rank-deficient. This is precisely why the \citet{meager2019understanding} micro-credit application with $S=7$ sites has non-trivial partial identification.</script>
+<script type="text/plain" class="why">Replace the em dashes with commas, split the semicolon into a new sentence, and change "exhibits" to "has".</script>
+</div>
+
+<div class="edit-src" data-id="P2" data-section="Preliminaries" data-type="Em dash / Run-on">
+<script type="text/plain" class="orig">We suppress the dependence of $c_0, \tilde c_m, \tilde c_r$ on $\gamma$ when no confusion arises; these enter the objective linearly in $\theta$ but do not interact with the feasible set, so they do not affect the width --- only the endpoints.</script>
+<script type="text/plain" class="prop">We suppress the dependence of $c_0, \tilde c_m, \tilde c_r$ on $\gamma$ when no confusion arises. These enter the objective linearly in $\theta$ but do not interact with the feasible set, so they affect only the endpoints, not the width.</script>
+<script type="text/plain" class="why">Split the semicolon, and remove the trailing em dash by rewriting "do not affect the width --- only the endpoints" as "affect only the endpoints, not the width".</script>
+</div>
+
+<div class="edit-src" data-id="P3" data-section="Preliminaries" data-type="Run-on">
+<script type="text/plain" class="orig">Throughout this paper we assume $r$ defines a compact polyhedron $\mathcal{R} := \{\theta : r(\theta)\le 0\}$; this is the regime where the width is finite and the LP/MIP program is well-posed.</script>
+<script type="text/plain" class="prop">Throughout this paper we assume $r$ defines a compact polyhedron $\mathcal{R} := \{\theta : r(\theta)\le 0\}$. This is the regime where the width is finite and the LP/MIP program is well-posed.</script>
+<script type="text/plain" class="why">Split the semicolon into two sentences.</script>
+</div>
+
+<div class="edit-src" data-id="SS1" data-section="Site-Selection Problem" data-type="Em dash">
+<script type="text/plain" class="orig">For each candidate we assume the investigator knows (or can assume a prior on) the within-site distribution of the individual-level covariates $X$ --- this is the ``some prior on $X$'' in our motivating question and is necessary because $\Sigma$ depends on $\mathbb{E}_X[\mathrm{Cov}(C_\bullet, C_\bullet \mid X)]$.</script>
+<script type="text/plain" class="prop">For each candidate we assume the investigator knows (or can assume a prior on) the within-site distribution of the individual-level covariates $X$. This is the ``some prior on $X$'' in our motivating question, and it is necessary because $\Sigma$ depends on $\mathbb{E}_X[\mathrm{Cov}(C_\bullet, C_\bullet \mid X)]$.</script>
+<script type="text/plain" class="why">The em dash joins a full clause. Replace it with a period.</script>
+</div>
+
+<div class="edit-src" data-id="SS2" data-section="Site-Selection Problem" data-type="Run-on / Jargon">
+<script type="text/plain" class="orig">In the simplest case, the investigator assumes $X$ at candidate site $k$ is drawn from the same distribution as at an existing reference site; in the most refined case, a calibrated demographic prior is used.</script>
+<script type="text/plain" class="prop">In the simplest case, the investigator assumes $X$ at candidate site $k$ is drawn from the same distribution as at an existing reference site. In the most refined case, the investigator uses a demographic prior fitted to data.</script>
+<script type="text/plain" class="why">Split the semicolon. "calibrated" is jargon and the clause is passive; change to "the investigator uses a demographic prior fitted to data".</script>
+</div>
+
+<div class="edit-src" data-id="SS3" data-section="Site-Selection Problem" data-type="Run-on">
+<script type="text/plain" class="orig">This additional input is analogous to the pre-registered prior used in two-stage adaptive designs; it is an assumption, not a free parameter.</script>
+<script type="text/plain" class="prop">This additional input is similar to the pre-registered prior used in two-stage adaptive designs. It is an assumption, not a free parameter.</script>
+<script type="text/plain" class="why">Split the semicolon and change "analogous to" to "similar to".</script>
+</div>
+
+<div class="edit-src" data-id="SS4" data-section="Site-Selection Problem" data-type="Em dash">
+<script type="text/plain" class="orig">where $\bar C_X^{(k)} = \mathbb{E}_{P_X^{(k)}}[(C_m, C_r) \mid X]$ --- that is, $u_m, u_r$ are the \emph{residuals} of the site-level context after projecting out the individual-level covariate dependence at the candidate site, and $n_k$ is the planned sample size at the candidate site.</script>
+<script type="text/plain" class="prop">where $\bar C_X^{(k)} = \mathbb{E}_{P_X^{(k)}}[(C_m, C_r) \mid X]$. That is, $u_m, u_r$ are the \emph{residuals} of the site-level context after projecting out the individual-level covariate dependence at the candidate site, and $n_k$ is the planned sample size at the candidate site.</script>
+<script type="text/plain" class="why">Replace the em dash with a period before "That is".</script>
+</div>
+
+<div class="edit-src" data-id="SS5" data-section="Site-Selection Problem" data-type="Colon / Jargon">
+<script type="text/plain" class="orig">The exact expression in \eqref{eq:dsigma} depends on how the candidate site is pooled with the existing sites in the conditional-moment estimator, but the \emph{rank-update structure} is universal: $\Delta\Sigma_k$ has rank at most $2$, with left/right directions spanned by the residualized context $(u_m, u_r)$ of the new site.</script>
+<script type="text/plain" class="prop">The exact expression in \eqref{eq:dsigma} depends on how the candidate site is pooled with the existing sites in the conditional-moment estimator, but the \emph{rank-update structure} is always the same. $\Delta\Sigma_k$ has rank at most $2$, and its left and right directions are spanned by the residualized context $(u_m, u_r)$ of the new site.</script>
+<script type="text/plain" class="why">Change "is universal:" to "is always the same." and split. "left/right directions spanned by" to "its left and right directions are spanned by".</script>
+</div>
+
+<div class="edit-src" data-id="SS6" data-section="Site-Selection Problem" data-type="Run-on">
+<script type="text/plain" class="orig">We return to this in Section~\ref{sec:unknown-b}; for most of our analysis the width depends on $b$ only through a compact-translation argument that does not affect the first-order ranking of candidates.</script>
+<script type="text/plain" class="prop">We return to this in Section~\ref{sec:unknown-b}. For most of our analysis the width depends on $b$ only through a compact-translation argument that does not affect the first-order ranking of candidates.</script>
+<script type="text/plain" class="why">Split the semicolon into two sentences.</script>
+</div>
+
+<div class="edit-src" data-id="SS7" data-section="Site-Selection Problem" data-type="Em dash / Puffery">
+<script type="text/plain" class="orig">In the simplest and cleanest case --- and the one we focus on from here --- $\mathcal{B}$ is a symmetric norm ball around the existing-pool $b$; this nests the ``no-information'' prior and is what we use in our simulations.</script>
+<script type="text/plain" class="prop">In the simplest case, which we focus on from here, $\mathcal{B}$ is a symmetric norm ball around the existing-pool $b$. This includes the ``no-information'' prior and is what we use in our simulations.</script>
+<script type="text/plain" class="why">Drop "and cleanest" (puffery), replace the em dashes with commas, split the semicolon, and change "nests" to "includes".</script>
+</div>
+
+<div class="edit-src" data-id="CH1" data-section="Convex-Hull" data-type="Inanimate subject">
+<script type="text/plain" class="orig">The minimax objective \eqref{eq:minimax} inherits a sharp geometric structure in the unrestricted limit $\mathcal{R} = \mathbb{R}^{d_g}$ (or equivalently, when the restriction set is large enough that no face of $r$ binds at the optimum).</script>
+<script type="text/plain" class="prop">The minimax objective \eqref{eq:minimax} has a simple geometric structure in the unrestricted limit $\mathcal{R} = \mathbb{R}^{d_g}$ (or equivalently, when the restriction set is large enough that no face of $r$ binds at the optimum).</script>
+<script type="text/plain" class="why">"inherits a sharp geometric structure" gives an inanimate subject an action and "sharp" is puffery. Change to "has a simple geometric structure".</script>
+</div>
+
+<div class="edit-src" data-id="CH2" data-section="Convex-Hull" data-type="Word choice">
+<script type="text/plain" class="orig">Proposition~\ref{prop:dichotomy} has a clean geometric reading in the site-level context space.</script>
+<script type="text/plain" class="prop">Proposition~\ref{prop:dichotomy} has a simple geometric interpretation in the site-level context space.</script>
+<script type="text/plain" class="why">"clean geometric reading" is informal; use "simple geometric interpretation".</script>
+</div>
+
+<div class="edit-src" data-id="CH3" data-section="Convex-Hull" data-type="Colon">
+<script type="text/plain" class="orig">Combined with Proposition~\ref{prop:dichotomy}, this yields a finite-vs-infinite dichotomy: \emph{under no restriction $r$, the only candidate sites that shrink the unrestricted width are those whose context lies outside the affine hull of existing sites.}</script>
+<script type="text/plain" class="prop">Combined with Proposition~\ref{prop:dichotomy}, this yields a finite-versus-infinite dichotomy. \emph{Under no restriction $r$, the only candidate sites that shrink the unrestricted width are those whose context lies outside the affine hull of existing sites.}</script>
+<script type="text/plain" class="why">The colon sets up a point rather than a list. Use a period, and spell out "vs" as "versus".</script>
+</div>
+
+<div class="edit-src" data-id="CH4" data-section="Convex-Hull" data-type="Em dash">
+<script type="text/plain" class="orig">Proposition~\ref{prop:dist} delivers the promised \textbf{convex-hull expansion rule}: in the unrestricted (large-$\tau$) limit, the minimax-optimal candidate is the one whose addition minimizes $\sup_{t \in \mathcal{T}} d_{\mathcal{S}\cup\{k\}}(t)$ --- i.e., the one whose enlarged affine hull leaves no target profile in $\mathcal{T}$ far from the span of sites.</script>
+<script type="text/plain" class="prop">Proposition~\ref{prop:dist} gives the \textbf{convex-hull expansion rule}: in the unrestricted (large-$\tau$) limit, the minimax-optimal candidate is the one whose addition minimizes $\sup_{t \in \mathcal{T}} d_{\mathcal{S}\cup\{k\}}(t)$. That is, it is the candidate whose enlarged affine hull leaves no target profile in $\mathcal{T}$ far from the span of sites.</script>
+<script type="text/plain" class="why">"delivers the promised" is informal; use "gives the". Replace the em dash with a period before "That is".</script>
+</div>
+
+<div class="edit-src" data-id="AR1" data-section="Affine Restrictions" data-type="Em dash / Hyphenation">
+<script type="text/plain" class="orig">Compact affine restrictions $\mathcal{R} = \{\theta : r(\theta)\le 0\}$ --- e.g., box constraints, effect-ordering, sign/monotonicity --- replace the unbounded-in-the-null-space behavior of Proposition~\ref{prop:dichotomy} with a finite LP whose width we can compute and optimize.</script>
+<script type="text/plain" class="prop">Compact affine restrictions $\mathcal{R} = \{\theta : r(\theta)\le 0\}$ (e.g., box constraints, effect-ordering, sign/monotonicity) replace the unbounded behavior in the null space of Proposition~\ref{prop:dichotomy} with a finite LP whose width we can compute and optimize.</script>
+<script type="text/plain" class="why">Replace the em dashes around the examples with parentheses, and unpack the coined adjective "unbounded-in-the-null-space" into "unbounded behavior in the null space".</script>
+</div>
+
+<div class="edit-src" data-id="AR2" data-section="Affine Restrictions" data-type="Run-on">
+<script type="text/plain" class="orig">The minimax selection \eqref{eq:minimax} therefore does not reduce to a single geometric quantity in general; the convex-hull rule is exact in regime (A) and the unrestricted limit, and is a useful first screen that should be refined by \eqref{eq:surrogate} when the restriction set is binding.</script>
+<script type="text/plain" class="prop">The minimax selection \eqref{eq:minimax} therefore does not reduce to a single geometric quantity in general. The convex-hull rule is exact in regime (A) and the unrestricted limit, and it is a useful first screen that should be refined by \eqref{eq:surrogate} when the restriction set is binding.</script>
+<script type="text/plain" class="why">Split the semicolon into two sentences.</script>
+</div>
+
+<div class="edit-src" data-id="AR3" data-section="Affine Restrictions" data-type="-ing tail">
+<script type="text/plain" class="orig">The binding vertex of the LP can shift, yielding a first-order width change of either sign.</script>
+<script type="text/plain" class="prop">The binding vertex of the LP can shift, which gives a first-order width change of either sign.</script>
+<script type="text/plain" class="why">The "-ing" tail "yielding..." tacks on the result; change to ", which gives".</script>
+</div>
+
+<div class="edit-src" data-id="AR4" data-section="Affine Restrictions" data-type="Em dash">
+<script type="text/plain" class="orig">If $\{\theta : \Sigma_\mathcal{S}\theta = -b_\mathcal{S}\}\cap \mathcal{R} = \emptyset$ --- an infeasibility signaled by the Farkas alternative of Boyarsky et al.\ (2026, \S4.4 (c)) --- a candidate $k$ can restore feasibility if its site-update direction pushes the affine subspace back into $\mathcal{R}$.</script>
+<script type="text/plain" class="prop">If $\{\theta : \Sigma_\mathcal{S}\theta = -b_\mathcal{S}\}\cap \mathcal{R} = \emptyset$, an infeasibility signaled by the Farkas alternative of Boyarsky et al.\ (2026, \S4.4 (c)), a candidate $k$ can restore feasibility if its site-update direction pushes the affine subspace back into $\mathcal{R}$.</script>
+<script type="text/plain" class="why">Replace the em dashes with commas (parentheses would nest inside the citation's own parentheses).</script>
+</div>
+
+<div class="edit-src" data-id="AR5" data-section="Affine Restrictions" data-type="Run-on / Jargon">
+<script type="text/plain" class="orig">In our simulation (Section~\ref{sec:simulation}) we adopt (1) with $B$ calibrated from the existing-pool residual variance; the three variants agree on the minimax-optimal candidate in all our runs, which is unsurprising given that the rank update in \eqref{eq:dsigma} dominates the first-order width change in the regimes where candidates are materially distinguishable.</script>
+<script type="text/plain" class="prop">In our simulation (Section~\ref{sec:simulation}) we adopt (1) with $B$ set from the existing-pool residual variance. The three variants agree on the minimax-optimal candidate in all our runs. This is expected, because the rank update in \eqref{eq:dsigma} dominates the first-order width change in the regimes where candidates differ meaningfully.</script>
+<script type="text/plain" class="why">"calibrated from" to "set from", split the semicolon, change "which is unsurprising given that" to "This is expected, because", and "materially distinguishable" to "differ meaningfully".</script>
+</div>
+
+<div class="edit-src" data-id="M1" data-section="Monotonicity" data-type="Stilted / Em dash">
+<script type="text/plain" class="orig">The reader could be forgiven for assuming that the minimax design problem \eqref{eq:minimax} is \emph{bounded above by the existing-pool width} --- i.e., that $\sup_t w_r(t;\Sigma_{\mathcal{S}\cup\{k\}})\le \sup_t w_r(t;\Sigma_\mathcal{S})$ for every candidate $k$, so that the design problem is merely a question of ``how much do we gain''.</script>
+<script type="text/plain" class="prop">One might expect that the minimax design problem \eqref{eq:minimax} is \emph{bounded above by the existing-pool width}. That is, one might expect that $\sup_t w_r(t;\Sigma_{\mathcal{S}\cup\{k\}})\le \sup_t w_r(t;\Sigma_\mathcal{S})$ for every candidate $k$, so that the design problem is only a question of how much we gain.</script>
+<script type="text/plain" class="why">"The reader could be forgiven for assuming" is a stilted idiom; use "One might expect". Replace the em dash with a period before "That is", and change "merely" to "only".</script>
+</div>
+
+<div class="edit-src" data-id="M2" data-section="Monotonicity" data-type="Stilted">
+<script type="text/plain" class="orig">Adding a site can strictly \emph{increase} the worst-case width, and in some configurations it can render the program infeasible.</script>
+<script type="text/plain" class="prop">Adding a site can strictly \emph{increase} the worst-case width, and in some cases it can make the program infeasible.</script>
+<script type="text/plain" class="why">"configurations" to "cases" and "render ... infeasible" to "make ... infeasible".</script>
+</div>
+
+<div class="edit-src" data-id="M3" data-section="Monotonicity" data-type="Em dash">
+<script type="text/plain" class="orig">This parallel slice intersects the restriction polyhedron $\mathcal{R}$ at a different polytope, whose projection onto the target functional can be longer than the original --- for example, when $\mathcal{R}$ is asymmetric around $\theta_\mathcal{S}^\star$ and the shift moves the slice into a wider cross-section of $\mathcal{R}$.</script>
+<script type="text/plain" class="prop">This parallel slice intersects the restriction polyhedron $\mathcal{R}$ at a different polytope, whose projection onto the target functional can be longer than the original. For example, this happens when $\mathcal{R}$ is asymmetric around $\theta_\mathcal{S}^\star$ and the shift moves the slice into a wider cross-section of $\mathcal{R}$.</script>
+<script type="text/plain" class="why">Replace the em dash with a period, and start the example as its own sentence.</script>
+</div>
+
+<div class="edit-src" data-id="M4" data-section="Monotonicity" data-type="Imagery">
+<script type="text/plain" class="orig">In the LP \eqref{eq:bounds}, this corresponds to a worsened condition number of the equality-constraint block and can enlarge the feasible set in directions where $\mathcal{R}$ does not bite.</script>
+<script type="text/plain" class="prop">In the LP \eqref{eq:bounds}, this corresponds to a worsened condition number of the equality-constraint block and can enlarge the feasible set in directions where $\mathcal{R}$ does not bind.</script>
+<script type="text/plain" class="why">"does not bite" is an idiom; the precise term is "does not bind".</script>
+</div>
+
+<div class="edit-src" data-id="M5" data-section="Monotonicity" data-type="Jargon / Notation">
+<script type="text/plain" class="orig">We give a fully worked $D=2$ example, both because the geometry is diagnostic and because the same construction lifts to the multivariate simulations of Section~\ref{sec:simulation}.</script>
+<script type="text/plain" class="prop">We give a fully worked $d_g=2$ example, both because the geometry is easy to see and because the same construction extends to the multivariate simulations of Section~\ref{sec:simulation}.</script>
+<script type="text/plain" class="why">"diagnostic" here means easy to see; say so. "lifts to" is jargon; use "extends to". Also "$D=2$" should be "$d_g=2$" to match the notation used two sentences later ("Take $d_g=2$").</script>
+</div>
+
+<div class="edit-src" data-id="M6" data-section="Monotonicity" data-type="Run-on">
+<script type="text/plain" class="orig">The construction generalizes: in dimension $d_g\ge 2$, any rank-preserving candidate with outcome $y_k\ne c^{(k)\top}\theta_\mathcal{S}^\star$ produces a parallel shift of the moment-implied subspace, and whenever $\mathcal{R}$ is \emph{asymmetric} around $\theta_\mathcal{S}^\star$ the shifted slice can cut $\mathcal{R}$ at a polytope of larger $t$-extent.</script>
+<script type="text/plain" class="prop">The construction generalizes. In dimension $d_g\ge 2$, any rank-preserving candidate with outcome $y_k\ne c^{(k)\top}\theta_\mathcal{S}^\star$ produces a parallel shift of the moment-implied subspace. Whenever $\mathcal{R}$ is \emph{asymmetric} around $\theta_\mathcal{S}^\star$, the shifted slice can cut $\mathcal{R}$ at a polytope of larger $t$-extent.</script>
+<script type="text/plain" class="why">Split the colon and the long sentence into three sentences.</script>
+</div>
+
+<div class="edit-src" data-id="M7" data-section="Monotonicity" data-type="Wordiness">
+<script type="text/plain" class="orig">We now isolate two assumptions, each of which on its own implies that the worst-case width is monotone-nonincreasing in site addition. They are mutually independent and either is implementable as a pre-experiment screen on the candidate pool.</script>
+<script type="text/plain" class="prop">We now isolate two assumptions, each of which on its own implies that the worst-case width is monotone-nonincreasing in site addition. The two assumptions are independent, and each one can be used as a pre-experiment screen on the candidate pool.</script>
+<script type="text/plain" class="why">"mutually independent" is redundant; use "independent". "either is implementable as" is wordy; use "each one can be used as".</script>
+</div>
+
+<div class="edit-src" data-id="M8" data-section="Monotonicity" data-type="Colon / Run-on">
+<script type="text/plain" class="orig">The two imply different \emph{consequences}: (M1) strictly reduces the null space and hence width on any target that loaded the resolved null direction, while (M2) leaves the moment-implied affine subspace untouched and prevents the feasibility-breaking shifts of Section~\ref{sec:monotone-fail}.</script>
+<script type="text/plain" class="prop">The two imply different \emph{consequences}. (M1) strictly reduces the null space, and hence the width, on any target that loaded the resolved null direction. (M2) leaves the moment-implied affine subspace unchanged and prevents the feasibility-breaking shifts of Section~\ref{sec:monotone-fail}.</script>
+<script type="text/plain" class="why">Split the colon and the "while" into separate sentences, and change "untouched" to "unchanged".</script>
+</div>
+
+<div class="edit-src" data-id="M9" data-section="Monotonicity" data-type="Jargon">
+<script type="text/plain" class="orig">and a fortiori the worst-case width $\sup_{t\in\mathcal{T}} w_r(t;\Sigma_{\mathcal{S}\cup\{k\}},b_{\mathcal{S}\cup\{k\}}) \le \sup_{t\in\mathcal{T}} w_r(t;\Sigma_\mathcal{S},b_\mathcal{S})$.</script>
+<script type="text/plain" class="prop">and therefore the worst-case width $\sup_{t\in\mathcal{T}} w_r(t;\Sigma_{\mathcal{S}\cup\{k\}},b_{\mathcal{S}\cup\{k\}}) \le \sup_{t\in\mathcal{T}} w_r(t;\Sigma_\mathcal{S},b_\mathcal{S})$.</script>
+<script type="text/plain" class="why">"a fortiori" is Latin jargon. The sup inequality follows directly from the pointwise one, so "and therefore" is both plain and correct.</script>
+</div>
+
+<div class="edit-src" data-id="M10" data-section="Monotonicity" data-type="Run-on">
+<script type="text/plain" class="orig">Theorem~\ref{thm:monotone} is proved in Appendix~\ref{sec:proof-thm1}; the key step is the algebraic identity \eqref{eq:identity} showing that $\Sigma_{\mathcal{S}\cup\{k\}}\theta+b_{\mathcal{S}\cup\{k\}}= \Sigma_\mathcal{S}\theta+b_\mathcal{S}+u\cdot(u^\top\theta-y_k)$, together with the consistency hypothesis $b_\mathcal{S}\in\mathrm{range}(\Sigma_\mathcal{S})$.</script>
+<script type="text/plain" class="prop">Theorem~\ref{thm:monotone} is proved in Appendix~\ref{sec:proof-thm1}. The key step is the algebraic identity \eqref{eq:identity}, which shows that $\Sigma_{\mathcal{S}\cup\{k\}}\theta+b_{\mathcal{S}\cup\{k\}}= \Sigma_\mathcal{S}\theta+b_\mathcal{S}+u\cdot(u^\top\theta-y_k)$, together with the consistency hypothesis $b_\mathcal{S}\in\mathrm{range}(\Sigma_\mathcal{S})$.</script>
+<script type="text/plain" class="why">Split the semicolon, and change "showing that" to ", which shows that".</script>
+</div>
+
+<div class="edit-src" data-id="M11" data-section="Monotonicity" data-type="Em dash">
+<script type="text/plain" class="orig">The pair (M1, M2) is \emph{not} exhaustive --- a candidate failing both can still improve the width --- but it provides a finite, computable screen.</script>
+<script type="text/plain" class="prop">The pair (M1, M2) is \emph{not} exhaustive, because a candidate failing both can still improve the width. But it does provide a finite, computable screen.</script>
+<script type="text/plain" class="why">Replace the em dashes; give the parenthetical its own clause and the contrast its own sentence.</script>
+</div>
+
+<div class="edit-src" data-id="M12" data-section="Monotonicity" data-type="List">
+<script type="text/plain" class="orig">In practice we recommend: \emph{(i)} run the SVD-based test \eqref{eq:m1} on every candidate; mark those that pass as \textbf{safe rank-expanders}; \emph{(ii)} among the rank-preserving candidates, check \eqref{eq:m2} against the existing-pool OLS prediction; mark those that pass as \textbf{safe consistent candidates}; \emph{(iii)} report the minimax \eqref{eq:minimax} only over the safe subset of the candidate pool, or report the unsafe candidates separately as ``diagnostic-only'' sites whose addition could be informative but whose worst-case width is not guaranteed to improve.</script>
+<script type="text/plain" class="prop">In practice we recommend the following. First, run the SVD-based test \eqref{eq:m1} on every candidate, and mark those that pass as \textbf{safe rank-expanders}. Second, among the rank-preserving candidates, check \eqref{eq:m2} against the existing-pool OLS prediction, and mark those that pass as \textbf{safe consistent candidates}. Third, report the minimax \eqref{eq:minimax} only over the safe subset of the candidate pool, or report the unsafe candidates separately as ``diagnostic-only'' sites whose addition could be informative but whose worst-case width is not guaranteed to improve.</script>
+<script type="text/plain" class="why">The three steps are packed into one sentence with stacked semicolons. Break them into three numbered sentences (First, Second, Third).</script>
+</div>
+
+<div class="edit-src" data-id="M13" data-section="Monotonicity" data-type="Inanimate / Jargon">
+<script type="text/plain" class="orig">When candidates carry a cost $c_k$, the safe-subset screening of (i)--(iii) above is composed with the Lagrangian \eqref{eq:lagrangian}, and the optimal candidate is the cheapest member of the safe subset that achieves the minimax target. Unsafe candidates can be admitted only with an explicit risk premium $\rho_k\ge 0$ added to their cost, calibrated to the upper bound on $w_r(\cdot;\Sigma_{\mathcal{S}\cup\{k\}})- w_r(\cdot;\Sigma_\mathcal{S})$ from the perturbation bound \eqref{eq:envelope}.</script>
+<script type="text/plain" class="prop">When candidates carry a cost $c_k$, we combine the safe-subset screening of (i)--(iii) above with the Lagrangian \eqref{eq:lagrangian}, and the optimal candidate is the cheapest member of the safe subset that achieves the minimax target. Unsafe candidates can be admitted only with an explicit risk premium $\rho_k\ge 0$ added to their cost, set from the upper bound on $w_r(\cdot;\Sigma_{\mathcal{S}\cup\{k\}})- w_r(\cdot;\Sigma_\mathcal{S})$ in the perturbation bound \eqref{eq:envelope}.</script>
+<script type="text/plain" class="why">"the screening ... is composed with" is awkward and passive; make "we" the actor. "calibrated to" to "set from".</script>
+</div>
+
+<div class="edit-src" data-id="M14" data-section="Monotonicity" data-type="Imagery / Colon">
+<script type="text/plain" class="orig">Proposition~\ref{prop:dist} of Section~\ref{sec:hull-distance} said that, in the large-$\tau$ unrestricted limit, the optimal candidate is the one whose addition minimizes $\sup_{t\in\mathcal{T}}d_{\mathcal{S}\cup\{k\}}(t)$. Theorem~\ref{thm:monotone} refines this picture: the convex-hull rule is \emph{sufficient} for monotone improvement (it implies (M1)), but it is not \emph{necessary}.</script>
+<script type="text/plain" class="prop">Proposition~\ref{prop:dist} of Section~\ref{sec:hull-distance} shows that, in the large-$\tau$ unrestricted limit, the optimal candidate is the one whose addition minimizes $\sup_{t\in\mathcal{T}}d_{\mathcal{S}\cup\{k\}}(t)$. Theorem~\ref{thm:monotone} refines this. The convex-hull rule is \emph{sufficient} for monotone improvement (it implies (M1)), but it is not \emph{necessary}.</script>
+<script type="text/plain" class="why">"said that" to "shows that". "refines this picture:" uses imagery and a colon; change to "refines this." and start a new sentence.</script>
+</div>
+
+<div class="edit-src" data-id="M15" data-section="Monotonicity" data-type="Em dash">
+<script type="text/plain" class="orig">An interior candidate satisfying (M2) --- i.e., a candidate whose context lies inside the hull but whose forecasted outcome matches the OLS prediction --- also guarantees no worsening.</script>
+<script type="text/plain" class="prop">An interior candidate that satisfies (M2), i.e., one whose context lies inside the hull but whose forecasted outcome matches the OLS prediction, also guarantees no worsening.</script>
+<script type="text/plain" class="why">Replace the em dashes with commas and change "satisfying" to "that satisfies".</script>
+</div>
+
+<div class="edit-src" data-id="M16" data-section="Monotonicity" data-type="Imagery / Run-on">
+<script type="text/plain" class="orig">Conversely, a hull-expander whose outcome is adversarial can shift the feasible set badly, exhibiting (F3); the (M1) screen is \emph{necessary} in the rank sense but is \emph{not sufficient against shifts}.</script>
+<script type="text/plain" class="prop">Conversely, a hull-expander whose outcome is adversarial can shift the feasible set in a harmful way, which is failure mode (F3). The (M1) screen is \emph{necessary} in the rank sense but is \emph{not sufficient against shifts}.</script>
+<script type="text/plain" class="why">"shift the feasible set badly, exhibiting (F3)" is informal; state it plainly and split the semicolon.</script>
+</div>
+
+<div class="edit-src" data-id="S1" data-section="Simulation" data-type="Em dash / Imagery">
+<script type="text/plain" class="orig">We generate $S = 8$ existing sites whose context vectors $(C_m^{(s)}, C_r^{(s)}) \in \mathbb{R}^{10}$ lie in a 4-dimensional affine subspace of the 10-dimensional context space --- that is, the existing pool spans only a thin slice of the site-level geometry, as in \citet{meager2019understanding}.</script>
+<script type="text/plain" class="prop">We generate $S = 8$ existing sites whose context vectors $(C_m^{(s)}, C_r^{(s)}) \in \mathbb{R}^{10}$ lie in a 4-dimensional affine subspace of the 10-dimensional context space. That is, the existing pool covers only a small part of the site-level geometry, as in \citet{meager2019understanding}.</script>
+<script type="text/plain" class="why">Replace the em dash with a period, and change "spans only a thin slice of" (imagery) to "covers only a small part of".</script>
+</div>
+
+<div class="edit-src" data-id="S2" data-section="Simulation" data-type="Run-on">
+<script type="text/plain" class="orig">Across $50$ Monte Carlo replicates, the interior and boundary candidates $k_1, k_2$ produce an identical minimax width to the existing pool (to numerical precision), $\hat w^\star_{k_1} = \hat w^\star_{k_2} = \hat w^\star_{\mathcal{S}} = 1291.8$; the two rank-expanding candidates produce strictly smaller widths, $\hat w^\star_{k_3} = 1152.2$ and $\hat w^\star_{k_4} = 1158.3$, corresponding to an $11\%$ reduction in the worst-case partial-identification interval.</script>
+<script type="text/plain" class="prop">Across $50$ Monte Carlo replicates, the interior and boundary candidates $k_1, k_2$ produce an identical minimax width to the existing pool (to numerical precision), $\hat w^\star_{k_1} = \hat w^\star_{k_2} = \hat w^\star_{\mathcal{S}} = 1291.8$. The two rank-expanding candidates produce strictly smaller widths, $\hat w^\star_{k_3} = 1152.2$ and $\hat w^\star_{k_4} = 1158.3$, an $11\%$ reduction in the worst-case partial-identification interval.</script>
+<script type="text/plain" class="why">Split the semicolon, and drop "corresponding to".</script>
+</div>
+
+<div class="edit-src" data-id="S3" data-section="Simulation" data-type="Em dash">
+<script type="text/plain" class="orig">The minimax-optimal candidate is $k_3$ in $23/50$ replicates and $k_4$ in $27/50$ replicates --- never $k_1$ or $k_2$.</script>
+<script type="text/plain" class="prop">The minimax-optimal candidate is $k_3$ in $23/50$ replicates and $k_4$ in $27/50$ replicates, never $k_1$ or $k_2$.</script>
+<script type="text/plain" class="why">Replace the em dash with a comma.</script>
+</div>
+
+<div class="edit-src" data-id="S4" data-section="Simulation" data-type="Idiom / Colon">
+<script type="text/plain" class="orig">The near-tie between $k_3$ and $k_4$ reflects a feature of the design rather than a bug: both candidates reduce the null space of $\Sigma$ by exactly one dimension, albeit in different directions, so whichever direction is better represented in the randomly-sampled target region dominates that replicate.</script>
+<script type="text/plain" class="prop">The near-tie between $k_3$ and $k_4$ is a feature of the design, not an error. Both candidates reduce the null space of $\Sigma$ by exactly one dimension, though in different directions, so whichever direction is better represented in the randomly-sampled target region wins that replicate.</script>
+<script type="text/plain" class="why">"reflects a feature ... rather than a bug:" uses the feature/bug idiom and a colon; state it plainly and split. "albeit" to "though"; "dominates" to "wins".</script>
+</div>
+
+<div class="edit-src" data-id="S5" data-section="Simulation" data-type="Em dash">
+<script type="text/plain" class="orig">The qualitative conclusion --- interior candidates are useless for tightening external-validity claims; rank-expanding candidates are strictly better --- is stable across the full run.</script>
+<script type="text/plain" class="prop">The qualitative conclusion is stable across the full run. Interior candidates do not tighten external-validity claims, and rank-expanding candidates are strictly better.</script>
+<script type="text/plain" class="why">Remove the em dashes (which also wrap an internal semicolon) by moving the conclusion into its own sentence. "useless for tightening" to "do not tighten".</script>
+</div>
+
+<div class="edit-src" data-id="S6" data-section="Simulation" data-type="Word choice">
+<script type="text/plain" class="orig">We run an additional experiment which augments the candidate pool with two further candidates to exercise the theory of Section~\ref{sec:monotonicity}:</script>
+<script type="text/plain" class="prop">We run an additional experiment that augments the candidate pool with two further candidates to test the theory of Section~\ref{sec:monotonicity}:</script>
+<script type="text/plain" class="why">"which" to "that", and "exercise the theory" to "test the theory".</script>
+</div>
+
+<div class="edit-src" data-id="S7" data-section="Simulation" data-type="Imagery">
+<script type="text/plain" class="orig">Two observations sharpen the message of Theorem~\ref{thm:monotone}.</script>
+<script type="text/plain" class="prop">Two observations make the message of Theorem~\ref{thm:monotone} concrete.</script>
+<script type="text/plain" class="why">"sharpen the message" is mild imagery; use "make ... concrete".</script>
+</div>
+
+<div class="edit-src" data-id="S8" data-section="Simulation" data-type="Em dash">
+<script type="text/plain" class="orig">First, in $8/50$ replicates $k_5$ strictly \emph{increases} the worst-case width relative to the existing pool --- never $k_1$ through $k_4$ or $k_6$.</script>
+<script type="text/plain" class="prop">First, in $8/50$ replicates $k_5$ strictly \emph{increases} the worst-case width relative to the existing pool, never $k_1$ through $k_4$ or $k_6$.</script>
+<script type="text/plain" class="why">Replace the em dash with a comma.</script>
+</div>
+
+<div class="edit-src" data-id="S9" data-section="Simulation" data-type="Jargon">
+<script type="text/plain" class="orig">\emph{On individual replicates the direction of the change is not predictable a priori}, which is precisely the failure mode (F1) of Section~\ref{sec:monotone-fail}.</script>
+<script type="text/plain" class="prop">\emph{On individual replicates the direction of the change cannot be predicted in advance}, which is precisely the failure mode (F1) of Section~\ref{sec:monotone-fail}.</script>
+<script type="text/plain" class="why">"is not predictable a priori" uses Latin jargon; use "cannot be predicted in advance".</script>
+</div>
+
+<div class="edit-src" data-id="S10" data-section="Simulation" data-type="Run-on / Jargon">
+<script type="text/plain" class="orig">The $8/50$ rate scales linearly with the asymmetry of the box restriction and with the magnitude $|\Delta|$ of the outcome shock; at $\Delta=40$ and a more asymmetric box, more than $30\%$ of replicates exhibit width increase.</script>
+<script type="text/plain" class="prop">The $8/50$ rate scales linearly with the asymmetry of the box restriction and with the magnitude $|\Delta|$ of the outcome shock. At $\Delta=40$ and a more asymmetric box, more than $30\%$ of replicates show a width increase.</script>
+<script type="text/plain" class="why">Split the semicolon, and change "exhibit width increase" to "show a width increase".</script>
+</div>
+
+<div class="edit-src" data-id="S11" data-section="Simulation" data-type="Em dash">
+<script type="text/plain" class="orig">Second, $k_6$ --- passing both (M1) and (M2) --- achieves \emph{exactly} the width of $k_3$ (the latter passes (M1) but not (M2)), and both are monotone-nonincreasing relative to the existing pool in every replicate.</script>
+<script type="text/plain" class="prop">Second, $k_6$, which passes both (M1) and (M2), achieves \emph{exactly} the width of $k_3$ (the latter passes (M1) but not (M2)), and both are monotone-nonincreasing relative to the existing pool in every replicate.</script>
+<script type="text/plain" class="why">Replace the em dashes around the appositive with commas.</script>
+</div>
+
+<div class="edit-src" data-id="S12" data-section="Simulation" data-type="Run-on">
+<script type="text/plain" class="orig">The candidate $k_3$ in this section's first script also satisfies the conclusion of Theorem~\ref{thm:monotone} in this dataset, because in the simplified moment formulation the residualization is exact and the OLS prediction matches the candidate outcome up to the noise term; this becomes a strict inequality once the candidate outcome is drawn from an adversarial prior, as in Section~\ref{sec:unknown-b}(3).</script>
+<script type="text/plain" class="prop">The candidate $k_3$ in this section's first script also satisfies the conclusion of Theorem~\ref{thm:monotone} in this dataset, because in the simplified moment formulation the residualization is exact and the OLS prediction matches the candidate outcome up to the noise term. This becomes a strict inequality once the candidate outcome is drawn from an adversarial prior, as in Section~\ref{sec:unknown-b}(3).</script>
+<script type="text/plain" class="why">Split the semicolon into two sentences.</script>
+</div>
+
+<div class="edit-src" data-id="S13" data-section="Simulation" data-type="Run-on">
+<script type="text/plain" class="orig">Panel (A) of Figure~\ref{fig:fig2} reproduces the hand-built 2D counterexample of Section~\ref{sec:counterexample} explicitly; Panel (B) shows the per-candidate mean minimax width across replicates; Panel (C) is the replicate-level scatter of post-addition vs.\ existing-pool minimax width, with points above the $y=x$ diagonal corresponding to candidate--replicate pairs in which the addition harmed external validity.</script>
+<script type="text/plain" class="prop">Figure~\ref{fig:fig2} has three panels. Panel (A) reproduces the hand-built 2D counterexample of Section~\ref{sec:counterexample}. Panel (B) shows the per-candidate mean minimax width across replicates. Panel (C) is the replicate-level scatter of post-addition versus existing-pool minimax width, where points above the $y=x$ diagonal are candidate--replicate pairs in which the addition harmed external validity.</script>
+<script type="text/plain" class="why">Two semicolons join three panel descriptions. Break them into separate sentences. "vs.\" to "versus", and "corresponding to" to "are".</script>
+</div>
+
+<div class="edit-src" data-id="S14" data-section="Simulation" data-type="Imagery / Run-on">
+<script type="text/plain" class="orig">The $k_5$ scatter cloud straddles the diagonal; every other cloud sits weakly below.</script>
+<script type="text/plain" class="prop">The $k_5$ points fall on both sides of the diagonal, and the points for every other candidate sit weakly below it.</script>
+<script type="text/plain" class="why">"scatter cloud" is imagery; refer to the points. Split the semicolon.</script>
+</div>
+
+<div class="edit-src" data-id="S15" data-section="Simulation" data-type="Jargon">
+<script type="text/plain" class="orig">Three features of the results are robust to DGP perturbations (heavy-tailed $X$, $S=6$ instead of $8$, larger $\|\theta\|_\infty$ bound):</script>
+<script type="text/plain" class="prop">Three features of the results are stable under changes to the DGP (heavy-tailed $X$, $S=6$ instead of $8$, larger $\|\theta\|_\infty$ bound):</script>
+<script type="text/plain" class="why">"robust to DGP perturbations" uses "robust"; use "stable under changes to the DGP".</script>
+</div>
+
+<div class="edit-src" data-id="S16" data-section="Simulation" data-type="Colon">
+<script type="text/plain" class="orig">This is not an approximation: when $\mathrm{rank}(\Sigma)$ does not change, the null-space geometry of the LP is unchanged, and a location-only update of $b$ (the only remaining effect of adding such a site) cancels in the width.</script>
+<script type="text/plain" class="prop">This is not an approximation. When $\mathrm{rank}(\Sigma)$ does not change, the null-space geometry of the LP is unchanged, and a location-only update of $b$ (the only remaining effect of adding such a site) cancels in the width.</script>
+<script type="text/plain" class="why">The colon joins two full clauses; use a period.</script>
+</div>
+
+<div class="edit-src" data-id="S17" data-section="Simulation" data-type="Filler">
+<script type="text/plain" class="orig">\textbf{Among rank-expanding candidates, distance to the hull matters at the margin.} The $11\%$ reduction achieved by $k_3, k_4$ is an interplay of two factors: how large a component of the target region aligns with the newly-resolved null-space direction, and how far the candidate sits outside the hull in that direction.</script>
+<script type="text/plain" class="prop">\textbf{Among rank-expanding candidates, distance to the hull decides between them.} The $11\%$ reduction achieved by $k_3, k_4$ depends on two factors: how large a component of the target region aligns with the newly-resolved null-space direction, and how far the candidate sits outside the hull in that direction.</script>
+<script type="text/plain" class="why">"matters at the margin" uses the empty word "matters"; say what it does. "is an interplay of two factors" to "depends on two factors".</script>
+</div>
+
+<div class="edit-src" data-id="S18" data-section="Simulation" data-type="Empty emphasis">
+<script type="text/plain" class="orig">Non-monotonicity is real, but the screens of Theorem~\ref{thm:monotone} eliminate it.</script>
+<script type="text/plain" class="prop">Non-monotonicity occurs, but the screens of Theorem~\ref{thm:monotone} eliminate it.</script>
+<script type="text/plain" class="why">"is real" is empty emphasis; use "occurs".</script>
+</div>
+
+<div class="edit-src" data-id="S19" data-section="Simulation" data-type="Em dash">
+<script type="text/plain" class="orig">The candidate $k_5$ --- interior to the hull, with a $\Delta=20$ outcome shock relative to the existing-pool OLS prediction --- increases the worst-case width in $8/50$ replicates. The candidate $k_6$ --- outside the hull \emph{and} with an OLS-consistent outcome --- never does so, matching Theorem~\ref{thm:monotone}'s prediction.</script>
+<script type="text/plain" class="prop">The candidate $k_5$, which is interior to the hull and has a $\Delta=20$ outcome shock relative to the existing-pool OLS prediction, increases the worst-case width in $8/50$ replicates. The candidate $k_6$, which is outside the hull \emph{and} has an OLS-consistent outcome, never does so. This matches the prediction of Theorem~\ref{thm:monotone}.</script>
+<script type="text/plain" class="why">Replace the em-dash appositives with commas, and turn the "-ing" tail "matching..." into its own sentence.</script>
+</div>
+
+<div class="edit-src" data-id="S20" data-section="Simulation" data-type="Style">
+<script type="text/plain" class="orig">In a Monte-Carlo sweep over asymmetry of the restriction box and shock magnitude, the fraction of replicates in which an unscreened candidate hurts external validity scales roughly linearly with both, reaching $30\%$+ in the most adversarial setting.</script>
+<script type="text/plain" class="prop">In a Monte-Carlo sweep over asymmetry of the restriction box and shock magnitude, the fraction of replicates in which an unscreened candidate hurts external validity scales roughly linearly with both, reaching more than $30\%$ in the most adversarial setting.</script>
+<script type="text/plain" class="why">"$30\%$+" to "more than $30\%$".</script>
+</div>
+
+<div class="edit-src" data-id="D1" data-section="Discussion" data-type="Colon">
+<script type="text/plain" class="orig">The locally-constant integer-solution argument of \S1(ii) in Boyarsky et al.\ (2026) extends: on a neighborhood of $\gamma_\mathcal{S}$, the optimal sign pattern is constant, so the MILP reduces to the LP \eqref{eq:surrogate} after fixing integer variables.</script>
+<script type="text/plain" class="prop">The locally-constant integer-solution argument of \S1(ii) in Boyarsky et al.\ (2026) extends to this case. On a neighborhood of $\gamma_\mathcal{S}$, the optimal sign pattern is constant, so the MILP reduces to the LP \eqref{eq:surrogate} after fixing integer variables.</script>
+<script type="text/plain" class="why">The colon sets up the explanation; change to "extends to this case." and start a new sentence.</script>
+</div>
+
+<div class="edit-src" data-id="D2" data-section="Discussion" data-type="Passive / Run-on">
+<script type="text/plain" class="orig">Selection is then performed by \eqref{eq:surrogate} at the fixed pattern; sign flips across candidate sites can be detected by re-solving the MILP at the top two or three candidates.</script>
+<script type="text/plain" class="prop">We then perform selection by \eqref{eq:surrogate} at the fixed pattern. Sign flips across candidate sites can be detected by re-solving the MILP at the top two or three candidates.</script>
+<script type="text/plain" class="why">Make "we" the actor instead of the passive "Selection is then performed", and split the semicolon.</script>
+</div>
+
+<div class="edit-src" data-id="D3" data-section="Discussion" data-type="Run-on">
+<script type="text/plain" class="orig">Adding a cost $c_k$ to the objective \eqref{eq:minimax} is straightforward because the cost term is separable in $k$; the minimax-optimal candidate under Lagrangian \eqref{eq:lagrangian} is obtained by solving \eqref{eq:surrogate} with an additional additive penalty.</script>
+<script type="text/plain" class="prop">Adding a cost $c_k$ to the objective \eqref{eq:minimax} is straightforward because the cost term is separable in $k$. The minimax-optimal candidate under Lagrangian \eqref{eq:lagrangian} is obtained by solving \eqref{eq:surrogate} with an additional additive penalty.</script>
+<script type="text/plain" class="why">Split the semicolon into two sentences.</script>
+</div>
+
+<div class="edit-src" data-id="D4" data-section="Discussion" data-type="Informal coinage">
+<script type="text/plain" class="orig">In our setting an ethicist-flavored version of cost might penalize candidates that are demographically similar to existing sites, because such sites do little to broaden the external-validity claim despite being cheap to reach.</script>
+<script type="text/plain" class="prop">In our setting a cost based on ethical concerns might penalize candidates that are demographically similar to existing sites, because such sites do little to broaden the external-validity claim despite being cheap to reach.</script>
+<script type="text/plain" class="why">"an ethicist-flavored version of cost" is an invented, informal phrase; use "a cost based on ethical concerns".</script>
+</div>
+
+<div class="edit-src" data-id="D5" data-section="Discussion" data-type="Em dash">
+<script type="text/plain" class="orig">in this case the width surrogate \eqref{eq:surrogate} becomes a set-function in $\mathcal{J}$ that is \emph{submodular} in the rank-monotone limit --- in precisely the sense that adding the first hull-expander contributes more than adding the second.</script>
+<script type="text/plain" class="prop">in this case the width surrogate \eqref{eq:surrogate} becomes a set-function in $\mathcal{J}$ that is \emph{submodular} in the rank-monotone limit. That is, adding the first hull-expander contributes more than adding the second.</script>
+<script type="text/plain" class="why">Replace the em dash with a period before "That is".</script>
+</div>
+
+<div class="edit-src" data-id="D6" data-section="Discussion" data-type="-ing tail">
+<script type="text/plain" class="orig">A greedy algorithm attains a $(1 - 1/e)$-approximation under mild regularity, matching the classical D-optimality result of Nemhauser et al.\ (1978).</script>
+<script type="text/plain" class="prop">A greedy algorithm attains a $(1 - 1/e)$-approximation under mild regularity, which matches the classical D-optimality result of Nemhauser et al.\ (1978).</script>
+<script type="text/plain" class="why">The "-ing" tail "matching..." tacks on a separate fact; change to ", which matches".</script>
+</div>
+
+<div class="edit-src" data-id="D7" data-section="Discussion" data-type="Inanimate / Colon">
+<script type="text/plain" class="orig">The minimax design criterion therefore inherits inference validity from their debiased cross-fitting: confidence intervals for the post-addition width are a standard delta-method computation.</script>
+<script type="text/plain" class="prop">The minimax design criterion therefore gets its inference validity from their debiased cross-fitting. Confidence intervals for the post-addition width are a standard delta-method computation.</script>
+<script type="text/plain" class="why">"inherits inference validity from" gives an inanimate subject an action; use "gets its inference validity from". Split the colon into two sentences.</script>
+</div>
+
+<div class="edit-src" data-id="D8" data-section="Discussion" data-type="Idiom">
+<script type="text/plain" class="orig">Three directions strike us as natural follow-ups.</script>
+<script type="text/plain" class="prop">Three directions are natural follow-ups.</script>
+<script type="text/plain" class="why">"strike us as" is an idiom; state it plainly.</script>
+</div>
+
+<div class="edit-src" data-id="D9" data-section="Discussion" data-type="Run-on">
+<script type="text/plain" class="orig">First, the adversarial $b$-prior of Section~\ref{sec:unknown-b}(3) admits a saddle-point representation but not a closed-form solution; existing interior-point solvers handle small instances, but large candidate pools would benefit from a custom Frank--Wolfe scheme.</script>
+<script type="text/plain" class="prop">First, the adversarial $b$-prior of Section~\ref{sec:unknown-b}(3) admits a saddle-point representation but not a closed-form solution. Existing interior-point solvers handle small instances, but large candidate pools would benefit from a custom Frank--Wolfe scheme.</script>
+<script type="text/plain" class="why">Split the semicolon into two sentences.</script>
+</div>
+
+<div class="edit-src" data-id="D10" data-section="Discussion" data-type="Run-on">
+<script type="text/plain" class="orig">Second, in the online-experimentation setting the candidate pool is revealed sequentially and the selection must be made without access to the full set; adapting \eqref{eq:surrogate} to this regret-minimization formulation is open.</script>
+<script type="text/plain" class="prop">Second, in the online-experimentation setting the candidate pool is revealed sequentially, and the selection must be made without access to the full set. Adapting \eqref{eq:surrogate} to this regret-minimization formulation is open.</script>
+<script type="text/plain" class="why">Split the semicolon, and add a comma before "and".</script>
+</div>
+
+<div class="edit-src" data-id="D11" data-section="Discussion" data-type="Jargon / Run-on">
+<script type="text/plain" class="orig">Third, the assumption that the within-site $X$-distribution at candidate sites is known (or informatively prior'd) is strong; a distributionally-robust variant that treats $P_X^{(k)}$ as uncertain over a Wasserstein ball would inherit the theoretical guarantees of the \citet{jeong2020assessing} worst-case program but at the cost of a more conservative selection.</script>
+<script type="text/plain" class="prop">Third, the assumption that the within-site $X$-distribution at candidate sites is known (or has an informative prior) is strong. A distributionally-robust variant that treats $P_X^{(k)}$ as uncertain over a Wasserstein ball would keep the theoretical guarantees of the \citet{jeong2020assessing} worst-case program, at the cost of a more conservative selection.</script>
+<script type="text/plain" class="why">"informatively prior'd" is informal jargon; use "has an informative prior". Split the semicolon, change "would inherit" to "would keep", and "but at the cost of" to ", at the cost of".</script>
+</div>
+
+<div class="edit-src" data-id="AP1" data-section="Appendix A (Proofs)" data-type="Em dash">
+<script type="text/plain" class="orig">The restriction polyhedron is $\mathcal{R}:=\{\theta:r(\theta)\le 0\}$ --- compact and convex unless explicitly stated otherwise.</script>
+<script type="text/plain" class="prop">The restriction polyhedron is $\mathcal{R}:=\{\theta:r(\theta)\le 0\}$, which is compact and convex unless explicitly stated otherwise.</script>
+<script type="text/plain" class="why">Replace the em dash with ", which is".</script>
+</div>
+
+<div class="edit-src" data-id="AP2" data-section="Appendix A (Proofs)" data-type="Run-on">
+<script type="text/plain" class="orig">Let $\theta_0$ be any solution to $\Sigma\theta_0=-b$; such a $\theta_0$ exists by the consistency hypothesis.</script>
+<script type="text/plain" class="prop">Let $\theta_0$ be any solution to $\Sigma\theta_0=-b$. Such a $\theta_0$ exists by the consistency hypothesis.</script>
+<script type="text/plain" class="why">Split the semicolon into two sentences.</script>
+</div>
+
+<div class="edit-src" data-id="AP3" data-section="Appendix A (Proofs)" data-type="Em dash / Colon">
+<script type="text/plain" class="orig">The third equivalence --- between rank-expansion and affine-hull membership --- is obtained by centering: writing $u=\bar c+\tilde u$ with $\bar c$ the average of $c^{(s)}$ and $\tilde u=u-\bar c$, the centered row space of $C$ equals $\mathrm{aff}(\mathcal{H}_\mathcal{S})-\bar c$ (the linear subspace parallel to the affine hull), and $u\in\mathrm{aff}(\mathcal{H}_\mathcal{S})$ iff $\tilde u$ lies in that linear subspace, iff $u$ is in the row span of $C$.</script>
+<script type="text/plain" class="prop">The third equivalence, between rank-expansion and affine-hull membership, is obtained by centering. Writing $u=\bar c+\tilde u$ with $\bar c$ the average of $c^{(s)}$ and $\tilde u=u-\bar c$, the centered row space of $C$ equals $\mathrm{aff}(\mathcal{H}_\mathcal{S})-\bar c$ (the linear subspace parallel to the affine hull), and $u\in\mathrm{aff}(\mathcal{H}_\mathcal{S})$ iff $\tilde u$ lies in that linear subspace, iff $u$ is in the row span of $C$.</script>
+<script type="text/plain" class="why">Replace the em dashes around the appositive with commas, and split the colon into a new sentence beginning "Writing".</script>
+</div>
+
+<div class="edit-src" data-id="AP4" data-section="Appendix A (Proofs)" data-type="Precision">
+<script type="text/plain" class="orig">Let $P$ be the orthogonal projector onto $\mathrm{range}(\Sigma_\mathcal{S})$ and $P^\perp:=I-P$ its orthogonal complement onto $\mathrm{null}(\Sigma_\mathcal{S})$.</script>
+<script type="text/plain" class="prop">Let $P$ be the orthogonal projector onto $\mathrm{range}(\Sigma_\mathcal{S})$ and $P^\perp:=I-P$ the orthogonal projector onto $\mathrm{null}(\Sigma_\mathcal{S})$.</script>
+<script type="text/plain" class="why">$P^\perp$ is a projector, not a "complement"; calling it "its orthogonal complement onto null" is imprecise. State that it is the orthogonal projector onto the null space.</script>
+</div>
+
+<div class="edit-src" data-id="AP5" data-section="Appendix A (Proofs)" data-type="Run-on">
+<script type="text/plain" class="orig">Proposition~\ref{prop:envelope} is a special case of the Bonnans--Shapiro directional derivative theorem for the value function of a perturbed convex program; we sketch the specialization to \eqref{eq:bounds} to make the constants explicit.</script>
+<script type="text/plain" class="prop">Proposition~\ref{prop:envelope} is a special case of the Bonnans--Shapiro directional derivative theorem for the value function of a perturbed convex program. We sketch the specialization to \eqref{eq:bounds} to make the constants explicit.</script>
+<script type="text/plain" class="why">Split the semicolon into two sentences.</script>
+</div>
+
+<div class="edit-src" data-id="AP6" data-section="Appendix A (Proofs)" data-type="Run-on">
+<script type="text/plain" class="orig">This is Theorem~4.24 of \citet{bonnans2013perturbation}; the form is standard for parametric LPs and follows from the envelope theorem applied to the Lagrangian $L(\theta,\lambda;h)=c(t)^\top\theta-\lambda^\top[(\Sigma+h_\Sigma)\theta+b+h_b]$.</script>
+<script type="text/plain" class="prop">This is Theorem~4.24 of \citet{bonnans2013perturbation}. The form is standard for parametric LPs and follows from the envelope theorem applied to the Lagrangian $L(\theta,\lambda;h)=c(t)^\top\theta-\lambda^\top[(\Sigma+h_\Sigma)\theta+b+h_b]$.</script>
+<script type="text/plain" class="why">Split the semicolon into two sentences.</script>
+</div>
+
+<div class="edit-src" data-id="AP7" data-section="Appendix A (Proofs)" data-type="Run-on">
+<script type="text/plain" class="orig">The only non-trivial change is that the rank of $\Delta\Sigma_k$ is at most $2$ in the block formulation, so the screens may strengthen in the sense that two coordinates of the candidate context need to fall outside the existing row space simultaneously; this is a strictly weaker monotone-improvement condition than (M1) for the simplified moment.</script>
+<script type="text/plain" class="prop">The only non-trivial change is that the rank of $\Delta\Sigma_k$ is at most $2$ in the block formulation, so the screens may strengthen, in the sense that two coordinates of the candidate context need to fall outside the existing row space simultaneously. This is a strictly weaker monotone-improvement condition than (M1) for the simplified moment.</script>
+<script type="text/plain" class="why">Split the semicolon into two sentences.</script>
+</div>
+
+</div>
+<!-- ===== END DATA ===== -->
+
+<script>
+(function(){
+  "use strict";
+  var KEY = "wtgn_plain_writing_v1";
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch(e){ state = {}; }
+
+  // collect edits
+  var srcs = Array.prototype.slice.call(document.querySelectorAll(".edit-src"));
+  var edits = srcs.map(function(el){
+    function grab(cls){ var s = el.querySelector("script."+cls); return s ? s.textContent.replace(/^\n/,"").replace(/\n$/,"") : ""; }
+    return {
+      id: el.getAttribute("data-id"),
+      section: el.getAttribute("data-section"),
+      type: el.getAttribute("data-type"),
+      orig: grab("orig"),
+      prop: grab("prop"),
+      why: grab("why")
+    };
+  });
+
+  // ensure state entries
+  edits.forEach(function(e){
+    if(!state[e.id]) state[e.id] = { status:"pending", text:e.prop };
+    if(typeof state[e.id].text !== "string") state[e.id].text = e.prop;
+  });
+
+  var cardsEl = document.getElementById("cards");
+  var currentFilter = "all";
+
+  var cl = document.getElementById("count-line");
+  if(cl) cl.textContent = edits.length + " proposed edits.";
+
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+
+  function statusLabel(s){
+    return s==="accepted"?"Accepted":s==="rejected"?"Rejected":s==="modified"?"Modified (edited)":"Pending";
+  }
+
+  function render(){
+    cardsEl.innerHTML = "";
+    var lastSection = null;
+    var shown = 0;
+    edits.forEach(function(e){
+      var st = state[e.id];
+      if(currentFilter!=="all" && st.status!==currentFilter) return;
+      shown++;
+      if(e.section !== lastSection){
+        var h = document.createElement("div");
+        h.className = "sec-head";
+        h.textContent = e.section;
+        cardsEl.appendChild(h);
+        lastSection = e.section;
+      }
+      var card = document.createElement("div");
+      card.className = "card" + (st.status==="rejected"?" is-rejected":"");
+
+      var top = document.createElement("div");
+      top.className = "card-top";
+      var eid = document.createElement("span"); eid.className="eid"; eid.textContent = e.id;
+      var chip = document.createElement("span"); chip.className="chip"; chip.textContent = e.type;
+      var stat = document.createElement("span"); stat.className="status "+st.status; stat.textContent = statusLabel(st.status);
+      top.appendChild(eid); top.appendChild(chip); top.appendChild(stat);
+      card.appendChild(top);
+
+      var l1 = document.createElement("div"); l1.className="label del"; l1.textContent="Original";
+      var b1 = document.createElement("div"); b1.className="block del"; b1.textContent = e.orig;
+      card.appendChild(l1); card.appendChild(b1);
+
+      var l2 = document.createElement("div"); l2.className="label add";
+      l2.textContent = st.status==="modified" ? "Proposed (your edit)" : "Proposed";
+      var b2 = document.createElement("div"); b2.className="block add"; b2.textContent = st.text;
+      card.appendChild(l2); card.appendChild(b2);
+
+      var why = document.createElement("div"); why.className="why";
+      var wb = document.createElement("b"); wb.textContent = "Why: ";
+      why.appendChild(wb); why.appendChild(document.createTextNode(e.why));
+      card.appendChild(why);
+
+      var actions = document.createElement("div"); actions.className="actions";
+      var bAcc = mkBtn("Accept","accept", st.status==="accepted");
+      var bRej = mkBtn("Reject","reject", st.status==="rejected");
+      var bEdit = mkBtn("Edit","edit", st.status==="modified");
+      actions.appendChild(bAcc); actions.appendChild(bRej); actions.appendChild(bEdit);
+      card.appendChild(actions);
+
+      // editor
+      var ed = document.createElement("div"); ed.className="editor";
+      var ta = document.createElement("textarea"); ta.value = st.text;
+      var row = document.createElement("div"); row.className="row";
+      var saveBtn = document.createElement("button"); saveBtn.textContent="Save edit";
+      var resetBtn = document.createElement("button"); resetBtn.textContent="Reset to proposed";
+      var cancelBtn = document.createElement("button"); cancelBtn.textContent="Cancel";
+      row.appendChild(saveBtn); row.appendChild(resetBtn); row.appendChild(cancelBtn);
+      ed.appendChild(ta); ed.appendChild(row);
+      card.appendChild(ed);
+
+      bAcc.onclick = function(){ st.status="accepted"; st.text=e.prop; save(); render(); };
+      bRej.onclick = function(){ st.status="rejected"; save(); render(); };
+      bEdit.onclick = function(){ ed.classList.toggle("show"); if(ed.classList.contains("show")) ta.focus(); };
+      saveBtn.onclick = function(){ st.text = ta.value; st.status="modified"; save(); render(); };
+      resetBtn.onclick = function(){ ta.value = e.prop; };
+      cancelBtn.onclick = function(){ ed.classList.remove("show"); ta.value = st.text; };
+
+      cardsEl.appendChild(card);
+    });
+    if(shown===0){
+      var none = document.createElement("div"); none.className="note";
+      none.textContent = "No edits in this view.";
+      cardsEl.appendChild(none);
+    }
+    updateCounts();
+  }
+
+  function mkBtn(text, act, on){
+    var b = document.createElement("button");
+    b.textContent = text; b.setAttribute("data-act",act);
+    if(on) b.classList.add("on");
+    return b;
+  }
+
+  function updateCounts(){
+    var c = {accepted:0,rejected:0,modified:0,pending:0};
+    edits.forEach(function(e){ c[state[e.id].status]++; });
+    document.getElementById("c-accepted").textContent = c.accepted;
+    document.getElementById("c-rejected").textContent = c.rejected;
+    document.getElementById("c-modified").textContent = c.modified;
+    document.getElementById("c-pending").textContent = c.pending;
+  }
+
+  // filters
+  Array.prototype.slice.call(document.querySelectorAll("#filters button")).forEach(function(btn){
+    btn.onclick = function(){
+      currentFilter = btn.getAttribute("data-f");
+      Array.prototype.slice.call(document.querySelectorAll("#filters button")).forEach(function(b){ b.classList.remove("active"); });
+      btn.classList.add("active");
+      render();
+    };
+  });
+
+  // export
+  var modal = document.getElementById("modal");
+  document.getElementById("export-btn").onclick = function(){
+    var lines = [];
+    lines.push("# Where to Go Next — plain-writing edits — decisions");
+    lines.push("");
+    var c = {accepted:0,rejected:0,modified:0,pending:0};
+    edits.forEach(function(e){ c[state[e.id].status]++; });
+    lines.push("Accepted: "+c.accepted+"  |  Modified: "+c.modified+"  |  Rejected: "+c.rejected+"  |  Pending: "+c.pending);
+    lines.push("");
+    lines.push("Apply the edits marked APPLY below. For each, replace ORIGINAL with FINAL.");
+    lines.push("");
+    edits.forEach(function(e){
+      var st = state[e.id];
+      var apply = (st.status==="accepted" || st.status==="modified");
+      lines.push("----------------------------------------");
+      lines.push("["+e.id+"] "+e.section+" — "+e.type+"  ::  "+st.status.toUpperCase()+(apply?"  (APPLY)":"  (skip)"));
+      if(apply){
+        lines.push("ORIGINAL:");
+        lines.push(e.orig);
+        lines.push("FINAL:");
+        lines.push(st.text);
+      }
+    });
+    lines.push("----------------------------------------");
+    var txt = lines.join("\n");
+    document.getElementById("export-text").value = txt;
+    document.getElementById("export-summary").textContent =
+      c.accepted+" accept, "+c.modified+" modified, "+c.rejected+" reject, "+c.pending+" pending";
+    modal.classList.add("show");
+  };
+  document.getElementById("close-btn").onclick = function(){ modal.classList.remove("show"); };
+  modal.onclick = function(ev){ if(ev.target===modal) modal.classList.remove("show"); };
+  document.getElementById("copy-btn").onclick = function(){
+    var ta = document.getElementById("export-text");
+    ta.select();
+    try { document.execCommand("copy"); } catch(e){}
+    if(navigator.clipboard){ try{ navigator.clipboard.writeText(ta.value); }catch(e){} }
+    var b = document.getElementById("copy-btn"); var old=b.textContent; b.textContent="Copied"; setTimeout(function(){ b.textContent=old; }, 1200);
+  };
+
+  render();
+})();
+</script>
+</body>
+</html>

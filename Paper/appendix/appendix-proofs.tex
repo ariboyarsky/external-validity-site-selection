@@ -6,8 +6,8 @@ Sections~\ref{sec:hull}--\ref{sec:monotonicity}. Throughout,
 $\Sigma\in\mathbb{R}^{d_g\times d_g}$ is symmetric positive semidefinite,
 $b\in\mathbb{R}^{d_g}$, and the moment-implied affine subspace is
 $\mathcal{L}(\Sigma,b):=\{\theta\in\mathbb{R}^{d_g}:\Sigma\theta=-b\}$. The
-restriction polyhedron is $\mathcal{R}:=\{\theta:r(\theta)\le 0\}$ --- compact and
-convex unless explicitly stated otherwise. The target functional is
+restriction polyhedron is $\mathcal{R}:=\{\theta:r(\theta)\le 0\}$, which is
+compact and convex unless explicitly stated otherwise. The target functional is
 $c(t)\in\mathbb{R}^{d_g}$, the partial-ID interval at target $t$ has endpoints
 $v_\ell(t),v_u(t)$ given by the LP pair \eqref{eq:bounds}, and the width is
 $w_r(t;\Sigma,b)=v_u(t)-v_\ell(t)$. We assume the consistency condition
@@ -26,8 +26,8 @@ w_{\rm unr}(t;\Sigma,b) \;=\;
 \]
 
 \begin{proof}
-Let $\theta_0$ be any solution to $\Sigma\theta_0=-b$; such a $\theta_0$ exists by
-the consistency hypothesis. Every solution to $\Sigma\theta=-b$ has the form
+Let $\theta_0$ be any solution to $\Sigma\theta_0=-b$. Such a $\theta_0$ exists
+by the consistency hypothesis. Every solution to $\Sigma\theta=-b$ has the form
 $\theta=\theta_0+\nu$ with $\nu\in\mathrm{null}(\Sigma)$. The linear functional
 evaluates to $c(t)^\top\theta=c(t)^\top\theta_0+c(t)^\top\nu$. Since
 $\mathcal{R}=\mathbb{R}^{d_g}$, $\nu$ ranges over all of $\mathrm{null}(\Sigma)$, a
@@ -91,12 +91,12 @@ $\mathrm{span}(u)\not\subseteq\mathrm{range}(C^\top)$, i.e., iff
 $u\notin\mathrm{range}(C^\top)$. The second equivalence
 $\mathrm{range}(C^\top)=\mathrm{range}(\Sigma_\mathcal{S})$ is the standard fact
 $\mathrm{range}(A^\top A)=\mathrm{range}(A^\top)$ for any real matrix $A$. The
-third equivalence --- between rank-expansion and affine-hull membership --- is
-obtained by centering: writing $u=\bar c+\tilde u$ with $\bar c$ the average of
+third equivalence, between rank-expansion and affine-hull membership, is
+obtained by centering. Writing $u=\bar c+\tilde u$ with $\bar c$ the average of
 $c^{(s)}$ and $\tilde u=u-\bar c$, the centered row space of $C$ equals
-$\mathrm{aff}(\mathcal{H}_\mathcal{S})-\bar c$ (the linear subspace parallel to the
-affine hull), and $u\in\mathrm{aff}(\mathcal{H}_\mathcal{S})$ iff $\tilde u$ lies
-in that linear subspace, iff $u$ is in the row span of $C$.
+$\mathrm{aff}(\mathcal{H}_\mathcal{S})-\bar c$ (the linear subspace parallel to
+the affine hull), and $u\in\mathrm{aff}(\mathcal{H}_\mathcal{S})$ iff $\tilde u$
+lies in that linear subspace, iff $u$ is in the row span of $C$.
 \end{proof}
 
 \subsection{Proof of Proposition~\ref{prop:dist} (width $=$ distance $\times 2\tau$)}
@@ -182,8 +182,8 @@ $b_{\mathcal{S}\cup\{k\}}=b_\mathcal{S}-uy_k$; summing gives \eqref{eq:identity}
 
 \begin{proof}[Proof of Theorem~\ref{thm:monotone} under (M1)]
 Suppose $u\notin\mathrm{range}(\Sigma_\mathcal{S})$. Let $P$ be the orthogonal
-projector onto $\mathrm{range}(\Sigma_\mathcal{S})$ and $P^\perp:=I-P$ its
-orthogonal complement onto $\mathrm{null}(\Sigma_\mathcal{S})$. Then
+projector onto $\mathrm{range}(\Sigma_\mathcal{S})$ and $P^\perp:=I-P$ the
+orthogonal projector onto $\mathrm{null}(\Sigma_\mathcal{S})$. Then
 $u_\perp:=P^\perp u\ne 0$. By the consistency hypothesis
 $b_\mathcal{S}\in\mathrm{range}(\Sigma_\mathcal{S})$, so for every $\theta$,
 $\Sigma_\mathcal{S}\theta+b_\mathcal{S}\in\mathrm{range}(\Sigma_\mathcal{S})$.
@@ -230,7 +230,7 @@ $u\perp\mathrm{null}(\Sigma_\mathcal{S})$, so $u^\top\nu=0$. Substituting into
 \eqref{eq:identity},
 $\Sigma_{\mathcal{S}\cup\{k\}}\theta+b_{\mathcal{S}\cup\{k\}}=0$, i.e.,
 $\theta\in\mathcal{L}(\Sigma_{\mathcal{S}\cup\{k\}},b_{\mathcal{S}\cup\{k\}})$. In
-the rank-preserving case the two affine subspaces coincide \emph{exactly} when
+the rank-preserving case the two affine subspaces coincide exactly when
 (M2) holds because both contain $\theta_\mathcal{S}^\star$ (by (M2)) and both have
 the same direction subspace
 $\mathrm{null}(\Sigma_\mathcal{S})=\mathrm{null}(\Sigma_{\mathcal{S}\cup\{k\}})$
@@ -259,7 +259,7 @@ $\sup_{t\in\mathcal{T}}w_r(t;\Sigma_{\mathcal{S}\cup\{k\}},b_{\mathcal{S}\cup\{k
 
 Proposition~\ref{prop:envelope} is a special case of the Bonnans--Shapiro
 directional derivative theorem for the value function of a perturbed convex
-program; we sketch the specialization to \eqref{eq:bounds} to make the constants
+program. We sketch the specialization to \eqref{eq:bounds} to make the constants
 explicit.
 
 \emph{Setup.} Define the parametric LP
@@ -274,7 +274,7 @@ $\nu^\star\ge 0$ the inequality multipliers on $r(\theta)\le 0$. Stationarity re
 $c(t)=\Sigma\lambda^\star+\partial r(\theta^\star)\nu^\star$.
 
 \emph{Directional derivative.} Under Robinson's constraint qualification
-(Assumption~6 of Boyarsky et al.\ 2026), the value function $v_u(\cdot)$ is
+(Assumption~6 of \citealp{boyarsky2026}), the value function $v_u(\cdot)$ is
 directionally differentiable at $h=0$ with derivative given by
 \[
 \frac{d v_u}{dh}\Bigl|_{h=0}\cdot h
@@ -282,7 +282,7 @@ directionally differentiable at $h=0$ with derivative given by
 \]
 where $\lambda^\star$ is chosen as the minimum-norm element of the set of optimal
 multipliers (a singleton under strict complementarity). This is Theorem~4.24 of
-\citet{bonnans2013perturbation}; the form is standard for parametric LPs and
+\citet{bonnans2013perturbation}. The form is standard for parametric LPs and
 follows from the envelope theorem applied to the Lagrangian
 $L(\theta,\lambda;h)=c(t)^\top\theta-\lambda^\top[(\Sigma+h_\Sigma)\theta+b+h_b]$.
 
@@ -309,8 +309,7 @@ $O(|\mathcal{T}|K)$ cost claimed in Section~\ref{sec:surrogate}.
 The proofs of Appendix~\ref{sec:proof-prop1}, \ref{sec:proof-prop2}, and
 \ref{sec:proof-thm1} use only the symmetric PSD structure of $\Sigma$, the
 consistency hypothesis $b\in\mathrm{range}(\Sigma)$, and the algebraic identity
-\eqref{eq:identity}. In the full BEN formulation of Equation~(A.9) of Boyarsky et
-al.\ (2026), $\Sigma$ is a $d_g\times d_g$ block matrix with $d_g=2(d_M+d_I)$ and
+\eqref{eq:identity}. In the full formulation of Equation~(A.9) of \citet{boyarsky2026}, $\Sigma$ is a $d_g\times d_g$ block matrix with $d_g=2(d_M+d_I)$ and
 block-rank update $\Delta\Sigma_k$ given by \eqref{eq:dsigma}. The same identity
 \eqref{eq:identity} holds with $u$ replaced by the block-residualized context
 vector $u_k:=(u_m^{(k)},u_r^{(k)})\otimes(\cdot)$ appearing in the block
@@ -319,7 +318,8 @@ by the corresponding block-residualized moment quantity. The (M1)/(M2) screens
 generalize to the block-residualized context (replacing the $\mathrm{range}$ test
 of \eqref{eq:m1} by a rank test on the block matrix), and
 Theorem~\ref{thm:monotone} carries over verbatim. The only non-trivial change is
-that the rank of $\Delta\Sigma_k$ is at most $2$ in the block formulation, so the
-screens may strengthen in the sense that two coordinates of the candidate context
-need to fall outside the existing row space simultaneously; this is a strictly
-weaker monotone-improvement condition than (M1) for the simplified moment.
+that the rank of $\Delta\Sigma_k$ is at most $2$ in the block formulation, so
+the screens may strengthen, in the sense that two coordinates of the candidate
+context need to fall outside the existing row space simultaneously. This is a
+strictly weaker monotone-improvement condition than (M1) for the simplified
+moment.
