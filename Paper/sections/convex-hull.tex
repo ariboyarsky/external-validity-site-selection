@@ -30,15 +30,6 @@ w_{\rm unr}(t; \Sigma, b) \;=\;
 \]
 \end{proposition}
 
-\begin{proof-sketch}
-The feasible set $\{\theta : \Sigma\theta = -b\}$ is an affine subspace with
-direction subspace $\mathrm{null}(\Sigma)$. The width of a linear functional over
-an affine subspace is $0$ if the functional is constant on the direction
-subspace, and unbounded otherwise. Constancy is equivalent to
-$c(t) \perp \mathrm{null}(\Sigma)$, which by rank--nullity is
-$c(t) \in \mathrm{range}(\Sigma^\top)$.
-\end{proof-sketch}
-
 \begin{corollary}
 \label{cor:collapse}
 Adding a candidate site $k$ collapses the unrestricted width at target $t$ from
@@ -80,13 +71,6 @@ support, then
 \]
 \end{proposition}
 
-\begin{proof-sketch}
-The block form \eqref{eq:dsigma} shows $\Delta\Sigma_k$ has row space spanned by
-$(u_m^{(k)}, u_r^{(k)})$. A rank increase occurs iff these rows lie outside the
-existing row space of $\Sigma_\mathcal{S}$, which by the site-level block
-structure is equivalent to $(C_m^{(k)}, C_r^{(k)})$ lying outside
-$\mathrm{aff}(\mathcal{H}_\mathcal{S})$.
-\end{proof-sketch}
 
 Combined with Proposition~\ref{prop:dichotomy}, this yields a
 finite-vs-infinite dichotomy: \emph{under no restriction $r$, the only candidate
