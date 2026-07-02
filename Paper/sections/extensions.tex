@@ -20,18 +20,28 @@ despite being cheap to reach.
 
 \paragraph{Multiple candidates at once.}
 The design problem \eqref{eq:minimax} can be posed over a subset
-$\mathcal{J} \subseteq \mathcal{K}$ of candidates to add simultaneously; in this
-case the width surrogate \eqref{eq:surrogate} becomes a set-function in
-$\mathcal{J}$ that is \emph{submodular} in the rank-monotone limit. That is,
-adding the first hull-expander contributes more than adding the second. A greedy
-algorithm attains a $(1 - 1/e)$-approximation under mild regularity, which
-matches the classical D-optimality result of \citet{nemhauser1978analysis}.
+$\mathcal{J}\subseteq\mathcal{K}$ of candidates to add simultaneously. If the
+objective is the \emph{coverage} (rank) gain, $\mathcal{J}\mapsto
+\mathrm{rank}(\Sigma_{\mathcal{S}\cup\mathcal{J}})$ is a matroid rank function,
+hence submodular, and greedy attains the classical $(1-1/e)$ guarantee
+\citep{nemhauser1978analysis}. We conjecture, but do not prove, that the
+\emph{width} surrogate inherits approximate submodularity in the rank-monotone
+limit; under affine restrictions and unknown $b$ the width is not automatically
+submodular, so the greedy guarantee should be read as applying to the pure
+coverage objective unless this is established.
 
 \paragraph{Connection to efficient influence functions.}
-The minimum-norm multiplier $\lambda^\star$ that appears in \eqref{eq:envelope}
-is the same object as the Riesz representer in the efficient influence function of \citet[Eq.~2.9]{boyarsky2026}. The minimax design criterion therefore gets
-its inference validity from their debiased cross-fitting. Confidence intervals
-for the post-addition width are a standard delta-method computation.
+The minimum-norm multiplier $\lambda^\star$ in \eqref{eq:envelope} coincides with
+the Riesz representer in the efficient influence function of
+\citet[Eq.~2.9]{boyarsky2026}, so the endpoint \emph{values} $v_u,v_\ell$ at a
+fixed candidate and target inherit their debiased-cross-fitting inference.
+Inference for the \emph{selected} design is more delicate: the criterion is a
+$\min$ over candidates of a $\sup$ over targets of an LP width, which is
+non-smooth. A valid confidence statement requires additional regularity --- a
+unique worst-case target, a unique minimizing candidate, and active-set
+stability --- under which a directional (Danskin/delta) argument applies. We flag
+this as a requirement rather than a corollary; absent these conditions the naive
+delta method is not justified.
 
 \paragraph{Open questions.}
 Three directions are natural follow-ups. First, the adversarial $b$-prior of

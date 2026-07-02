@@ -16,42 +16,53 @@ feasible set is a \emph{rank-2 perturbation} of the affine subspace
 $\{\Sigma_\mathcal{S}\theta = -b\}$. Under Assumption~6 of \citet{boyarsky2026} (Robinson constraint qualification) the LP values are Lipschitz in
 $\Sigma$, and we obtain a first-order surrogate:
 
-\begin{proposition}[Rank-2 envelope]
+\begin{proposition}[Rank-2 envelope, endpoint-specific]
 \label{prop:envelope}
-Let $(\theta_\mathcal{S}^\star, \lambda_\mathcal{S}^\star,
-\nu_\mathcal{S}^\star)$ be a KKT triple at $\Sigma_\mathcal{S}$ for a target
-$(t_m, t_r)$, with minimum-norm multiplier $\lambda_\mathcal{S}^\star$. Then
+Fix a target $t$ and assume the upper and lower LPs in \eqref{eq:bounds} each
+have a unique optimal primal--dual pair (strict complementarity). Let
+$(\theta_u^\star,\lambda_u^\star)$ and $(\theta_\ell^\star,\lambda_\ell^\star)$
+be the optimal primal solution and equality multiplier of the upper ($\max$) and
+lower ($\min$) problems at $\Sigma_\mathcal{S}$, each with the sign convention of
+its own Lagrangian. Then the directional derivatives of the endpoints along the
+site-update direction $(\Delta\Sigma_k,\Delta b_k)$ are
 \begin{equation}
 \label{eq:envelope}
-v_u\bigl(\gamma_{\mathcal{S}\cup\{k\}}\bigr) - v_u\bigl(\gamma_\mathcal{S}\bigr)
- \;\approx\;
- - \lambda_\mathcal{S}^{\star\top}\bigl(\Delta\Sigma_k\,
- \theta_{\mathcal{S}}^\star + \Delta b_k\bigr),
+D v_u \;=\; -\,\lambda_u^{\star\top}\bigl(\Delta\Sigma_k\,\theta_u^\star+\Delta b_k\bigr),
+\qquad
+D v_\ell \;=\; -\,\lambda_\ell^{\star\top}\bigl(\Delta\Sigma_k\,\theta_\ell^\star+\Delta b_k\bigr),
 \end{equation}
-and analogously for $v_\ell$. The first-order change in the width is
-$\Delta w_k \approx - (\lambda_\mathcal{S}^{u,\star} - \lambda_\mathcal{S}^{\ell,\star})^\top
- (\Delta\Sigma_k\,\theta^\star_{\mathcal{S}} + \Delta b_k)$.
+and the first-order change in the width is $D w_k = D v_u-D v_\ell$. This
+collapses to a single $-(\lambda_u^\star-\lambda_\ell^\star)^\top
+(\Delta\Sigma_k\,\theta^\star+\Delta b_k)$ only in the degenerate zero-width case
+$\theta_u^\star=\theta_\ell^\star$; in general the optimizers, active sets, and
+multipliers differ and must be kept separate. Without strict complementarity,
+$D v_u$ and $D v_\ell$ are the $\max$ and $\min$ of \eqref{eq:envelope} over the
+optimal primal--dual solution sets.
 \end{proposition}
 
 Proposition~\ref{prop:envelope} is the Bonnans--Shapiro directional derivative of
 the constrained-value map, specialized to the finite-dimensional rank-2
 site-update direction $(h_\Sigma, h_b) = (\Delta\Sigma_k/\|\Delta\Sigma_k\|,
-\Delta b_k)$. The formula \eqref{eq:envelope} coincides with Equation~(1.3) of \citet{boyarsky2026}, evaluated at the site-augmentation direction. It gives a
-\emph{linear-in-$k$} surrogate for the width change, so the minimax selection
-\eqref{eq:minimax} reduces to a finite computation:
+\Delta b_k)$. The formula \eqref{eq:envelope} coincides with Equation~(1.3) of \citet{boyarsky2026}, evaluated at the site-augmentation direction. It gives a \emph{linear-in-$k$} surrogate for the width change. Because a
+candidate that shrinks the width has $D w_k<0$, the selection minimizes the
+\emph{signed} first-order width, not its magnitude:
 \begin{equation}
 \label{eq:surrogate}
 k^\star_{\rm surr}\;\in\;\arg\min_{k\in\mathcal{K}}\;
  \sup_{(t_m,t_r)\in\mathcal{T}}\;
- \Bigl|\,\lambda_\mathcal{S}^{u,\star}(t)^\top
-  \Delta\Sigma_k\,\theta^\star_\mathcal{S}(t)
-  - \lambda_\mathcal{S}^{\ell,\star}(t)^\top
-  \Delta\Sigma_k\,\theta^\star_\mathcal{S}(t)\,\Bigr|,
+ \Bigl[\,w_\mathcal{S}(t)\;+\;\overline{Dw}_k(t)\,\Bigr],
+\qquad
+\overline{Dw}_k(t):=
+ -\lambda_u^{\star\top}\Delta\Sigma_k\theta_u^\star
+ +\lambda_\ell^{\star\top}\Delta\Sigma_k\theta_\ell^\star
+ +\sup_{\Delta b_k\in\mathcal{B}}\bigl(\lambda_\ell^\star-\lambda_u^\star\bigr)^\top\Delta b_k,
 \end{equation}
-after taking a sup over the unknown $\Delta b_k$ in the prior ball $\mathcal{B}$,
-which is handled by a standard dual-norm bound and is additive in the candidate.
+where the last term robustifies over the unknown $\Delta b_k$ in the prior ball
+$\mathcal{B}$ via a dual-norm bound and is additive in the candidate. Replacing
+the bracket by $\bigl|D w_k(t)\bigr|$, as in an earlier draft, is incorrect: it
+penalizes precisely the width-shrinking candidates (those with $D w_k<0$).
 Computing \eqref{eq:surrogate} requires solving the LP pair \eqref{eq:bounds} at
-$\Sigma_\mathcal{S}$ once per target and a finite-dimensional matrix-vector
+$\Sigma_\mathcal{S}$ once per target and a finite-dimensional matrix--vector
 product per candidate, total cost $O(|\mathcal{T}|\cdot K)$.
 
 \subsection{Three regimes}
@@ -105,15 +116,20 @@ outcomes. Three prior choices are natural:
 
 \item \textbf{Meta-analytic prior.} Use the existing-pool estimates as a prior on
   the candidate's $(Y, A)$ conditional means, and propagate through the
-  expression for $b$ in Equation~(A.7) of \citet{boyarsky2026}. This is a
-  structural Bayesian design; under a flat prior on $\theta$ it recovers a
-  Bayesian D-optimality criterion, and the minimax and Bayesian selections agree
-  in the large-candidate-sample limit.
+  expression for $b$ in Equation~(A.7) of \citet{boyarsky2026}. We expect that
+  under a flat prior on $\theta$ this behaves like a Bayesian D-optimal design,
+  with the minimax and Bayesian selections coinciding in the
+  large-candidate-sample limit; we state this as a heuristic guide rather than a
+  theorem and do not prove it here.
 
 \item \textbf{Adversarial $b$.} $\Delta b_k \in \mathcal{B}$ chosen to maximize
-  the width. This is the robust-optimization analogue of (1) with an ellipsoidal
-  $\mathcal{B}$; Sion-minimax arguments give a tractable saddle-point
-  representation.
+  the width, the robust-optimization analogue of (1) with an ellipsoidal
+  $\mathcal{B}$. The inner problem $\max_{\Delta b_k\in\mathcal{B}} w$ is the
+  maximization of a concave function (the width is a concave upper value minus a
+  convex lower value of $b$) over a convex set, hence tractable for each fixed
+  $k$. A full Sion-minimax exchange with the candidate choice is not available in
+  general because the candidate index is discrete; we solve the outer
+  minimization by enumeration over $\mathcal{K}$.
 \end{enumerate}
 
 In our simulation (Section~\ref{sec:simulation}) we adopt (1) with $B$ set from

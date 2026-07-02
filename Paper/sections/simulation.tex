@@ -185,12 +185,16 @@ Three features of the results are robust to DGP perturbations (heavy-tailed $X$,
 $S=6$ instead of $8$, larger $\|\theta\|_\infty$ bound):
 
 \begin{itemize}
-\item Hull membership is a sharp screen. Candidates $k_1$ and $k_2$,
-  both of whose site-level contexts lie inside the affine hull of the existing
-  pool, produce an exactly identical minimax width to the existing pool. This is
-  not an approximation. When $\mathrm{rank}(\Sigma)$ does not change, the
-  null-space geometry of the LP is unchanged, and a location-only update of $b$
-  (the only remaining effect of adding such a site) cancels in the width.
+\item Hull membership is a sharp screen \emph{when the outcome is consistent}.
+  Candidates $k_1$ and $k_2$, whose contexts lie inside the affine hull of the
+  existing pool \emph{and} whose simulated outcomes match the existing-pool fit
+  (so (M2) holds), produce an exactly identical minimax width to the existing
+  pool --- the rank-preserving case~(i) of Theorem~\ref{thm:monotone}, where
+  $\mathcal{F}_{\mathcal{S}\cup\{k\}}=\mathcal{F}_\mathcal{S}$. Rank preservation
+  \emph{alone} does not produce this cancellation: the conflicting candidate
+  $k_5$ is also rank-preserving, yet its inconsistent $b$-shift changes the width
+  (Section~\ref{sec:counterexample}). What cancels the location update is
+  outcome-consistency, not rank preservation.
 \item Among rank-expanding candidates, distance to the hull decides
   between them. The $11\%$ reduction achieved by $k_3, k_4$ depends on two
   factors: how large a component of the target region aligns with the
@@ -198,11 +202,13 @@ $S=6$ instead of $8$, larger $\|\theta\|_\infty$ bound):
   the hull in that direction. Proposition~\ref{prop:dist} captures both effects
   in
   the large-$\tau$ limit.
-\item The minimax selection is stable to the choice of prior on $b$. The
-  three $b$-prior variants of Section~\ref{sec:unknown-b} agree on the optimal
-  candidate up to Monte-Carlo noise. In particular, they all rank the four
-  candidates as $\{k_1, k_2\} \succ k_3 \sim k_4$ by worst-case width, with the
-  tie between $k_3$ and $k_4$ broken stochastically by the target draw.
+\item The minimax selection is stable to the choice of prior on $b$. The three
+  $b$-prior variants of Section~\ref{sec:unknown-b} agree on the optimal
+  candidate up to Monte-Carlo noise. Since lower width is better, ordering by
+  worst-case width from widest (worst) to narrowest (best) gives
+  $\{k_1,k_2\}\;>\;k_3\sim k_4$, so the \emph{preferred} candidates are
+  $k_3\sim k_4$, with the tie between them broken stochastically by the target
+  draw.
 \item Non-monotonicity occurs, but the screens of
   Theorem~\ref{thm:monotone} eliminate it. The candidate $k_5$, which is
   interior to the hull and has a $\Delta=20$ outcome shock relative to the

@@ -39,30 +39,28 @@ $\Sigma_{\mathcal{S}\cup\{k\}}
  = \Sigma_{\mathcal{S}} + \Delta\Sigma_k(C_m^{(k)}, C_r^{(k)}; P_X^{(k)})$,
 where $\Delta\Sigma_k$ depends on the candidate's site-level context and on the
 investigator's assumed within-site $X$-distribution but \emph{not} on its
-outcomes. Using the block form of Equation~(A.9) of \citet{boyarsky2026}, one
-verifies
+outcomes. The only structural facts we use are that this update is \emph{positive
+semidefinite} and of \emph{rank at most two}: there is a $d_g\times 2$ factor
+$U_k$ whose columns are the residualized candidate-context directions, and a
+$2\times 2$ matrix $A_k\succeq 0$, such that
 \begin{equation}
 \label{eq:dsigma}
-\Delta\Sigma_k
-\;=\; n_k \cdot \bigl(-\rho\bigr)\cdot
-\begin{bmatrix}
-  u_m u_m^\top & u_m u_r^\top & u_m u_m^\top & u_r u_m^\top \\
-  u_r u_m^\top & u_r u_r^\top & u_m u_r^\top & u_r u_r^\top \\
-  u_m u_m^\top & u_r u_m^\top & \rho^{-1} u_m u_m^\top & \rho^{-1} u_r u_m^\top \\
-  u_m u_r^\top & u_r u_r^\top & \rho^{-1} u_m u_r^\top & \rho^{-1} u_r u_r^\top
-\end{bmatrix},
-\qquad
-(u_m, u_r) := \bigl(C_m^{(k)}, C_r^{(k)}\bigr) - \bar C_X^{(k)},
+\Delta\Sigma_k \;=\; U_k\,A_k\,U_k^\top,
+\qquad A_k\succeq 0,
+\qquad \operatorname{rank}\bigl(U_k A_k U_k^\top\bigr)\le 2,
 \end{equation}
-where $\bar C_X^{(k)} = \mathbb{E}_{P_X^{(k)}}[(C_m, C_r) \mid X]$. That is,
-$u_m, u_r$ are the \emph{residuals} of the site-level context after projecting
-out the individual-level covariate dependence at the candidate site, and $n_k$
-is the planned sample size at the candidate site. The exact expression in
-\eqref{eq:dsigma} depends on how the candidate site is pooled with the existing
-sites in the conditional-moment estimator, but the rank-update structure
-is always the same. $\Delta\Sigma_k$ has rank at most $2$, and its left and
-right directions are spanned by the residualized context $(u_m, u_r)$ of the new
-site.
+where $(u_m, u_r) := \bigl(C_m^{(k)}, C_r^{(k)}\bigr) - \bar C_X^{(k)}$ with
+$\bar C_X^{(k)} = \mathbb{E}_{P_X^{(k)}}[(C_m, C_r) \mid X]$ are the residuals of
+the site-level context after projecting out the individual-level covariate
+dependence at the candidate site, and the columns of $U_k$ are built from
+$(u_m,u_r)$. Positive semidefiniteness gives
+$\Sigma_{\mathcal{S}\cup\{k\}}\succeq\Sigma_\mathcal{S}$, hence
+$\mathrm{null}(\Sigma_{\mathcal{S}\cup\{k\}})\subseteq\mathrm{null}(\Sigma_\mathcal{S})$
+--- the monotone-in-rank property we use throughout
+Sections~\ref{sec:hull}--\ref{sec:monotonicity}. The explicit block form of
+$U_k$ and $A_k$ implied by Equation~(A.9) of \citet{boyarsky2026}, together with
+its PSD verification, is recorded in Appendix~\ref{sec:proof-block}; the planned
+candidate sample size $n_k$ enters only through the positive scale of $A_k$.
 
 The right-hand side $b$ also updates, from $b_\mathcal{S}$ to
 $b_{\mathcal{S}\cup\{k\}}$, but the new right-hand side depends on the candidate
