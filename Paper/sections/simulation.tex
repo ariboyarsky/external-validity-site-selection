@@ -209,17 +209,22 @@ $S=6$ instead of $8$, larger $\|\theta\|_\infty$ bound):
   $\{k_1,k_2\}\;>\;k_3\sim k_4$, so the \emph{preferred} candidates are
   $k_3\sim k_4$, with the tie between them broken stochastically by the target
   draw.
-\item Non-monotonicity occurs, but the screens of
+\item Non-monotonicity occurs, and in these simulations the screens of
   Theorem~\ref{thm:monotone} eliminate it. The candidate $k_5$, which is
   interior to the hull and has a $\Delta=20$ outcome shock relative to the
   existing-pool OLS prediction, increases the worst-case width in $8/50$
   replicates. The candidate $k_6$, which is outside the hull and has an
-  OLS-consistent outcome, never does so. This matches the prediction of
-  Theorem~\ref{thm:monotone}. In a Monte-Carlo sweep over asymmetry of the
+  OLS-consistent outcome, never does so. This matches
+  Theorem~\ref{thm:monotone} because the screened candidates here also satisfy
+  its side conditions: realized outcomes match the forecasts, and the augmented
+  feasible sets remain non-empty. The screens are deterministic no-harm
+  guarantees only under those conditions --- (M1) alone is not. In a Monte-Carlo
+  sweep over asymmetry of the
   restriction box and shock magnitude, the fraction of replicates in which an
   unscreened candidate hurts external validity scales roughly linearly with
   both, reaching more than $30\%$ in the most adversarial setting. Restricting
   the minimax \eqref{eq:minimax} to the \emph{safe} subset
-  (passing (M1) or (M2)) costs nothing in the average optimum we report and
-  eliminates the tail risk of doing harm.
+  (passing the screens together with these side conditions) costs nothing in the
+  average optimum we report and, in these runs, eliminates the tail risk of
+  doing harm.
 \end{itemize}

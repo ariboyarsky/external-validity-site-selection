@@ -44,14 +44,19 @@ this as a requirement rather than a corollary; absent these conditions the naive
 delta method is not justified.
 
 \paragraph{Open questions.}
-Three directions are natural follow-ups. First, the adversarial $b$-prior of
+Four directions are natural follow-ups. First, our analysis holds the moment
+identity exact; with an \emph{estimated or relaxed} identity, the tolerance-set
+program over $\{\theta:\|\widehat\Sigma\theta+\widehat b\|\le\eta\}$ does widen
+as the smallest non-trivial eigenvalue shrinks (Section~\ref{sec:monotone-fail},
+(F2)), and a site-selection theory for that relaxed program --- where
+conditioning genuinely matters --- is open. Second, the adversarial $b$-prior of
 Section~\ref{sec:unknown-b}(3) admits a saddle-point representation but not a
 closed-form solution. Existing interior-point solvers handle small instances,
 but large candidate pools would benefit from a custom Frank--Wolfe scheme.
-Second, in the online-experimentation setting the candidate pool is revealed
+Third, in the online-experimentation setting the candidate pool is revealed
 sequentially, and the selection must be made without access to the full set.
 Adapting \eqref{eq:surrogate} to this regret-minimization formulation is open.
-Third, the assumption that the within-site $X$-distribution at candidate sites
+Fourth, the assumption that the within-site $X$-distribution at candidate sites
 is known (or has an informative prior) is strong. A distributionally-robust
 variant that treats $P_X^{(k)}$ as uncertain over a Wasserstein ball would keep
 the theoretical guarantees of the \citet{jeong2020assessing} worst-case program,

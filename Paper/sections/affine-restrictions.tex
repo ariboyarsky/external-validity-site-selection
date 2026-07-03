@@ -36,8 +36,20 @@ collapses to a single $-(\lambda_u^\star-\lambda_\ell^\star)^\top
 (\Delta\Sigma_k\,\theta^\star+\Delta b_k)$ only in the degenerate zero-width case
 $\theta_u^\star=\theta_\ell^\star$; in general the optimizers, active sets, and
 multipliers differ and must be kept separate. Without strict complementarity,
-$D v_u$ and $D v_\ell$ are the $\max$ and $\min$ of \eqref{eq:envelope} over the
-optimal primal--dual solution sets.
+the derivatives are given by Gol'shtein-type minimax formulas over the optimal
+primal and dual sets: writing $\mathcal{S}_\bullet$ and $\Lambda_\bullet$ for
+the optimal primal and dual solution sets of endpoint $\bullet\in\{u,\ell\}$,
+\[
+D v_u \;=\; \max_{\theta_u\in\mathcal{S}_u}\,\min_{\lambda_u\in\Lambda_u}
+ -\lambda_u^{\top}\bigl(\Delta\Sigma_k\,\theta_u+\Delta b_k\bigr),
+\qquad
+D v_\ell \;=\; \min_{\theta_\ell\in\mathcal{S}_\ell}\,\max_{\lambda_\ell\in\Lambda_\ell}
+ -\lambda_\ell^{\top}\bigl(\Delta\Sigma_k\,\theta_\ell+\Delta b_k\bigr).
+\]
+The multiplier selection directions follow from the value functions' curvature
+in the right-hand side: the upper ($\max$) value is concave in $b$, so its
+directional derivative is selected by a \emph{minimum} over active dual optima;
+the lower ($\min$) value is convex in $b$, selected by a \emph{maximum}.
 \end{proposition}
 
 Proposition~\ref{prop:envelope} is the Bonnans--Shapiro directional derivative of
@@ -63,7 +75,10 @@ the bracket by $\bigl|D w_k(t)\bigr|$, as in an earlier draft, is incorrect: it
 penalizes precisely the width-shrinking candidates (those with $D w_k<0$).
 Computing \eqref{eq:surrogate} requires solving the LP pair \eqref{eq:bounds} at
 $\Sigma_\mathcal{S}$ once per target and a finite-dimensional matrix--vector
-product per candidate, total cost $O(|\mathcal{T}|\cdot K)$.
+product per candidate, total cost $O(|\mathcal{T}|\cdot K)$ when $\mathcal{T}$
+is finite or discretized; for a continuous target region the outer
+$\sup_{t\in\mathcal{T}}$ is an additional optimization problem, and we use a
+grid in the simulations.
 
 \subsection{Three regimes}
 \label{sec:regimes}
@@ -99,9 +114,13 @@ LOO diagnostic of \citet[\S4.4]{boyarsky2026}, now read in reverse:
 \end{itemize}
 
 The minimax selection \eqref{eq:minimax} therefore does not reduce to a single
-geometric quantity in general. The convex-hull rule is exact in regime (A) and
-the unrestricted limit, and it is a useful first screen that should be refined
-by \eqref{eq:surrogate} when the restriction set is binding.
+geometric quantity in general. In the unrestricted moment-range analysis, the
+affine span is the exact object: the affine-span rule is exact in regime (A) and
+the unrestricted limit. Under compact restrictions or positivity-type
+substantive constraints, convex-hull position remains a useful \emph{diagnostic}
+--- as regime (B) shows, $b$-translations and restriction faces matter even at
+fixed rank --- and both screens should be refined by \eqref{eq:surrogate} when
+the restriction set is binding.
 
 \subsection{Handling the unknown \texorpdfstring{$\Delta b_k$}{Delta b\_k}}
 \label{sec:unknown-b}

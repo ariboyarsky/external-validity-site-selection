@@ -151,14 +151,17 @@ enlarges the range, $\mathrm{range}(\Sigma_{\mathcal{S}\cup\{k\}}^\top)\supseteq
 equality iff $c(t)$'s null-space component is unchanged --- by
 Proposition~\ref{prop:hull}, iff $\tilde u\in\mathrm{range}(\tilde\Sigma_\mathcal{S})$.
 
-For Corollary~\ref{cor:hulldist}, under the stated embedding the orthogonal
-complement of $\mathrm{range}(\Sigma_\mathcal{S}^\top)$ pulls back through $L$ to
-the orthogonal complement of the centered context span
-$\mathrm{span}\{\tilde c^{(s)}\}$, which is the direction space of
-$\mathrm{aff}(\mathcal{H}_\mathcal{S})$. With $L^\top L=\kappa I$ the projection
-norms satisfy $\|P_{\mathrm{null}}c(t)\|_2=\sqrt{\kappa}\,
-\mathrm{dist}\bigl((t_m,t_r),\mathrm{aff}(\mathcal{H}_\mathcal{S})\bigr)$,
-as claimed.
+For Corollary~\ref{cor:hulldist}, write $x:=(t_m,t_r)-\bar c=x_V+x_\perp$ with
+$x_V\in V:=\mathrm{span}\{\tilde c^{(s)}\}$ and $x_\perp\perp V$. The assumed
+range identity $\mathrm{range}(\Sigma_\mathcal{S}^\top)=LV$ is what licenses the
+pullback --- without it, the distance from $c(t)$ to
+$\mathrm{range}(\Sigma_\mathcal{S}^\top)$ need not correspond to any distance in
+context space. Given it, $Lx_V\in LV=\mathrm{range}(\Sigma_\mathcal{S}^\top)$,
+and $L^\top L=\kappa I$ makes $Lx_\perp\perp LV$ (since
+$(Lx_\perp)^\top(Lv)=\kappa\,x_\perp^\top v=0$), so
+$\delta_\mathcal{S}(t)=\|Lx_\perp\|_2=\sqrt{\kappa}\,\|x_\perp\|_2
+ =\sqrt{\kappa}\,\mathrm{dist}\bigl((t_m,t_r),\mathrm{aff}(\mathcal{H}_\mathcal{S})\bigr)$,
+as claimed. $V$ is the direction space of $\mathrm{aff}(\mathcal{H}_\mathcal{S})$.
 \end{proof}
 
 \subsection{Proof of Theorem~\ref{thm:monotone}
@@ -268,8 +271,12 @@ D v_u\cdot h=-\lambda_u^{\star\top}\bigl(h_\Sigma\theta_u^\star+h_b\bigr),
 D v_\ell\cdot h=-\lambda_\ell^{\star\top}\bigl(h_\Sigma\theta_\ell^\star+h_b\bigr),
 \]
 each evaluated at its \emph{own} optimizer and multiplier (Theorem~4.24 of
-\citealp{bonnans2013perturbation}). Without strict complementarity the derivative
-is the $\max$ (resp.\ $\min$) over the optimal multiplier set.
+\citealp{bonnans2013perturbation}). Without strict complementarity the
+derivatives are Gol'shtein-type minimax values over the optimal primal--dual
+sets: for the upper ($\max$) problem the multiplier is selected by an inner
+\emph{minimum} (its value function is concave in the right-hand side), and for
+the lower ($\min$) problem by an inner \emph{maximum} (convex value function),
+as stated in Proposition~\ref{prop:envelope}.
 
 \emph{Application to site augmentation.} Set $h_\Sigma=\Delta\Sigma_k$,
 $h_b=\Delta b_k$ to obtain \eqref{eq:envelope}; subtracting,
@@ -325,12 +332,44 @@ $\mathrm{rank}(\Delta\Sigma_k)\le\mathrm{rank}(U_k)\le2$.
 Given \eqref{eq:dsigma-block}, the identity \eqref{eq:identity} holds in the
 block model with the rank-one term $u(u^\top\theta-y_k)$ replaced by
 $U_kA_k(U_k^\top\theta-\eta_k)$, where $\eta_k$ is the block-residualized outcome
-moment; the (M1)/(M2) screens become the rank/consistency tests on $U_k$ against
-the existing-pool range. Theorem~\ref{thm:monotone} then carries over \emph{under
-this PSD factorization}, not verbatim: the one structural change is that
-$\Delta\Sigma_k$ may have rank two, so (M1) asks both columns of $U_k$ to fall
-outside the existing row space --- a weaker monotone-improvement condition than
-the rank-one screen. Pinning down the exact constants $n_k,\rho$ from the BEN
-estimator is left to their Appendix~A.9; nothing in
+moment: for the rank-$r$ update
+$\Sigma'=\Sigma+U_kA_kU_k^\top$, $b'=b-U_kA_k\eta_k$,
+\begin{equation}
+\label{eq:identity-block}
+\Sigma'\theta+b' \;=\; \Sigma\theta+b+U_kA_k\bigl(U_k^\top\theta-\eta_k\bigr).
+\end{equation}
+The rank-one monotonicity proof extends under the sufficient condition
+\begin{equation}
+\label{eq:range-transversality}
+\mathrm{range}(U_kA_k)\cap\mathrm{range}(\Sigma_\mathcal{S})=\{0\},
+\qquad\text{equivalently}\qquad
+\ker\bigl(P_{\mathrm{null}(\Sigma_\mathcal{S})}U_kA_k\bigr)\subseteq\ker(U_kA_k).
+\end{equation}
+Indeed, for $\theta\in\mathcal{L}(\Sigma',b')$, projecting
+\eqref{eq:identity-block} onto $\mathrm{null}(\Sigma_\mathcal{S})$ (using
+$b_\mathcal{S}\in\mathrm{range}(\Sigma_\mathcal{S})$) gives
+$P_{\mathrm{null}(\Sigma_\mathcal{S})}U_kA_k(U_k^\top\theta-\eta_k)=0$, and
+\eqref{eq:range-transversality} upgrades this to
+$U_kA_k(U_k^\top\theta-\eta_k)=0$, hence $\Sigma_\mathcal{S}\theta+b_\mathcal{S}=0$.
+Therefore
+\[
+\mathcal{F}_{\mathcal{S}\cup\{k\}}
+ \;=\; \mathcal{F}_\mathcal{S}\cap
+ \bigl\{\theta:U_kA_k(U_k^\top\theta-\eta_k)=0\bigr\},
+\]
+and, whenever this intersection is non-empty, every support-function width
+weakly decreases, exactly as in Theorem~\ref{thm:monotone}(ii). We emphasize
+that \eqref{eq:range-transversality} is a condition on the \emph{whole update
+range}: requiring merely that each column of $U_k$ lie outside
+$\mathrm{range}(\Sigma_\mathcal{S})$ is \emph{not} sufficient, since a linear
+combination of the columns can fall inside $\mathrm{range}(\Sigma_\mathcal{S})$
+(e.g.\ columns $e_1\pm e_2$ with $\mathrm{range}(\Sigma_\mathcal{S})=
+\mathrm{span}(e_1)$), and then the projection step above no longer pins down the
+old moment. If the update has a component inside
+$\mathrm{range}(\Sigma_\mathcal{S})$, that component requires an (M2)-type
+consistency condition on the matching coordinates of $\eta_k$; otherwise it
+translates the old affine slice and monotonicity can fail as in
+Section~\ref{sec:counterexample}. Pinning down the exact constants $n_k,\rho$
+from the BEN estimator is left to their Appendix~A.9; nothing in
 Sections~\ref{sec:hull}--\ref{sec:monotonicity} uses more than the PSD,
-rank-$\le2$, and identity properties verified here.
+rank-$\le2$, identity, and transversality properties verified here.

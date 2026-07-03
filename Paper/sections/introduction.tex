@@ -49,20 +49,27 @@ that the width $w_r$ depends on the candidate site through $\Sigma$, the
 \emph{design matrix} of the moment condition, and $\Sigma$ is a function of
 known site-level quantities $(C_m, C_r)$ only. This is what makes the design
 problem tractable without running the candidate experiments. The right-hand side
-$b$ would move once the experiment is run. But whether the width is finite, and
-by how much, is determined by the site-level context. Selecting a site to add is
-therefore a design-time problem,
-not a post-hoc one.
+$b$ would move once the experiment is run. The site-level context determines the
+rank and moment-range geometry, and therefore determines \emph{unrestricted}
+finiteness of the width, conditional on feasibility. Under compact restrictions,
+however, $b$ also matters: it translates the moment-implied affine slice through
+the restriction set and can change the width (Section~\ref{sec:counterexample}).
+We therefore treat the context-driven geometry as the design-time object and
+evaluate candidates using either an outcome forecast or a robust uncertainty set
+for $\Delta b_k$ (Section~\ref{sec:unknown-b}).
 
 \paragraph{Contributions.}
 (1) We formalize the site-selection problem in the partial-identification framework of \citet{boyarsky2026}. We show that the partial-identification
 width depends on the candidate through a low-rank update of $\Sigma$ (rank at
 most two) that is known before the experiment is run. (2) We establish that, in
-the unrestricted limit $r \equiv 0$ with mild regularization, the minimax
-criterion reduces to a convex-hull expansion rule in the site-level context
-space. The optimal candidate is the one whose $(C_m^{(k)}, C_r^{(k)})$ lies
-furthest from the convex hull of observed sites in a weighted distance, where
-the weighting is determined by $\mathcal{T}$.
+the unrestricted limit $r \equiv 0$ with mild regularization, the minimax rule
+selects the candidate whose addition most reduces the worst-case distance from
+the target functional $c(t)$ to the enlarged moment range
+(Proposition~\ref{prop:dist}). Under a balanced isometric embedding this becomes
+a weighted \emph{affine-span} expansion rule in site-context space
+(Corollary~\ref{cor:hulldist}), with the weighting determined by $\mathcal{T}$.
+Convex-hull expansion is the right design intuition exactly when the target set
+lies outside the existing affine span in target-relevant directions.
 (3) Under compact affine restrictions $r(\theta)\le 0$, we derive a tractable
 surrogate, a finite LP over the candidate pool, that has the same three-regime
 structure as the leave-one-site-out diagnostic of \citet{boyarsky2026}: candidates are \emph{coverage-expanding} (reduce rank-deficiency),
@@ -72,10 +79,12 @@ feasible). (4) We show that the minimax design is \emph{not} automatically
 monotone in site addition. A rank-preserving candidate whose outcome conflicts
 with the existing-pool fit can shift the moment-implied affine subspace to a
 less favorable cross-section of the restriction polyhedron, and it can strictly
-\emph{increase} the worst-case width. We isolate two pre-experiment screens,
+\emph{increase} the worst-case width. We isolate two screens,
 rank expansion (M1) and outcome-consistency (M2), and prove
-(Theorem~\ref{thm:monotone}) that either one is sufficient for the worst-case
-width to be monotone-nonincreasing in the augmentation. (5) A synthetic
+(Theorem~\ref{thm:monotone}) that the worst-case width is monotone-nonincreasing
+under (M2) in the rank-preserving case, and under (M1) whenever the augmented
+feasible set remains non-empty --- a condition guaranteed by pairing (M1) with
+an outcome-feasibility check, not by (M1) alone. (5) A synthetic
 simulation with eight existing sites and six candidates, including a
 deliberately conflicting one, confirms both the hull-expansion result and the
 non-monotonicity (with $16\%$ of replicates showing strict worsening from the

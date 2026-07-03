@@ -61,6 +61,12 @@ Sections~\ref{sec:hull}--\ref{sec:monotonicity}. The explicit block form of
 $U_k$ and $A_k$ implied by Equation~(A.9) of \citet{boyarsky2026}, together with
 its PSD verification, is recorded in Appendix~\ref{sec:proof-block}; the planned
 candidate sample size $n_k$ enters only through the positive scale of $A_k$.
+Throughout, the theory is stated for the \emph{unnormalized} (additive) scatter:
+the sample-averaged BEN estimator divides both $\Sigma$ and $b$ by the same
+pooled count, and this joint positive rescaling of $(\Sigma,b)$ leaves the
+solution set $\{\theta:\Sigma\theta=-b\}$, hence every feasible set and width in
+this paper, unchanged. Only the additive form supports the PSD-update calculus
+above.
 
 The right-hand side $b$ also updates, from $b_\mathcal{S}$ to
 $b_{\mathcal{S}\cup\{k\}}$, but the new right-hand side depends on the candidate

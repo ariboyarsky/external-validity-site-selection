@@ -71,9 +71,8 @@ Let $\bar c := \tfrac1S\sum_{s=1}^S (C_m^{(s)},C_r^{(s)})$, and write the
 \emph{centered} contexts $\tilde c^{(s)} := (C_m^{(s)},C_r^{(s)})-\bar c$ and
 $\tilde u := (C_m^{(k)},C_r^{(k)})-\bar c$. Let $\tilde C$ be the matrix with
 rows $\tilde c^{(s)}$ and let the centered cross-site moment be
-$\tilde\Sigma_\mathcal{S}=\tilde C^\top\tilde C$ in the simplified formulation
-(the block form \eqref{eq:dsigma} replaces $\tilde c^{(s)}\tilde c^{(s)\top}$ by
-its residualized analogue). If the candidate site's $X$-distribution has
+$\tilde\Sigma_\mathcal{S}=\tilde C^\top\tilde C$ in the simplified formulation.
+If the candidate site's $X$-distribution has
 positive density on the individual-level support, then
 \[
 \mathrm{rank}\bigl(\Sigma_{\mathcal{S}\cup\{k\}}\bigr)
@@ -87,6 +86,20 @@ and in that case
 $\mathrm{null}(\Sigma_{\mathcal{S}\cup\{k\}})\subsetneq\mathrm{null}(\Sigma_\mathcal{S})$.
 \end{proposition}
 
+\paragraph{Remark (Block/BEN version).}
+For the residualized block moment of \eqref{eq:dsigma}, what is always true is
+the range test:
+$\mathrm{rank}(\Sigma_\mathcal{S}+\Delta\Sigma_k)>\mathrm{rank}(\Sigma_\mathcal{S})
+ \iff \mathrm{range}(\Delta\Sigma_k)\not\subseteq\mathrm{range}(\Sigma_\mathcal{S})$.
+The \emph{affine-hull} reading of Proposition~\ref{prop:hull} additionally
+requires that the residualization embed contexts injectively: positive density
+of the candidate's $X$-distribution alone does not guarantee that the raw
+context direction maps injectively into the residualized moment range. We
+therefore invoke the affine-hull equivalence for the block model only under the
+explicit embedding assumption
+$\mathrm{range}(\Sigma_\mathcal{S})=L_X\,\mathrm{span}\{\tilde c^{(s)}:s=1,\dots,S\}$
+for an injective linear residualized-context map $L_X$; then a candidate context
+outside $\mathrm{aff}(\mathcal{H}_\mathcal{S})$ is equivalent to rank expansion.
 
 Combined with Proposition~\ref{prop:dichotomy}, this yields a
 finite-versus-infinite dichotomy. Under no restriction $r$, the only candidate
@@ -155,7 +168,15 @@ Suppose the cross-site design is balanced with a common within-site
 $X$-distribution, and the target functional is an isometric (or scalar) linear
 embedding of the centered target profile,
 $c(t)=L\bigl((t_m,t_r)-\bar c\bigr)$ with $L^\top L=\kappa I$ for some
-$\kappa>0$. Then
+$\kappa>0$, \emph{and} the moment range is exactly the image under $L$ of the
+centered context span,
+\[
+\mathrm{range}\bigl(\Sigma_\mathcal{S}^\top\bigr)
+ \;=\; L\,\mathrm{span}\bigl\{\tilde c^{(s)}:s=1,\dots,S\bigr\}.
+\]
+(The scaled isometry $L^\top L=\kappa I$ alone does not imply this range
+identity; it must be imposed, and it is what the balanced design with common
+$X$-distribution delivers.) Then
 \[
 \delta_\mathcal{S}(t)\;=\;\sqrt{\kappa}\;\,
  \mathrm{dist}\bigl((t_m,t_r),\mathrm{aff}(\mathcal{H}_\mathcal{S})\bigr),

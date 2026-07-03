@@ -50,8 +50,11 @@ eigenvalue \emph{magnitudes}, and any re-weighting that preserves the row space
 leaves $\mathcal{L}(\Sigma,b)$ unchanged. Conditioning bites only once the moment
 identity is \emph{estimated or relaxed} to a tolerance set
 $\{\theta:\|\widehat\Sigma\theta+\widehat b\|\le\eta\}$, whose width does grow as
-$\sigma_{\min,+}$ shrinks; that relaxed program is the subject of
-Section~\ref{sec:unknown-b}. For the exact LP, only the rank-preserving shift
+$\sigma_{\min,+}$ shrinks. We do not analyze that tolerance-set program in this
+paper; Section~\ref{sec:unknown-b} treats the related but distinct problem of
+uncertainty in $\Delta b_k$ under the exact moment identity, and we flag the
+relaxed-moment analysis as an open question in
+Section~\ref{sec:extensions}. For the exact LP, only the rank-preserving shift
 (F1) and the restriction-set conflict (F3) can do harm.
 
 \paragraph{(F3) Restriction-set conflict.}
@@ -111,9 +114,12 @@ $\mathcal{R}$ at a polytope of larger $t$-extent.
 \subsection{Sufficient conditions for monotone improvement}
 \label{sec:sufficient}
 
-We now isolate two assumptions, each of which on its own implies that the
-worst-case width is monotone-nonincreasing in site addition. The two assumptions
-are independent, and each one can be used as a pre-experiment screen on the
+We now isolate two assumptions under which the worst-case width is
+monotone-nonincreasing in site addition. The two assumptions are independent,
+but neither is unconditionally sufficient on its own: (M2) is sufficient in the
+rank-preserving case, while (M1) requires in addition that the augmented
+feasible set remain non-empty (Theorem~\ref{thm:monotone}). Each has a
+design-time (pre-experiment) counterpart that can be used to screen the
 candidate pool.
 
 \paragraph{Assumption (M1) --- Rank-Expansion Screen.}
@@ -134,13 +140,26 @@ y_k \;=\; (u_m^{(k)},u_r^{(k)})^\top \theta_\mathcal{S}^\star,
 \emph{where $\theta_\mathcal{S}^\star$ is the minimum-norm solution to
 $\Sigma_\mathcal{S}\theta = -b_\mathcal{S}$.}
 
-Both screens are checkable before the candidate experiment is run: (M1) is a rank
-test on $(u_m^{(k)},u_r^{(k)})$ against the existing-pool SVD, and (M2) is the
-existing-pool OLS prediction at the candidate context (it does not require the
-candidate's experimental data). The two imply different consequences.
-(M1) strictly reduces the null space, and hence the width, on any target that
-loaded the resolved null direction. (M2) leaves the moment-implied affine
-subspace unchanged and prevents the feasibility-breaking shifts of
+The two screens differ in what can be checked before the candidate experiment is
+run. (M1) is fully checkable at design time: it is a rank test on
+$(u_m^{(k)},u_r^{(k)})$ against the existing-pool SVD. (M2), as stated, is a
+condition on the \emph{realized} candidate outcome moment $y_k$, which is not
+observable at design time. Its design-time counterpart is the \emph{forecast
+screen} $y_k^{\rm prior}\approx u^\top\theta_\mathcal{S}^\star$, where
+$y_k^{\rm prior}$ is a model- or prior-based forecast (e.g.\ the existing-pool
+OLS prediction at the candidate context). The deterministic conclusions of
+Theorem~\ref{thm:monotone} apply to the realized $y_k$; the forecast screen is a
+sufficient condition only for the forecasted moment, or a high-probability
+screen when the prior concentrates near $u^\top\theta_\mathcal{S}^\star$. The
+two assumptions imply different consequences. (M1) strictly reduces the null
+space. In the unrestricted large-$\tau$ limit this strictly reduces the width
+for targets loading the resolved direction (Proposition~\ref{prop:dist}). Under
+compact restrictions, strict width reduction requires the added constraint to
+cut off a maximizing or minimizing face of $\mathcal{F}_\mathcal{S}$, and
+monotone nonincrease requires
+$\mathcal{F}_\mathcal{S}\cap\{\theta:u^\top\theta=y_k\}\ne\varnothing$. (M2)
+leaves the moment-implied affine subspace unchanged in the rank-preserving case
+and prevents the feasibility-breaking shifts of
 Section~\ref{sec:monotone-fail}.
 
 \begin{theorem}[Monotone improvement under (M1) or (M2)]
@@ -184,10 +203,13 @@ the consistency hypothesis $b_\mathcal{S}\in\mathrm{range}(\Sigma_\mathcal{S})$.
 The pair (M1, M2) is \emph{not} exhaustive, because a candidate failing both can
 still improve the width. But it does provide a finite, computable screen. In
 practice we recommend the following. First, run the SVD-based test \eqref{eq:m1}
-on every candidate, and mark those that pass as \textbf{safe rank-expanders}.
-Second, among the rank-preserving candidates, check \eqref{eq:m2} against the
-existing-pool OLS prediction, and mark those that pass as \textbf{safe
-consistent candidates}. Third, report the minimax \eqref{eq:minimax} only over
+on every candidate, and mark those that pass \emph{and} whose forecasted outcome
+keeps $\mathcal{F}_\mathcal{S}\cap\{\theta:u^\top\theta=y_k\}\ne\varnothing$
+(an LP feasibility check) as \textbf{safe rank-expanders}; passing (M1) alone is
+not a no-harm guarantee. Second, among the rank-preserving candidates, check
+\eqref{eq:m2} against the existing-pool OLS prediction, and mark those that pass
+as \textbf{safe consistent candidates}. Third, report the minimax
+\eqref{eq:minimax} only over
 the safe subset of the candidate pool, or report the unsafe candidates
 separately as ``diagnostic-only'' sites whose addition could be informative but
 whose worst-case width is not guaranteed to improve.
@@ -222,9 +244,18 @@ The cleanest characterization combines both:
 A candidate $k$ is \textbf{width-monotone safe} if either (i) its residualized
 context is outside $\mathrm{range}(\Sigma_\mathcal{S})$ and the outcome
 shift $\Delta b_k$ is small enough that the hyperplane $u^\top\theta=y_k$
-intersects $\mathcal{R}$ at a non-empty set, or (ii) its context is inside the
+intersects the \emph{existing feasible set},
+\[
+\mathcal{F}_\mathcal{S}\cap\{\theta:u^\top\theta=y_k\}\ne\varnothing,
+\qquad\text{i.e.}\qquad
+\exists\,\theta\in\mathcal{R}\ \text{with}\
+\Sigma_\mathcal{S}\theta=-b_\mathcal{S},\ u^\top\theta=y_k,
+\]
+or (ii) its context is inside the
 existing range and its outcome matches the existing OLS prediction (modulo
-tolerance).
+tolerance). Intersecting $\mathcal{R}$ alone is not enough: a hyperplane can cut
+$\mathcal{R}$ yet miss the moment slice
+$\mathcal{L}(\Sigma_\mathcal{S},b_\mathcal{S})\cap\mathcal{R}$ entirely.
 \end{quote}
 
 This is the operational characterization we use in Section~\ref{sec:simulation}.

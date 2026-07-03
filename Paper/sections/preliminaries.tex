@@ -57,9 +57,11 @@ and the width of the partial-identification interval at target $(t_m,t_r)$ is
 w_r(t_m, t_r; \Sigma, b) \;=\; v_u(\gamma) - v_\ell(\gamma).
 \end{equation}
 We suppress the dependence of $c_0, \tilde c_m, \tilde c_r$ on $\gamma$ when no
-confusion arises. These enter the objective linearly in $\theta$ but do not
-interact with the feasible set, so they affect only the endpoints, not the
-width.
+confusion arises. None of these interact with the feasible set, but they play
+different roles in the width: the additive constant $c_0(\gamma)$ shifts both
+endpoints equally and therefore cancels in \eqref{eq:width}, whereas the linear
+target direction $c(t)$ (built from $\tilde c_m, \tilde c_r$ and the target
+profile) determines both the endpoints and the width.
 
 \paragraph{Restrictions.}
 The analyst chooses $r(\theta)\le 0$ from a library of affinely-representable
