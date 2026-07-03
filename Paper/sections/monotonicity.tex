@@ -259,3 +259,345 @@ $\mathcal{L}(\Sigma_\mathcal{S},b_\mathcal{S})\cap\mathcal{R}$ entirely.
 \end{quote}
 
 This is the operational characterization we use in Section~\ref{sec:simulation}.
+
+\subsection{Adverse no-shrink risk after context-based site selection}
+\label{sec:adverse-no-shrink-ri}
+
+The minimax rule is a design-time rule: it uses the candidate site's context to
+identify sites whose addition should shrink the external-validity bound. This
+calculation is possible before the candidate experiment is run because the
+candidate's contribution to the moment matrix, $\Delta\Sigma_k$, is determined by
+pre-randomization context and covariate information. The right-hand side,
+however, shifts by an outcome-dependent amount $\Delta b_k$, which is not known
+until the selected experiment is actually run. Thus a site may look promising
+from its context, but the realized outcome update may fail to deliver the
+predicted shrinkage.
+
+We formalize this failure as an adverse no-shrink, or more generally
+under-delivery, event. Let
+\[
+\widehat W_S
+:=
+\sup_{t\in T}
+w_r(t;\widehat\Sigma_S,\widehat b_S)
+\]
+be the existing-pool worst-case width. For candidate $k$, let
+$\widehat\delta_k^{\mathrm{ctx}}$ be any pre-specified, pre-randomization
+forecast for the candidate's right-hand-side update. For example,
+$\widehat\delta_k^{\mathrm{ctx}}$ may be induced by the existing-pool prediction
+$y_k=u_k^\top\widehat\theta_S^\star$, by the center of the prior set
+$B$ from Section 5.3, or by a meta-analytic forecast. Define the
+context-predicted post-addition width
+\[
+\widehat W_k^{\mathrm{ctx}}
+:=
+\sup_{t\in T}
+w_r\!\left(
+t;
+\widehat\Sigma_{S\cup\{k\}},
+\widehat b_S+\widehat\delta_k^{\mathrm{ctx}}
+\right),
+\]
+and the context-predicted gain
+\[
+\widehat G_k^{\mathrm{ctx}}
+:=
+\widehat W_S-\widehat W_k^{\mathrm{ctx}}.
+\]
+The case of interest is $\widehat G_k^{\mathrm{ctx}}>0$: based on context, the
+candidate is predicted to shrink the worst-case partial-identification width.
+
+After the selected candidate experiment is run, the realized treatment assignment
+determines the observed candidate-site outcome contribution and hence the realized
+update to $b$. To obtain an exact finite-sample benchmark for adverse
+realizations, we use the randomization design within the selected site.
+
+Let $\mathcal F_0$ denote all information available before the treatment
+assignment in the selected candidate site:
+\[
+\mathcal F_0
+=
+\sigma\!\left(
+D_S,\,
+\{Z_k,\Omega_k,Q_k,G_k\}_{k\in K},\,
+T,\,
+R,\,
+U
+\right),
+\]
+where $D_S$ is the existing-site data, $Z_k$ contains candidate $k$'s
+pre-randomization information, $\Omega_k$ is its assignment space, $Q_k$ is its
+known randomization distribution, $G_k$ is a finite randomization group acting on
+$\Omega_k$, and $U$ is optional tie-breaking randomness. The selected site is
+\[
+K^\star=\kappa(\mathcal F_0),
+\]
+so site selection may depend on the minimax rule, candidate contexts, costs, the
+target region, restrictions, and tie-breaking randomness, but not on the selected
+site's treatment assignment or post-treatment outcomes.
+
+For the selected site $K^\star=k$, let $A_k\in\Omega_k$ be the realized
+assignment. We assume the assignment distribution is invariant under the
+randomization group:
+\[
+Q_k(ga)=Q_k(a)
+\qquad
+\text{for every }g\in G_k,\ a\in\Omega_k.
+\tag{RI}
+\]
+Complete randomization is the special case in which $G_k$ is the symmetric group
+on units and $\Omega_k$ fixes the number treated. Block randomization is the
+case in which $G_k$ is the product of the within-block symmetric groups.
+
+Let $H_0(\eta)$ be a sharp benchmark for the candidate-site potential outcomes.
+Sharpness means that, given the observed data and $\eta$, the missing potential
+outcomes can be imputed under every assignment $a\in\Omega_k$. Let
+$D_k^\eta(a)$ denote the candidate-site data that would be observed under
+assignment $a$ after this imputation, and let
+\[
+\widehat{\Delta b}_k(a;\eta)
+\]
+be the corresponding candidate-site update to the right-hand side. Define the
+post-addition worst-case width under assignment $a$ as
+\[
+\widehat W_k(a;\eta)
+:=
+\sup_{t\in T}
+w_r\!\left(
+t;
+\widehat\Sigma_{S\cup\{k\}},
+\widehat b_S+\widehat{\Delta b}_k(a;\eta)
+\right).
+\]
+The realized gain under assignment $a$ is
+\[
+\widehat G_k(a;\eta)
+:=
+\widehat W_S-\widehat W_k(a;\eta).
+\]
+
+For $q\in[0,1]$, define the adverse $q$-under-delivery event
+\[
+\mathcal A_{k,q}(a;\eta)
+:=
+\left\{
+\widehat G_k(a;\eta)
+\le
+q\,\widehat G_k^{\mathrm{ctx}}
+\right\}.
+\tag{6.5}
+\]
+Equivalently,
+\[
+\mathcal A_{k,q}(a;\eta)
+=
+\left\{
+\widehat W_k(a;\eta)
+\ge
+\widehat W_S-q\,\widehat G_k^{\mathrm{ctx}}
+\right\}.
+\]
+Thus $q=0$ corresponds to no shrinkage or worsening:
+\[
+\mathcal A_{k,0}(a;\eta)
+=
+\left\{
+\widehat W_k(a;\eta)\ge \widehat W_S
+\right\}.
+\]
+For $q=1/2$, the event says that the realized experiment delivered at most half
+of the context-predicted gain. For $q=1$, it says that the realized experiment
+underperformed the context-only forecast.
+
+For an assignment $a$, write
+\[
+\mathcal O_k(a)
+:=
+\{ga:g\in G_k\}
+\]
+for its orbit under the randomization group. The randomization-inference estimate
+of adverse under-delivery risk is
+\[
+\widehat\pi_{k,q}^{\mathrm{RI}}(\eta)
+:=
+\frac{1}{|\mathcal O_k(A_k^{\mathrm{obs}})|}
+\sum_{a\in\mathcal O_k(A_k^{\mathrm{obs}})}
+\mathbf 1\{\mathcal A_{k,q}(a;\eta)\}.
+\tag{6.6}
+\]
+This is the fraction of assignments, among those allowed by the actual
+randomization design, under which the candidate would fail to deliver at least a
+$q$-fraction of the context-predicted shrinkage.
+
+\begin{theorem}[Post-selection randomization inference for adverse no-shrink risk]
+\label{thm:adverse-no-shrink-ri}
+Assume:
+
+\begin{enumerate}
+\item The selected site satisfies $K^\star=\kappa(\mathcal F_0)$, so selection
+uses only pre-randomization information.
+
+\item Conditional on $\mathcal F_0$ and $K^\star=k$, the selected-site assignment
+$A_k$ is drawn from the known design $Q_k$ on $\Omega_k$.
+
+\item The randomization design is invariant under the finite group $G_k$, i.e.
+\[
+Q_k(ga)=Q_k(a)
+\qquad
+\forall g\in G_k,\ a\in\Omega_k.
+\]
+
+\item The benchmark $H_0(\eta_0)$ is true and sharp, so
+$\widehat W_k(a;\eta_0)$ is computable for every $a\in\Omega_k$.
+
+\item The context-predicted gain $\widehat G_k^{\mathrm{ctx}}$ is
+$\mathcal F_0$-measurable.
+\end{enumerate}
+
+Then, for every $q\in[0,1]$,
+\[
+\Pr_{\eta_0}
+\left(
+\mathcal A_{k,q}(A_k;\eta_0)
+\mid
+\mathcal F_0,\,
+K^\star=k,\,
+\mathcal O_k(A_k^{\mathrm{obs}})
+\right)
+=
+\widehat\pi_{k,q}^{\mathrm{RI}}(\eta_0).
+\tag{6.7}
+\]
+In particular, for $q=0$,
+\[
+\Pr_{\eta_0}
+\left(
+\widehat W_k(A_k;\eta_0)\ge \widehat W_S
+\mid
+\mathcal F_0,\,
+K^\star=k,\,
+\mathcal O_k(A_k^{\mathrm{obs}})
+\right)
+=
+\widehat\pi_{k,0}^{\mathrm{RI}}(\eta_0).
+\tag{6.8}
+\]
+Thus $\widehat\pi_{k,0}^{\mathrm{RI}}(\eta_0)$ is the exact conditional
+randomization probability that the selected site fails to shrink the
+worst-case bound, even though its context predicted shrinkage.
+
+Moreover, define the adverse-severity statistic
+\[
+T_{k,q}^{\mathrm{adv}}(a;\eta)
+:=
+\left[
+\widehat W_k(a;\eta)
+-
+\left\{
+\widehat W_S-q\,\widehat G_k^{\mathrm{ctx}}
+\right\}
+\right]_+,
+\tag{6.9}
+\]
+and the randomization $p$-value
+\[
+p_{k,q}^{\mathrm{adv}}(\eta)
+:=
+\frac{1}{|\mathcal O_k(A_k^{\mathrm{obs}})|}
+\sum_{a\in\mathcal O_k(A_k^{\mathrm{obs}})}
+\mathbf 1
+\left\{
+T_{k,q}^{\mathrm{adv}}(a;\eta)
+\ge
+T_{k,q}^{\mathrm{adv}}(A_k^{\mathrm{obs}};\eta)
+\right\}.
+\tag{6.10}
+\]
+Under $H_0(\eta_0)$, for every $\alpha\in[0,1]$,
+\[
+\Pr_{\eta_0}
+\left(
+p_{k,q}^{\mathrm{adv}}(\eta_0)\le \alpha
+\mid
+\mathcal F_0,\,
+K^\star=k,\,
+\mathcal O_k(A_k^{\mathrm{obs}})
+\right)
+\le
+\alpha.
+\tag{6.11}
+\]
+Consequently,
+\[
+\Pr_{\eta_0}
+\left(
+p_{k,q}^{\mathrm{adv}}(\eta_0)\le \alpha
+\mid
+\mathcal F_0,\,
+K^\star=k
+\right)
+\le
+\alpha,
+\qquad
+\Pr_{\eta_0}
+\left(
+p_{k,q}^{\mathrm{adv}}(\eta_0)\le \alpha
+\right)
+\le
+\alpha.
+\tag{6.12}
+\]
+\end{theorem}
+
+\begin{remark}[Interpretation]
+The quantity $\widehat\pi_{k,0}^{\mathrm{RI}}$ answers the question:
+among the assignments that could have occurred in the selected site under the
+actual randomization design, what fraction would have produced no shrinkage or
+worsening of the worst-case external-validity bound? The statistic
+$p_{k,0}^{\mathrm{adv}}$ answers a related severity question: conditional on the
+context-consistent benchmark, how unusual was the adverse realization we
+observed?
+
+This is a post-experiment, design-based quantity. It is exact because it relies
+only on the known treatment-randomization mechanism inside the selected site.
+It is not a claim that candidate sites themselves were randomly sampled, nor is
+it a model-free pre-experiment probability over unknown potential outcomes.
+Before running the candidate experiment, an analogous design-stage risk must be
+model-based, for example
+\[
+\pi_{k,q}^{\mathrm{pred}}
+:=
+\Pr_{\Delta b_k\sim\Pi_k}
+\left(
+\sup_{t\in T}
+w_r(t;\widehat\Sigma_{S\cup\{k\}},\widehat b_S+\Delta b_k)
+\ge
+\widehat W_S-q\,\widehat G_k^{\mathrm{ctx}}
+\ \middle|\ \mathcal F_0
+\right),
+\]
+where $\Pi_k$ is a pre-specified predictive distribution for the candidate's
+outcome-dependent update. The randomization-inference quantity
+$\widehat\pi_{k,q}^{\mathrm{RI}}$ is the exact post-experiment analogue obtained
+after the selected experiment has actually been run.
+\end{remark}
+
+\begin{remark}[Recommended reporting]
+For the selected site $K^\star$, report three numbers:
+\[
+\widehat G_{K^\star}^{\mathrm{ctx}},
+\qquad
+\widehat G_{K^\star}^{\mathrm{obs}}
+=
+\widehat W_S-\widehat W_{K^\star}(A_{K^\star}^{\mathrm{obs}};\eta),
+\qquad
+\widehat\pi_{K^\star,0}^{\mathrm{RI}}.
+\]
+The first is the shrinkage promised by context. The second is the shrinkage
+actually delivered by the realized experiment. The third is the exact
+randomization probability of no shrinkage or worsening under the selected
+site's assignment mechanism. A context-promising site with small
+$\widehat\pi_{K^\star,0}^{\mathrm{RI}}$ is robust to randomization-induced
+outcome updates; a site with large $\widehat\pi_{K^\star,0}^{\mathrm{RI}}$ is
+fragile, even if its context looked favorable ex ante.
+\end{remark}
