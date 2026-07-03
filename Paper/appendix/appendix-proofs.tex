@@ -17,7 +17,7 @@ $\mathcal{L}(\Sigma,b)=\emptyset$).
 \subsection{Proof of Proposition~\ref{prop:dichotomy} (unrestricted dichotomy)}
 \label{sec:proof-prop1}
 
-\emph{Claim.} With $\mathcal{R}=\mathbb{R}^{d_g}$ and any
+Claim. With $\mathcal{R}=\mathbb{R}^{d_g}$ and any
 $b\in\mathrm{range}(\Sigma)$,
 \[
 w_{\rm unr}(t;\Sigma,b) \;=\;
@@ -33,7 +33,7 @@ evaluates to $c(t)^\top\theta=c(t)^\top\theta_0+c(t)^\top\nu$. Since
 $\mathcal{R}=\mathbb{R}^{d_g}$, $\nu$ ranges over all of $\mathrm{null}(\Sigma)$, a
 linear subspace.
 
-\emph{Case 1: $c(t)\perp\mathrm{null}(\Sigma)$.} Then $c(t)^\top\nu=0$ for every
+Case 1: $c(t)\perp\mathrm{null}(\Sigma)$. Then $c(t)^\top\nu=0$ for every
 $\nu\in\mathrm{null}(\Sigma)$, so $c(t)^\top\theta=c(t)^\top\theta_0$ identically
 and $v_u=v_\ell=c(t)^\top\theta_0$, giving width $0$. By the orthogonal
 decomposition
@@ -41,7 +41,7 @@ $\mathbb{R}^{d_g}=\mathrm{range}(\Sigma^\top)\oplus\mathrm{null}(\Sigma)$ (valid
 for any matrix, here in fact $\mathrm{range}(\Sigma)$ since $\Sigma=\Sigma^\top$),
 this is equivalent to $c(t)\in\mathrm{range}(\Sigma^\top)$.
 
-\emph{Case 2: $c(t)\not\perp\mathrm{null}(\Sigma)$.} Pick
+Case 2: $c(t)\not\perp\mathrm{null}(\Sigma)$. Pick
 $\nu_0\in\mathrm{null}(\Sigma)$ with $c(t)^\top\nu_0\ne 0$, and consider the
 one-parameter family $\theta_0+\alpha\nu_0$ for $\alpha\in\mathbb{R}$. Then
 $c(t)^\top(\theta_0+\alpha\nu_0)=c(t)^\top\theta_0+\alpha c(t)^\top\nu_0\to\pm\infty$
@@ -53,7 +53,7 @@ $+\infty$.
 (rank-expansion $\Leftrightarrow$ hull-expansion)}
 \label{sec:proof-prop2}
 
-\emph{Claim.} In the centered coordinates of Proposition~\ref{prop:hull} --- with
+Claim. In the centered coordinates of Proposition~\ref{prop:hull} --- with
 $\tilde C$ the matrix of centered rows $\tilde c^{(s)}=c^{(s)}-\bar c$,
 $\tilde\Sigma_\mathcal{S}=\tilde C^\top\tilde C$, and candidate residual
 $\tilde u=c^{(k)}-\bar c$ --- one has
@@ -105,7 +105,7 @@ of \eqref{eq:dsigma}, not the raw second-moment matrix.
 \subsection{Proof of Proposition~\ref{prop:dist} (width $=$ distance $\times 2\tau$)}
 \label{sec:proof-prop3}
 
-\emph{Claim.} We prove Proposition~\ref{prop:dist} and
+Claim. We prove Proposition~\ref{prop:dist} and
 Corollary~\ref{cor:hulldist}: with $\theta_0$ the minimum-norm solution of
 $\Sigma_\mathcal{S}\theta=-b$ and
 $\delta_\mathcal{S}(t)=\|P_{\mathrm{null}(\Sigma_\mathcal{S})}c(t)\|_2$, for every
@@ -116,8 +116,8 @@ w_r^\tau(t;\Sigma_\mathcal{S},b)
  \;=\; 2\tau\,\delta_\mathcal{S}(t)(1+o_\tau(1)),
 \qquad\tau\to\infty,
 \]
-\emph{and, under the balanced embedding of Corollary~\ref{cor:hulldist},
-$\delta_\mathcal{S}(t)=\sqrt{\kappa}\,\mathrm{dist}((t_m,t_r),\mathrm{aff}(\mathcal{H}_\mathcal{S}))$.}
+and, under the balanced embedding of Corollary~\ref{cor:hulldist},
+$\delta_\mathcal{S}(t)=\sqrt{\kappa}\,\mathrm{dist}((t_m,t_r),\mathrm{aff}(\mathcal{H}_\mathcal{S}))$.
 
 \begin{proof}
 Decompose $c(t)=c_\parallel(t)+c_\perp(t)$ with
@@ -132,7 +132,7 @@ $c_\parallel(t)^\top\nu=0$ and $c_\perp(t)^\top\theta_0=0$.
 
 Because $\theta_0\perp\nu$, the ball constraint reads
 $\|\theta\|_2^2=\|\theta_0\|_2^2+\|\nu\|_2^2\le\tau^2$, i.e.\
-$\|\nu\|_2\le\sqrt{\tau^2-\|\theta_0\|_2^2}=:\rho_\tau$. This is the \emph{exact}
+$\|\nu\|_2\le\sqrt{\tau^2-\|\theta_0\|_2^2}=:\rho_\tau$. This is the exact
 radius, not $\tau-\|\theta_0\|_2$. Maximizing and minimizing the linear
 functional $c_\perp(t)^\top\nu$ over the radius-$\rho_\tau$ ball in
 $\mathrm{null}(\Sigma_\mathcal{S})$ gives $\pm\rho_\tau\|c_\perp(t)\|_2$ by
@@ -188,7 +188,7 @@ Recall the identity \eqref{eq:identity}:
 $\Sigma_{\mathcal{S}\cup\{k\}}\theta+b_{\mathcal{S}\cup\{k\}}
  =\Sigma_\mathcal{S}\theta+b_\mathcal{S}+u(u^\top\theta-y_k)$.
 
-\emph{(ii) Rank-expanding case, $u\notin\mathrm{range}(\Sigma_\mathcal{S})$.}
+(ii) Rank-expanding case, $u\notin\mathrm{range}(\Sigma_\mathcal{S})$.
 Let $P^\perp$ project orthogonally onto $\mathrm{null}(\Sigma_\mathcal{S})$, so
 $u_\perp:=P^\perp u\ne 0$. Applying $P^\perp$ to \eqref{eq:identity} and using
 $b_\mathcal{S}\in\mathrm{range}(\Sigma_\mathcal{S})$ (which kills
@@ -215,7 +215,7 @@ then $\theta_\mathcal{S}^\star\in\mathcal{F}_{\mathcal{S}\cup\{k\}}$ and
 non-emptiness holds. Absent such a guarantee the augmented set may be empty (see
 the Remark below), and the inequality is vacuous.
 
-\emph{(i) Rank-preserving case, $u\in\mathrm{range}(\Sigma_\mathcal{S})$, (M2).}
+(i) Rank-preserving case, $u\in\mathrm{range}(\Sigma_\mathcal{S})$, (M2).
 Here $u\perp\mathrm{null}(\Sigma_\mathcal{S})$. For $\theta\in\mathcal{F}_\mathcal{S}$,
 write $\theta=\theta_\mathcal{S}^\star+\nu$, $\nu\in\mathrm{null}(\Sigma_\mathcal{S})$;
 then $u^\top\theta-y_k=u^\top\nu=0$, so by \eqref{eq:identity}
@@ -251,7 +251,7 @@ directional derivative theorem for the value function of a perturbed convex
 program. We sketch the specialization to \eqref{eq:bounds} to make the constants
 explicit.
 
-\emph{Setup.} For the upper endpoint define
+Setup. For the upper endpoint define
 \[
 v_u(h):=\max_\theta\bigl\{c(t)^\top\theta:(\Sigma_\mathcal{S}+h_\Sigma)\theta
  =-(b_\mathcal{S}+h_b),\;r(\theta)\le 0\bigr\},
@@ -262,7 +262,7 @@ $c(t)=\Sigma_\mathcal{S}\lambda_u^\star+\partial r(\theta_u^\star)^\top\nu_u^\st
 Define $v_\ell(h)$ symmetrically with the $\min$ Lagrangian and triple
 $(\theta_\ell^\star,\lambda_\ell^\star,\nu_\ell^\star)$.
 
-\emph{Directional derivative.} Under Robinson's constraint qualification
+Directional derivative. Under Robinson's constraint qualification
 (Assumption~6 of \citealp{boyarsky2026}) and strict complementarity, each value
 function is directionally differentiable with
 \[
@@ -270,15 +270,15 @@ D v_u\cdot h=-\lambda_u^{\star\top}\bigl(h_\Sigma\theta_u^\star+h_b\bigr),
 \qquad
 D v_\ell\cdot h=-\lambda_\ell^{\star\top}\bigl(h_\Sigma\theta_\ell^\star+h_b\bigr),
 \]
-each evaluated at its \emph{own} optimizer and multiplier (Theorem~4.24 of
+each evaluated at its own optimizer and multiplier (Theorem~4.24 of
 \citealp{bonnans2013perturbation}). Without strict complementarity the
 derivatives are Gol'shtein-type minimax values over the optimal primal--dual
 sets: for the upper ($\max$) problem the multiplier is selected by an inner
-\emph{minimum} (its value function is concave in the right-hand side), and for
-the lower ($\min$) problem by an inner \emph{maximum} (convex value function),
+minimum (its value function is concave in the right-hand side), and for
+the lower ($\min$) problem by an inner maximum (convex value function),
 as stated in Proposition~\ref{prop:envelope}.
 
-\emph{Application to site augmentation.} Set $h_\Sigma=\Delta\Sigma_k$,
+Application to site augmentation. Set $h_\Sigma=\Delta\Sigma_k$,
 $h_b=\Delta b_k$ to obtain \eqref{eq:envelope}; subtracting,
 $D w_k=D v_u-D v_\ell$. The endpoints share an optimizer --- so that
 $D w_k=-(\lambda_u^\star-\lambda_\ell^\star)^\top(\Delta\Sigma_k\theta^\star+\Delta b_k)$
@@ -286,7 +286,7 @@ $D w_k=-(\lambda_u^\star-\lambda_\ell^\star)^\top(\Delta\Sigma_k\theta^\star+\De
 general the optimizers, active sets, and multipliers differ and are kept
 separate.
 
-\emph{Rank-2 reduction.} By \eqref{eq:dsigma}, $\Delta\Sigma_k=U_kA_kU_k^\top$
+Rank-2 reduction. By \eqref{eq:dsigma}, $\Delta\Sigma_k=U_kA_kU_k^\top$
 with $U_k$ a $d_g\times 2$ factor, so $\Delta\Sigma_k\theta^\star_\bullet
 =U_k(A_kU_k^\top\theta^\star_\bullet)$ lies in the two-dimensional column space of
 $U_k$, and each endpoint derivative reduces to the two scalars
@@ -359,9 +359,9 @@ Therefore
 \]
 and, whenever this intersection is non-empty, every support-function width
 weakly decreases, exactly as in Theorem~\ref{thm:monotone}(ii). We emphasize
-that \eqref{eq:range-transversality} is a condition on the \emph{whole update
-range}: requiring merely that each column of $U_k$ lie outside
-$\mathrm{range}(\Sigma_\mathcal{S})$ is \emph{not} sufficient, since a linear
+that \eqref{eq:range-transversality} is a condition on the whole update
+range: requiring merely that each column of $U_k$ lie outside
+$\mathrm{range}(\Sigma_\mathcal{S})$ is not sufficient, since a linear
 combination of the columns can fall inside $\mathrm{range}(\Sigma_\mathcal{S})$
 (e.g.\ columns $e_1\pm e_2$ with $\mathrm{range}(\Sigma_\mathcal{S})=
 \mathrm{span}(e_1)$), and then the projection step above no longer pins down the

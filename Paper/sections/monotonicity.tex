@@ -2,7 +2,7 @@
 \label{sec:monotonicity}
 
 One might expect that the minimax design problem \eqref{eq:minimax} is
-\emph{bounded above by the existing-pool width}. That is, one might expect that
+bounded above by the existing-pool width. That is, one might expect that
 $\sup_t w_r(t;\Sigma_{\mathcal{S}\cup\{k\}})\le \sup_t
 w_r(t;\Sigma_\mathcal{S})$ for every candidate $k$, so that the design problem
 is only a question of how much we gain. This is false. Adding a site can
@@ -16,18 +16,18 @@ under which monotone improvement is guaranteed.
 
 Recall from Section~\ref{sec:augmentation} that two things change when a candidate
 site is added: the moment matrix $\Sigma$ acquires a rank-$\le 2$ update
-$\Delta\Sigma_k$ in the row directions spanned by the \emph{residualized} context
+$\Delta\Sigma_k$ in the row directions spanned by the residualized context
 $(u_m^{(k)},u_r^{(k)})$, and the right-hand side $b$ shifts by an
 outcome-dependent amount $\Delta b_k$. The first update is monotone in PSD order:
 $\Sigma_{\mathcal{S}\cup\{k\}} \succeq \Sigma_\mathcal{S}$, so
 $\mathrm{null}(\Sigma_{\mathcal{S}\cup\{k\}})\subseteq
  \mathrm{null}(\Sigma_\mathcal{S})$. The second is not monotone in any sense.
-Two mechanisms can widen the \emph{exact} program \eqref{eq:bounds}; a third,
+Two mechanisms can widen the exact program \eqref{eq:bounds}; a third,
 conditioning, cannot, and is recorded only to forestall it:
 
 \paragraph{(F1) Rank-preserving shift.}
 If $(u_m^{(k)},u_r^{(k)})\in \mathrm{range}(\Sigma_\mathcal{S})$, the rank of
-$\Sigma$ does not change, and the new feasible set is \emph{parallel} to the old
+$\Sigma$ does not change, and the new feasible set is parallel to the old
 in the sense $\theta'+\mathrm{null}(\Sigma_\mathcal{S})$ for some
 $\theta'\ne\theta_\mathcal{S}^\star$ whenever
 $y_k\ne (u_m^{(k)},u_r^{(k)})^\top \theta_\mathcal{S}^\star$. This parallel
@@ -38,15 +38,15 @@ $\theta_\mathcal{S}^\star$ and the shift moves the slice into a wider
 cross-section of $\mathcal{R}$.
 
 \paragraph{(F2) Conditioning does \emph{not} widen the exact LP.}
-One might expect a mechanism from \emph{conditioning}: in the formulation of
+One might expect a mechanism from conditioning: in the formulation of
 \citet{boyarsky2026}, $\Sigma$ is a sample average over the pooled
 $(\sum_s n_s+n_k)$ observations, so adding a candidate re-weights the
 existing-pool contribution by $n/(n+n_k)$ and can shrink the smallest
 non-trivial eigenvalue $\sigma_{\min,+}(\Sigma_{\mathcal{S}\cup\{k\}})$. This
-does \emph{not} enlarge the exact feasible set. With equality constraints
+does not enlarge the exact feasible set. With equality constraints
 $\Sigma\theta=-b$, the set $\mathcal{L}(\Sigma,b)\cap\mathcal{R}$ is determined
 by the row space, the null space, and a particular solution; it is invariant to
-eigenvalue \emph{magnitudes}, and any re-weighting that preserves the row space
+eigenvalue magnitudes, and any re-weighting that preserves the row space
 leaves $\mathcal{L}(\Sigma,b)$ unchanged. Conditioning bites only once the moment
 identity is \emph{estimated or relaxed} to a tolerance set
 $\{\theta:\|\widehat\Sigma\theta+\widehat b\|\le\eta\}$, whose width does grow as
@@ -90,7 +90,7 @@ $w_r\bigl(t;\Sigma_\mathcal{S},b_\mathcal{S}\bigr)=1$.
 
 \paragraph{Candidate.}
 Add a rank-preserving candidate $k_5$ with $c^{(k_5)}=c^{(1)}=(1,1)^\top$ and
-\emph{conflicting} outcome $y_{k_5}=0\ne 2= c^{(k_5)\top}\theta_\mathcal{S}^\star$,
+conflicting outcome $y_{k_5}=0\ne 2= c^{(k_5)\top}\theta_\mathcal{S}^\star$,
 where $\theta_\mathcal{S}^\star=(1,1)^\top$ is the minimum-norm solution. Then
 $\Sigma_{\mathcal{S}\cup\{k_5\}}=2\,c^{(1)}{c^{(1)}}^\top$ (still rank 1), and
 $b_{\mathcal{S}\cup\{k_5\}}=b_\mathcal{S}-c^{(k_5)}y_{k_5}=(-2,-2)^\top$, giving
@@ -108,7 +108,7 @@ the box.
 The construction generalizes. In dimension $d_g\ge 2$, any rank-preserving
 candidate with outcome $y_k\ne c^{(k)\top}\theta_\mathcal{S}^\star$ produces a
 parallel shift of the moment-implied subspace. Whenever $\mathcal{R}$ is
-\emph{asymmetric} around $\theta_\mathcal{S}^\star$, the shifted slice can cut
+asymmetric around $\theta_\mathcal{S}^\star$, the shifted slice can cut
 $\mathcal{R}$ at a polytope of larger $t$-extent.
 
 \subsection{Sufficient conditions for monotone improvement}
@@ -123,22 +123,22 @@ design-time (pre-experiment) counterpart that can be used to screen the
 candidate pool.
 
 \paragraph{Assumption (M1) --- Rank-Expansion Screen.}
-\emph{The candidate's residualized context lies outside the row space of the
-existing pool:}
+The candidate's residualized context lies outside the row space of the
+existing pool:
 \begin{equation}
 \label{eq:m1}
 (u_m^{(k)},u_r^{(k)})\;\notin\;\mathrm{range}\bigl(\Sigma_\mathcal{S}\bigr).
 \end{equation}
 
 \paragraph{Assumption (M2) --- Outcome-Consistency Screen.}
-\emph{The candidate's outcome forecast is consistent with the existing pool's
-minimum-norm fit:}
+The candidate's outcome forecast is consistent with the existing pool's
+minimum-norm fit:
 \begin{equation}
 \label{eq:m2}
 y_k \;=\; (u_m^{(k)},u_r^{(k)})^\top \theta_\mathcal{S}^\star,
 \end{equation}
-\emph{where $\theta_\mathcal{S}^\star$ is the minimum-norm solution to
-$\Sigma_\mathcal{S}\theta = -b_\mathcal{S}$.}
+where $\theta_\mathcal{S}^\star$ is the minimum-norm solution to
+$\Sigma_\mathcal{S}\theta = -b_\mathcal{S}$.
 
 The two screens differ in what can be checked before the candidate experiment is
 run. (M1) is fully checkable at design time: it is a rank test on
@@ -169,14 +169,14 @@ $b_{\mathcal{S}\cup\{k\}}=b_\mathcal{S}-uy_k$, the consistency condition
 $b_\mathcal{S}\in\mathrm{range}(\Sigma_\mathcal{S})$, and
 $\mathcal{F}_\mathcal{S}\ne\varnothing$.
 \begin{enumerate}
-\item[(i)] \emph{(Rank-preserving, (M2).)} If $u\in\mathrm{range}(\Sigma_\mathcal{S})$
+\item[(i)] (Rank-preserving, (M2).) If $u\in\mathrm{range}(\Sigma_\mathcal{S})$
   and $y_k=u^\top\theta_\mathcal{S}^\star$, then
   $\mathcal{F}_{\mathcal{S}\cup\{k\}}=\mathcal{F}_\mathcal{S}$, and the width is
   unchanged at every target.
-\item[(ii)] \emph{(Rank-expanding, (M1).)} If $u\notin\mathrm{range}(\Sigma_\mathcal{S})$,
+\item[(ii)] (Rank-expanding, (M1).) If $u\notin\mathrm{range}(\Sigma_\mathcal{S})$,
   then
   $\mathcal{F}_{\mathcal{S}\cup\{k\}}=\mathcal{F}_\mathcal{S}\cap\{\theta:u^\top\theta=y_k\}$.
-  \emph{If} this set is non-empty --- in particular under (M2),
+  If this set is non-empty --- in particular under (M2),
   $y_k=u^\top\theta_\mathcal{S}^\star$, whenever $\theta_\mathcal{S}^\star\in\mathcal{R}$
   --- then $\mathcal{F}_{\mathcal{S}\cup\{k\}}\subseteq\mathcal{F}_\mathcal{S}$ and
   for every target $t$,
@@ -200,15 +200,15 @@ $\Sigma_{\mathcal{S}\cup\{k\}}\theta+b_{\mathcal{S}\cup\{k\}}=
 the consistency hypothesis $b_\mathcal{S}\in\mathrm{range}(\Sigma_\mathcal{S})$.
 
 \paragraph{Remark (Practical use).}
-The pair (M1, M2) is \emph{not} exhaustive, because a candidate failing both can
+The pair (M1, M2) is not exhaustive, because a candidate failing both can
 still improve the width. But it does provide a finite, computable screen. In
 practice we recommend the following. First, run the SVD-based test \eqref{eq:m1}
-on every candidate, and mark those that pass \emph{and} whose forecasted outcome
+on every candidate, and mark those that pass and whose forecasted outcome
 keeps $\mathcal{F}_\mathcal{S}\cap\{\theta:u^\top\theta=y_k\}\ne\varnothing$
-(an LP feasibility check) as \textbf{safe rank-expanders}; passing (M1) alone is
+(an LP feasibility check) as safe rank-expanders; passing (M1) alone is
 not a no-harm guarantee. Second, among the rank-preserving candidates, check
 \eqref{eq:m2} against the existing-pool OLS prediction, and mark those that pass
-as \textbf{safe consistent candidates}. Third, report the minimax
+as safe consistent candidates. Third, report the minimax
 \eqref{eq:minimax} only over
 the safe subset of the candidate pool, or report the unsafe candidates
 separately as ``diagnostic-only'' sites whose addition could be informative but
@@ -223,17 +223,17 @@ $\rho_k\ge 0$ added to their cost, set from the upper bound on
 $w_r(\cdot;\Sigma_{\mathcal{S}\cup\{k\}})- w_r(\cdot;\Sigma_\mathcal{S})$ in the
 perturbation bound \eqref{eq:envelope}.
 
-\subsection{Discussion: why the affine-span rule is \emph{only} sufficient}
+\subsection{Discussion: why the affine-span rule is only sufficient}
 \label{sec:hull-only-sufficient}
 
 Proposition~\ref{prop:dist} of Section~\ref{sec:hull-distance} shows that, in
 the large-$\tau$ unrestricted limit, the optimal candidate is the one whose
 addition minimizes $\sup_{t\in\mathcal{T}}\delta_{\mathcal{S}\cup\{k\}}(t)$.
 Theorem~\ref{thm:monotone} refines this. The affine-span (hull-expansion) rule
-is \emph{sufficient} for monotone improvement \emph{when feasibility is
-preserved}: an outside-hull candidate satisfies (M1), and if its outcome keeps
+is sufficient for monotone improvement when feasibility is
+preserved: an outside-hull candidate satisfies (M1), and if its outcome keeps
 $\mathcal{F}_{\mathcal{S}\cup\{k\}}\ne\varnothing$ the width cannot increase. It
-is not \emph{necessary}: an interior candidate satisfying (M2) also guarantees no
+is not necessary: an interior candidate satisfying (M2) also guarantees no
 worsening. Conversely, a hull-expander with an adversarial outcome can empty or
 badly shift the feasible set (failure mode (F3)); (M1) is necessary in the rank
 sense but not sufficient against shifts.
@@ -241,10 +241,10 @@ sense but not sufficient against shifts.
 The cleanest characterization combines both:
 
 \begin{quote}
-A candidate $k$ is \textbf{width-monotone safe} if either (i) its residualized
+A candidate $k$ is width-monotone safe if either (i) its residualized
 context is outside $\mathrm{range}(\Sigma_\mathcal{S})$ and the outcome
 shift $\Delta b_k$ is small enough that the hyperplane $u^\top\theta=y_k$
-intersects the \emph{existing feasible set},
+intersects the existing feasible set,
 \[
 \mathcal{F}_\mathcal{S}\cap\{\theta:u^\top\theta=y_k\}\ne\varnothing,
 \qquad\text{i.e.}\qquad

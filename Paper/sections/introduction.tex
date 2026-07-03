@@ -2,7 +2,7 @@
 \label{sec:intro}
 
 A multi-site experiment supports its external-validity claim through the
-\emph{cross-site} variation in site-level context. If the treatment effect is
+cross-site variation in site-level context. If the treatment effect is
 stable across sites that differ substantially in their moderating attributes,
 then it is credible that the effect will transport to a new site whose
 moderators lie within the observed range. Conversely, when the observed sites
@@ -12,17 +12,17 @@ treatment effect at a moderator profile $(t_m,t_r)$ outside the span of observed
 sites is then only partially identified, no matter how large the
 individual-level samples are \citep*{boyarsky2026}.
 
-An investigator facing this situation has two options. She may \emph{tighten the
-identification set} by imposing additional substantive restrictions
+An investigator facing this situation has two options. She may tighten the
+identification set by imposing additional substantive restrictions
 $r(\theta)\le 0$ (effect-ordering, sign or monotonicity constraints, norm
 bounds, etc.). This trades a sharper bound for additional untestable
 assumptions. Or she
-may \emph{expand the evidence base} by running a new experiment in an additional
+may expand the evidence base by running a new experiment in an additional
 site. The first option is the subject of \citet{boyarsky2026}. In this paper
 we address the second.
 
 Specifically, we consider the situation in which the investigator has a small
-pool $\mathcal{K} = \{1, \ldots, K\}$ of \emph{candidate} sites. For each
+pool $\mathcal{K} = \{1, \ldots, K\}$ of candidate sites. For each
 candidate site the investigator knows the site-level context $(C_m^{(k)},
 C_r^{(k)})$ in advance, cheaply obtained from administrative data, public
 statistics, a pilot survey, or an established literature, but has no
@@ -38,7 +38,7 @@ in the sense of most shrinking the partial-identification width over
 $\mathcal{T}$?
 \end{quote}
 
-We cast the problem as a \textbf{minimax design}:
+We cast the problem as a minimax design:
 \[
 k^\star \;\in\; \arg\min_{k\in \mathcal{K}}\; \sup_{(t_m,t_r)\in\mathcal{T}}\;
 w_r\!\bigl(t_m,t_r;\; \Sigma_{\mathcal{S}\cup\{k\}}\bigr),
@@ -46,11 +46,11 @@ w_r\!\bigl(t_m,t_r;\; \Sigma_{\mathcal{S}\cup\{k\}}\bigr),
 where $w_r(t_m,t_r;\Sigma)$ is the width of the partial-identification interval
 under restriction $r$ evaluated at target $(t_m,t_r)$. The key observation is
 that the width $w_r$ depends on the candidate site through $\Sigma$, the
-\emph{design matrix} of the moment condition, and $\Sigma$ is a function of
+design matrix of the moment condition, and $\Sigma$ is a function of
 known site-level quantities $(C_m, C_r)$ only. This is what makes the design
 problem tractable without running the candidate experiments. The right-hand side
 $b$ would move once the experiment is run. The site-level context determines the
-rank and moment-range geometry, and therefore determines \emph{unrestricted}
+rank and moment-range geometry, and therefore determines unrestricted
 finiteness of the width, conditional on feasibility. Under compact restrictions,
 however, $b$ also matters: it translates the moment-implied affine slice through
 the restriction set and can change the width (Section~\ref{sec:counterexample}).
@@ -66,20 +66,20 @@ the unrestricted limit $r \equiv 0$ with mild regularization, the minimax rule
 selects the candidate whose addition most reduces the worst-case distance from
 the target functional $c(t)$ to the enlarged moment range
 (Proposition~\ref{prop:dist}). Under a balanced isometric embedding this becomes
-a weighted \emph{affine-span} expansion rule in site-context space
+a weighted affine-span expansion rule in site-context space
 (Corollary~\ref{cor:hulldist}), with the weighting determined by $\mathcal{T}$.
 Convex-hull expansion is the right design intuition exactly when the target set
 lies outside the existing affine span in target-relevant directions.
 (3) Under compact affine restrictions $r(\theta)\le 0$, we derive a tractable
 surrogate, a finite LP over the candidate pool, that has the same three-regime
-structure as the leave-one-site-out diagnostic of \citet{boyarsky2026}: candidates are \emph{coverage-expanding} (reduce rank-deficiency),
-\emph{location-improving} (shift the affine subspace at fixed rank), or
-\emph{feasibility-restoring} (make a previously incompatible restriction set
-feasible). (4) We show that the minimax design is \emph{not} automatically
+structure as the leave-one-site-out diagnostic of \citet{boyarsky2026}: candidates are coverage-expanding (reduce rank-deficiency),
+location-improving (shift the affine subspace at fixed rank), or
+feasibility-restoring (make a previously incompatible restriction set
+feasible). (4) We show that the minimax design is not automatically
 monotone in site addition. A rank-preserving candidate whose outcome conflicts
 with the existing-pool fit can shift the moment-implied affine subspace to a
 less favorable cross-section of the restriction polyhedron, and it can strictly
-\emph{increase} the worst-case width. We isolate two screens,
+increase the worst-case width. We isolate two screens,
 rank expansion (M1) and outcome-consistency (M2), and prove
 (Theorem~\ref{thm:monotone}) that the worst-case width is monotone-nonincreasing
 under (M2) in the rank-preserving case, and under (M1) whenever the augmented
@@ -94,10 +94,10 @@ mixed-integer effect-ordering formulation and to cost-weighted objectives, and
 defer complete proofs to Appendix~\ref{sec:appendix}.
 
 \paragraph{Positioning.}
-The site-selection question is the \emph{forward} version of the
+The site-selection question is the forward version of the
 leave-one-site-out diagnostic in Section~4.4 of \citet{boyarsky2026}, which asks which existing donor sites are essential to a reported bound. Our problem
 has the same three-regime taxonomy as that diagnostic, but we apply it to a
-\emph{counterfactual} addition rather than a realized removal. It also
+counterfactual addition rather than a realized removal. It also
 complements classical optimal experimental design (D-, G-, and I-optimality),
 which operates within a single population under point identification \citep{atkinson2007optimum, pukelsheim2006optimal}. In our setting the design object is
 not an individual-level allocation of treatment but a site-level choice of

@@ -6,7 +6,7 @@
 
 We observe outcomes from $S$ existing sites, pooled as
 $\mathcal{D}_\mathcal{S} = \{(Y_i, A_i, X_i, C_{m,i}, C_{r,i})\}_{i=1}^n$. A
-\textbf{candidate pool} $\mathcal{K} = \{1, \ldots, K\}$ consists of $K$
+candidate pool $\mathcal{K} = \{1, \ldots, K\}$ consists of $K$
 prospective sites for which the site-level context $(C_m^{(k)}, C_r^{(k)})$ is
 observed but no individual-level data has been collected. For each candidate we
 assume the investigator knows (or can assume a prior on) the within-site
@@ -21,13 +21,13 @@ assumption, not a free parameter.
 
 The investigator also specifies:
 \begin{itemize}
-\item a \textbf{target region} $\mathcal{T} \subseteq \mathbb{R}^{d_M+d_I}$ of
+\item a target region $\mathcal{T} \subseteq \mathbb{R}^{d_M+d_I}$ of
   context profiles over which she cares about transportability (a discrete set of
   ``benchmark'' profiles, or a continuous region such as a box around the
   marginal mean of the target population);
-\item a \textbf{restriction set} $\mathcal{R} = \{\theta : r(\theta) \le 0\}$
+\item a restriction set $\mathcal{R} = \{\theta : r(\theta) \le 0\}$
   assumed compact;
-\item optionally, a \textbf{cost} $c_k \ge 0$ per candidate site.
+\item optionally, a cost $c_k \ge 0$ per candidate site.
 \end{itemize}
 
 \subsection{The site-augmentation update}
@@ -39,8 +39,8 @@ $\Sigma_{\mathcal{S}\cup\{k\}}
  = \Sigma_{\mathcal{S}} + \Delta\Sigma_k(C_m^{(k)}, C_r^{(k)}; P_X^{(k)})$,
 where $\Delta\Sigma_k$ depends on the candidate's site-level context and on the
 investigator's assumed within-site $X$-distribution but \emph{not} on its
-outcomes. The only structural facts we use are that this update is \emph{positive
-semidefinite} and of \emph{rank at most two}: there is a $d_g\times 2$ factor
+outcomes. The only structural facts we use are that this update is positive
+semidefinite and of rank at most two: there is a $d_g\times 2$ factor
 $U_k$ whose columns are the residualized candidate-context directions, and a
 $2\times 2$ matrix $A_k\succeq 0$, such that
 \begin{equation}
@@ -70,7 +70,7 @@ above.
 
 The right-hand side $b$ also updates, from $b_\mathcal{S}$ to
 $b_{\mathcal{S}\cup\{k\}}$, but the new right-hand side depends on the candidate
-site's \emph{outcomes} and is therefore unknown until the experiment is run. We
+site's outcomes and is therefore unknown until the experiment is run. We
 return to this in Section~\ref{sec:unknown-b}. For most of our analysis the
 width depends on $b$ only through a compact-translation argument that does not
 affect the first-order ranking of candidates.
@@ -98,7 +98,7 @@ pay for a unit reduction in worst-case width. All results below extend directly
 to \eqref{eq:lagrangian} because the cost term is separable in $k$.
 
 Because $b$ is not known before the candidate experiment is run, we evaluate the
-width in \eqref{eq:minimax} at a \emph{robustified} $b$ that maximizes the width
+width in \eqref{eq:minimax} at a robustified $b$ that maximizes the width
 over a compact uncertainty set $\mathcal{B}$ consistent with the investigator's
 prior beliefs about candidate-site outcomes. In the simplest case, which we
 focus on from here, $\mathcal{B}$ is a symmetric norm ball around the

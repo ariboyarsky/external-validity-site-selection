@@ -39,7 +39,7 @@ $c(t) \in \mathrm{range}\!\bigl(\Sigma_\mathcal{S}^\top + \Delta\Sigma_k^\top\bi
 but $c(t) \notin \mathrm{range}(\Sigma_\mathcal{S}^\top)$.
 \end{corollary}
 
-This is the unrestricted version of the \emph{coverage-expanding-donor} regime
+This is the unrestricted version of the coverage-expanding-donor regime
 (a) of the leave-one-site-out taxonomy in \citet[\S4.4]{boyarsky2026}.
 
 \paragraph{Remark (Feasibility and fixed $\gamma$).}
@@ -68,7 +68,7 @@ sufficient overlap in $X$ at the points where their contexts differ.
 \begin{proposition}[Rank expansion $\Leftrightarrow$ affine-hull expansion]
 \label{prop:hull}
 Let $\bar c := \tfrac1S\sum_{s=1}^S (C_m^{(s)},C_r^{(s)})$, and write the
-\emph{centered} contexts $\tilde c^{(s)} := (C_m^{(s)},C_r^{(s)})-\bar c$ and
+centered contexts $\tilde c^{(s)} := (C_m^{(s)},C_r^{(s)})-\bar c$ and
 $\tilde u := (C_m^{(k)},C_r^{(k)})-\bar c$. Let $\tilde C$ be the matrix with
 rows $\tilde c^{(s)}$ and let the centered cross-site moment be
 $\tilde\Sigma_\mathcal{S}=\tilde C^\top\tilde C$ in the simplified formulation.
@@ -91,7 +91,7 @@ For the residualized block moment of \eqref{eq:dsigma}, what is always true is
 the range test:
 $\mathrm{rank}(\Sigma_\mathcal{S}+\Delta\Sigma_k)>\mathrm{rank}(\Sigma_\mathcal{S})
  \iff \mathrm{range}(\Delta\Sigma_k)\not\subseteq\mathrm{range}(\Sigma_\mathcal{S})$.
-The \emph{affine-hull} reading of Proposition~\ref{prop:hull} additionally
+The affine-hull reading of Proposition~\ref{prop:hull} additionally
 requires that the residualization embed contexts injectively: positive density
 of the candidate's $X$-distribution alone does not guarantee that the raw
 context direction maps injectively into the residualized moment range. We
@@ -104,7 +104,7 @@ outside $\mathrm{aff}(\mathcal{H}_\mathcal{S})$ is equivalent to rank expansion.
 Combined with Proposition~\ref{prop:dichotomy}, this yields a
 finite-versus-infinite dichotomy. Under no restriction $r$, the only candidate
 sites that shrink the unrestricted width are those whose context lies outside
-the \emph{affine hull} of the existing sites; we therefore call the exact rule
+the affine hull of the existing sites; we therefore call the exact rule
 \emph{affine-span expansion}. Convex-hull coverage is a useful but strictly
 weaker intuition: a target outside the convex hull but inside the affine hull
 already has zero unrestricted width (it lies in $\mathrm{range}(\Sigma^\top)$),
@@ -117,7 +117,7 @@ $\mathcal{T}$ contains points outside $\mathrm{aff}(\mathcal{H}_\mathcal{S})$.
 Proposition~\ref{prop:dichotomy}'s dichotomy is discontinuous, which is
 uninformative for comparing two candidates both of which lie outside the hull, or
 both of which lie inside. The correct continuous refinement uses a
-\emph{regularized} width,
+regularized width,
 \begin{equation}
 \label{eq:regwidth}
 w_r^\tau(t; \Sigma, b) \;:=\; \max_\theta\{c(t)^\top\theta\} -
@@ -168,7 +168,7 @@ Suppose the cross-site design is balanced with a common within-site
 $X$-distribution, and the target functional is an isometric (or scalar) linear
 embedding of the centered target profile,
 $c(t)=L\bigl((t_m,t_r)-\bar c\bigr)$ with $L^\top L=\kappa I$ for some
-$\kappa>0$, \emph{and} the moment range is exactly the image under $L$ of the
+$\kappa>0$, and the moment range is exactly the image under $L$ of the
 centered context span,
 \[
 \mathrm{range}\bigl(\Sigma_\mathcal{S}^\top\bigr)
@@ -185,12 +185,12 @@ so \eqref{eq:prop3} reduces to a weighted distance from $(t_m,t_r)$ to the
 affine hull of the existing contexts.
 \end{corollary}
 
-Proposition~\ref{prop:dist} gives the \textbf{affine-span expansion rule}: in
+Proposition~\ref{prop:dist} gives the affine-span expansion rule: in
 the unrestricted (large-$\tau$) limit, the minimax-optimal candidate is the one
 whose addition minimizes $\sup_{t \in \mathcal{T}} \delta_{\mathcal{S}\cup\{k\}}(t)$,
 the worst-case distance from the target functional to the moment range. Under
 the balanced embedding of Corollary~\ref{cor:hulldist} this is the candidate
-whose enlarged \emph{affine hull} leaves no target profile in $\mathcal{T}$ far
+whose enlarged affine hull leaves no target profile in $\mathcal{T}$ far
 from the span of sites. When $\mathcal{T}$ contains points outside
 $\mathrm{aff}(\mathcal{H}_\mathcal{S})$ the rule coincides with expanding the
 convex hull in the direction of the target region; in general it is an

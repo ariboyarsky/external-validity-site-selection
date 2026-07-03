@@ -21,11 +21,11 @@ despite being cheap to reach.
 \paragraph{Multiple candidates at once.}
 The design problem \eqref{eq:minimax} can be posed over a subset
 $\mathcal{J}\subseteq\mathcal{K}$ of candidates to add simultaneously. If the
-objective is the \emph{coverage} (rank) gain, $\mathcal{J}\mapsto
+objective is the coverage (rank) gain, $\mathcal{J}\mapsto
 \mathrm{rank}(\Sigma_{\mathcal{S}\cup\mathcal{J}})$ is a matroid rank function,
 hence submodular, and greedy attains the classical $(1-1/e)$ guarantee
 \citep{nemhauser1978analysis}. We conjecture, but do not prove, that the
-\emph{width} surrogate inherits approximate submodularity in the rank-monotone
+width surrogate inherits approximate submodularity in the rank-monotone
 limit; under affine restrictions and unknown $b$ the width is not automatically
 submodular, so the greedy guarantee should be read as applying to the pure
 coverage objective unless this is established.
@@ -33,9 +33,9 @@ coverage objective unless this is established.
 \paragraph{Connection to efficient influence functions.}
 The minimum-norm multiplier $\lambda^\star$ in \eqref{eq:envelope} coincides with
 the Riesz representer in the efficient influence function of
-\citet[Eq.~2.9]{boyarsky2026}, so the endpoint \emph{values} $v_u,v_\ell$ at a
+\citet[Eq.~2.9]{boyarsky2026}, so the endpoint values $v_u,v_\ell$ at a
 fixed candidate and target inherit their debiased-cross-fitting inference.
-Inference for the \emph{selected} design is more delicate: the criterion is a
+Inference for the selected design is more delicate: the criterion is a
 $\min$ over candidates of a $\sup$ over targets of an LP width, which is
 non-smooth. A valid confidence statement requires additional regularity --- a
 unique worst-case target, a unique minimizing candidate, and active-set
@@ -45,7 +45,7 @@ delta method is not justified.
 
 \paragraph{Open questions.}
 Four directions are natural follow-ups. First, our analysis holds the moment
-identity exact; with an \emph{estimated or relaxed} identity, the tolerance-set
+identity exact; with an estimated or relaxed identity, the tolerance-set
 program over $\{\theta:\|\widehat\Sigma\theta+\widehat b\|\le\eta\}$ does widen
 as the smallest non-trivial eigenvalue shrinks (Section~\ref{sec:monotone-fail},
 (F2)), and a site-selection theory for that relaxed program --- where

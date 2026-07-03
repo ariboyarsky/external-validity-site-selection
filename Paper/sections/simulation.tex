@@ -24,7 +24,7 @@ Section~\ref{sec:regimes}:
 \item \textbf{$k_2$}: context profile on the boundary of $\mathcal{H}_\mathcal{S}$
   (boundary candidate; regime (B)).
 \item \textbf{$k_3$}: context profile outside $\mathcal{H}_\mathcal{S}$ in a
-  direction \emph{not} spanned by any current rank-reducing direction (regime
+  direction not spanned by any current rank-reducing direction (regime
   (A); hull-expanding).
 \item \textbf{$k_4$}: context profile outside $\mathcal{H}_\mathcal{S}$ but only
   weakly (small displacement from the boundary; regime (A) but with small
@@ -42,13 +42,13 @@ $\|\theta\|_\infty \le 5$ as $r$.
 For each candidate $k \in \{k_1, \ldots, k_4\}$ and each $t \in \mathcal{T}$ we
 compute:
 \begin{enumerate}
-\item the \textbf{pre-width} $w_r(t; \hat\Sigma_\mathcal{S}, \hat b_\mathcal{S})$;
-\item the \textbf{post-width} $w_r(t; \hat\Sigma_{\mathcal{S}\cup\{k\}},
+\item the pre-width $w_r(t; \hat\Sigma_\mathcal{S}, \hat b_\mathcal{S})$;
+\item the post-width $w_r(t; \hat\Sigma_{\mathcal{S}\cup\{k\}},
   \hat b_{\mathcal{S}\cup\{k\}})$, with $\hat b$ resampled from the calibrated
   prior of Section~\ref{sec:unknown-b}(1);
-\item the \textbf{minimax objective}
+\item the minimax objective
   $\sup_t w_r(t; \Sigma_{\mathcal{S}\cup\{k\}})$;
-\item the \textbf{distance-to-hull} $d_\mathcal{S}(t)$ and
+\item the distance-to-hull $d_\mathcal{S}(t)$ and
   $d_{\mathcal{S}\cup\{k\}}(t)$.
 \end{enumerate}
 
@@ -96,11 +96,11 @@ We run an additional experiment that augments the candidate pool with two
 further candidates to test the theory of Section~\ref{sec:monotonicity}:
 
 \begin{itemize}
-\item \textbf{$k_5$ --- rank-preserving with conflicting outcome.} Same context
+\item \textbf{$k_5$} --- rank-preserving with conflicting outcome. Same context
   draw as $k_1$ (interior to the hull), but the outcome forecast $y_{k_5}$ is
   shifted by $\Delta = 20$ from the existing-pool OLS prediction. Fails (M2);
   passes neither screen.
-\item \textbf{$k_6$ --- rank-expanding with consistent outcome.} Context outside
+\item \textbf{$k_6$} --- rank-expanding with consistent outcome. Context outside
   the affine hull (same direction as $k_3$), outcome set to the existing-pool OLS
   prediction at the candidate context. Passes both (M1) and (M2).
 \end{itemize}
@@ -135,7 +135,7 @@ experiment.}
 
 Two observations make the message of Theorem~\ref{thm:monotone} concrete.
 
-First, in $8/50$ replicates $k_5$ strictly \emph{increases} the worst-case width
+First, in $8/50$ replicates $k_5$ strictly increases the worst-case width
 relative to the existing pool, never $k_1$ through $k_4$ or $k_6$. The mean of
 $k_5$ across the full $50$ replicates is below the existing-pool mean only because
 the shift sometimes happens to land the moment-implied slice in a tighter
@@ -187,11 +187,11 @@ $S=6$ instead of $8$, larger $\|\theta\|_\infty$ bound):
 \begin{itemize}
 \item Hull membership is a sharp screen \emph{when the outcome is consistent}.
   Candidates $k_1$ and $k_2$, whose contexts lie inside the affine hull of the
-  existing pool \emph{and} whose simulated outcomes match the existing-pool fit
+  existing pool and whose simulated outcomes match the existing-pool fit
   (so (M2) holds), produce an exactly identical minimax width to the existing
   pool --- the rank-preserving case~(i) of Theorem~\ref{thm:monotone}, where
   $\mathcal{F}_{\mathcal{S}\cup\{k\}}=\mathcal{F}_\mathcal{S}$. Rank preservation
-  \emph{alone} does not produce this cancellation: the conflicting candidate
+  alone does not produce this cancellation: the conflicting candidate
   $k_5$ is also rank-preserving, yet its inconsistent $b$-shift changes the width
   (Section~\ref{sec:counterexample}). What cancels the location update is
   outcome-consistency, not rank preservation.
@@ -206,7 +206,7 @@ $S=6$ instead of $8$, larger $\|\theta\|_\infty$ bound):
   $b$-prior variants of Section~\ref{sec:unknown-b} agree on the optimal
   candidate up to Monte-Carlo noise. Since lower width is better, ordering by
   worst-case width from widest (worst) to narrowest (best) gives
-  $\{k_1,k_2\}\;>\;k_3\sim k_4$, so the \emph{preferred} candidates are
+  $\{k_1,k_2\}\;>\;k_3\sim k_4$, so the preferred candidates are
   $k_3\sim k_4$, with the tie between them broken stochastically by the target
   draw.
 \item Non-monotonicity occurs, and in these simulations the screens of
@@ -223,7 +223,7 @@ $S=6$ instead of $8$, larger $\|\theta\|_\infty$ bound):
   restriction box and shock magnitude, the fraction of replicates in which an
   unscreened candidate hurts external validity scales roughly linearly with
   both, reaching more than $30\%$ in the most adversarial setting. Restricting
-  the minimax \eqref{eq:minimax} to the \emph{safe} subset
+  the minimax \eqref{eq:minimax} to the safe subset
   (passing the screens together with these side conditions) costs nothing in the
   average optimum we report and, in these runs, eliminates the tail risk of
   doing harm.
