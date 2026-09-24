@@ -18,11 +18,16 @@ estimator, the predictions matched the realized experiments.
 
 Several extensions follow the same lines. Costs enter separably, so a
 budgeted rule ranks candidates by predicted gain per unit cost within
-the screened pool. Choosing several sites at once is a coverage problem. The identification
-gain of a set of candidates is the rank added by their profiles, which
-is a matroid rank function, so greedy selection has the usual submodular
-guarantee for the identification part. The width objective itself should
-be re-solved at the chosen set.
+the screened pool. Choosing several sites at once is harder. The rank added by a set of
+candidates is a matroid rank function, so greedy selection maximizes the
+added rank exactly under a limit on the number of sites. The rank is not
+the target-relevant objective, however. Whether a target enters the
+augmented hull can require two candidates together. For example, a
+target offset along $e_1+e_2$ needs a candidate along $e_1$ and one along
+$e_2$, and neither helps alone. That objective is not submodular, and the
+width objective can behave the same way, so a joint selection should
+evaluate the width map at candidate sets rather than add sites one at a
+time.
 When the candidate's covariate distribution is unknown, the overlap condition of \cref{subsec:augmentation} is the input most
 likely to fail, and a
 worst-case treatment of the candidate's covariate law would make the

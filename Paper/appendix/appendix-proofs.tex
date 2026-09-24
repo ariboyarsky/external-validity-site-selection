@@ -4,7 +4,10 @@
 Throughout the appendix, \cref{ass:model} holds for every site that
 appears, including candidate sites unless the text says otherwise, and
 the eigenvalue condition of \cref{sec:setting} holds for the pool and,
-where an augmented pool appears, for the augmented pool. We write
+where an augmented pool appears, for the augmented pool. The overlap
+condition of \cref{ass:model} holds for every source law that appears;
+adding a site only enlarges the source covariate support, so it
+continues to hold after an addition. We write
 $\Pi_V$ and $\Pi^\perp$ for the orthogonal projections onto $\Vspan$ and
 $\Vspan^\perp$, and $\beta^\circ=(\beta_0^\circ,\beta_1^\circ)$ for the
 true coefficient vector of \eqref{eq:response-model}. Recall from
@@ -48,6 +51,29 @@ the component of the offset orthogonal to $\Vspan$, which gives
 $\range(\CovC)=\Vspan$, so $\ellvec\in\range(\CovC)$ if and only if
 $\Pi^\perp\ellvec=0$, if and only if $\Pi^\perp(\ct-c_1)=0$, if and only
 if $\ct\in c_1+\Vspan=\affhull(\pool)$.
+\end{proof}
+
+\subsection{Proof of \texorpdfstring{\cref{cor:width-offset}}{Corollary 1}}
+\label{app:proof-width-offset}
+
+\begin{proof}
+By the second fact above, every $\beta\in\feasset$ has
+$\beta_a=\beta_a^\circ+z_a$ with $z_a\in\Vspan^\perp$. Write
+$\shift^\circ=\beta_1^\circ-\beta_0^\circ$ and $\nu=z_1-z_0\in\Vspan^\perp$.
+Then
+\[
+  \bT+\ellvec^\top(\beta_1-\beta_0)
+  =\bigl(\bT+\ellvec^\top\shift^\circ\bigr)+(\Pi^\perp\ellvec)^\top\nu
+  =\psi_T+\bigl(\Pi^\perp(\ct-c_1)\bigr)^\top\nu,
+\]
+using $\ellvec^\top\nu=(\Pi^\perp\ellvec)^\top\nu$ and \cref{lem:loading}.
+The set of $\nu$ that arise from $\beta\in\feasset$ is determined by
+$\beta^\circ$ and $\restrset$ alone. Hence the supremum and the infimum of
+the objective over $\feasset$ are $\psi_T$ plus the supremum and the
+infimum of $(\Pi^\perp(\ct-c_1))^\top\nu$ over that set, and their
+difference depends on the target only through $\Pi^\perp(\ct-c_1)$. When
+$\feasset$ is empty or an endpoint is infinite, the same statement holds
+for the extended value.
 \end{proof}
 
 \subsection{Proof of \texorpdfstring{\cref{prop:dichotomy}}{Proposition 1}}
@@ -120,6 +146,24 @@ $\Pi^\perp\ellvec\neq0$ and trivially when it is zero. The width is
 therefore $2\rho_\tau\norm{\Pi^\perp\ellvec}_2$, and
 \cref{lem:loading} identifies the last factor with
 $\dist(\ct,\affhull(\pool))$.
+
+For the augmented pool, the same argument applies with $\Vspan'$ in place
+of $\Vspan$, by \cref{prop:hull,prop:refinement}. By \eqref{eq:app-normal}
+the equality system for the shift is
+$\CovC\shift=\CovC\shift^\circ$, so the minimum-norm solution is
+$\bar\shift=\Pi_V\shift^\circ$, and for the augmented pool it is
+$\Pi_{\Vspan'}\shift^\circ=\Pi_V\shift^\circ
++(\newdir{k}^\top\shift^\circ)\newdir{k}$, whose squared norm is
+$\norm{\bar\shift}_2^2+(\newdir{k}^\top\shift^\circ)^2$. The cap on the
+augmented program is feasible when $\tau\geq\norm{\Pi_{\Vspan'}\shift^\circ}_2$,
+which holds whenever $\norm{\shift^\circ}_2\leq\tau$. By
+\cref{prop:refinement} the augmented endpoints equal the base objective
+over $\feasset'$, and by \cref{cor:width-offset} applied to the augmented
+pool the width depends on the target only through its offset from
+$\affhull(\pool\cup\{k\})$. This gives \eqref{eq:width-distance-aug}.
+The first factor in \eqref{eq:width-distance-aug} is largest when
+$\newdir{k}^\top\shift^\circ=0$, which is the claim about the neutral
+forecast.
 \end{proof}
 
 \subsection{Proof of \texorpdfstring{\cref{prop:refinement}}{Proposition 4}}
@@ -180,6 +224,73 @@ The two programs have the same objective value at every feasible point,
 hence the same endpoints.
 \end{proof}
 
+\subsection{Proof of \texorpdfstring{\cref{thm:monotone}}{Theorem 1}}
+\label{app:proof-monotone}
+
+\begin{proof}
+By \cref{prop:refinement}, $\feasset'$ is either $\feasset$ or
+$\feasset$ intersected with the two hyperplanes through
+$\beta^\circ$, so $\feasset'\subseteq\feasset$ in both cases. The true
+vector $\beta^\circ$ satisfies the equality systems of both pools by
+\eqref{eq:app-normal} and lies in $\restrset$ by hypothesis, so
+$\beta^\circ\in\feasset'$ and both programs are feasible. By
+\cref{prop:refinement} the augmented-pool endpoints equal the base
+objective optimized over $\feasset'$, so shrinking the feasible set
+weakly raises the infimum and weakly lowers the supremum at every
+target, which is \eqref{eq:monotone}, with equality throughout in the
+rank-preserving case where $\feasset'=\feasset$. Since
+$\beta^\circ\in\feasset'$, the value
+$\psi_T=\bT+\ellvec^\top(\beta^\circ_1-\beta^\circ_0)$ lies between the
+augmented endpoints.
+\end{proof}
+
+\subsection{Proof of \texorpdfstring{\cref{prop:undetectable}}{the proposition on undetectable conflict}}
+\label{app:proof-undetectable}
+
+\begin{proof}
+Let $\gamma=\newdir{k}/h_k$ and $\alpha=-c_1^\top\gamma$. For a pool
+site $s$, $c_s-c_1\in\Vspan$ is orthogonal to $\newdir{k}$, so
+$\alpha+c_s^\top\gamma=(c_s-c_1)^\top\gamma=0$. For the candidate,
+$\cand{k}-c_1=\Pi_V(\cand{k}-c_1)+h_k\newdir{k}$, so
+$\alpha+{\cand{k}}^\top\gamma=h_k\newdir{k}^\top\newdir{k}/h_k=1$. The
+function $c\mapsto\alpha+c^\top\gamma$ therefore equals the indicator of
+the candidate on the augmented set of profiles. Since $C$ takes only
+these values in the augmented pool,
+\[
+  \E[Y(a)\mid X,C]
+  =g_a(X)+C^\top\beta_a^\circ+\Delta_a\one\{C=\cand{k}\}
+  =\bigl(g_a(X)+\Delta_a\alpha\bigr)+C^\top\bigl(\beta_a^\circ+\Delta_a\gamma\bigr),
+\]
+which is \eqref{eq:shift-absorbed}. The augmented source law therefore
+satisfies \cref{ass:model} with $(\widetilde g_a,\widetilde\beta_a)$, and
+\cref{prop:refinement} applies with $\widetilde\beta$ in place of
+$\beta^\circ$. Because $\newdir{k}\perp\Vspan$,
+$\Bspan^\top\widetilde\beta_a=\Bspan^\top\beta_a^\circ$, and
+$\newdir{k}^\top\widetilde\beta_a=\reveal{a}{k}+\Delta_a/h_k$. The
+augmented feasible set is
+$(\widetilde\beta_a+\Vspan'^\perp)$ intersected over the arms and with
+$\restrset$, and $\widetilde\beta_a+\Vspan'^\perp
+=(\beta_a^\circ+\Vspan^\perp)\cap\{\newdir{k}^\top\beta_a
+=\reveal{a}{k}+\Delta_a/h_k\}$, as in the proof of
+\cref{prop:refinement}.
+
+For a target in $\affhull(\pool\cup\{k\})$ the augmented program has
+width zero, and its value is the target effect of the model-consistent
+world $(\widetilde g,\widetilde\beta)$,
+$\E_{\tP}[\widetilde g_1-\widetilde g_0]+\ct^\top(\widetilde\beta_1-\widetilde\beta_0)$.
+The true effect is $\E_{\tP}[g_1-g_0]+\ct^\top(\beta_1^\circ-\beta_0^\circ)$.
+Their difference is
+$(\Delta_1-\Delta_0)(\alpha+\ct^\top\gamma)
+=(\Delta_1-\Delta_0)(\ct-c_1)^\top\newdir{k}/h_k$, which is
+\eqref{eq:shift-bias}.
+
+For the last claim in the text, suppose $\cand{k}=\sum_sw_sc_s$ with
+$\sum_sw_s=1$. Any affine function $f$ of $c$ then satisfies
+$f(\cand{k})=\sum_sw_sf(c_s)$, so $f$ cannot equal one at $\cand{k}$ and
+zero at every $c_s$. A constant shift at an interior candidate is
+therefore not of the form \eqref{eq:response-model}.
+\end{proof}
+
 \subsection{Proof of \texorpdfstring{\cref{prop:omitted-bias}}{Proposition on omitted-moderator bias}}
 \label{app:proof-omitted-bias}
 
@@ -192,13 +303,15 @@ $\widetilde U=U-\muU(X)$. Randomization and
   =\cov(C\mid X)\theta+\cov(C,U\mid X)\gamma.
 \]
 Taking expectations gives \eqref{eq:omitted-moment-shift}. Let
-$q=\CUcov\gamma$. Every solution of \eqref{eq:omitted-normal-equation} has
-the form
+$q=\CUcov\gamma$. Since $\cov(C,U\mid X)=\E[\widetilde C\,\widetilde U^\top\mid X]$
+and every $\widetilde C$ lies in $\Vspan$, every column of $\CUcov$ lies in
+$\Vspan$, so $q\in\Vspan=\range(\CovC)$ by the eigenvalue condition.
+Hence \eqref{eq:omitted-normal-equation} has a solution, and every
+solution has the form
 \[
   \theta^C=\theta+\CovC^\dagger q+z,
-  \qquad z\in\kernel(\CovC),
-\]
-because $q\in\Vspan=\range(\CovC)$. The true target effect is
+  \qquad z\in\kernel(\CovC).
+\] The true target effect is
 \[
   \psi_T=\bT+\ellvec^\top\theta+\ellU^\top\gamma,
 \]
@@ -222,63 +335,88 @@ $\cand{k}=\sum_s w_sc_s$. The remaining term is
   \left(u_k-\sum_s w_su_s\right)^\top\gamma
   =\udisc{k}^\top\gamma,
 \]
-which proves \eqref{eq:omitted-contrast}.
+which proves \eqref{eq:omitted-contrast} for every $x\in\mathcal X_k$,
+where all the conditional expectations are defined.
 
-The candidate's observed contrast therefore adds exactly the equality
-$\udisc{k}^\top\gamma=\rho_k$ to the source moment and restriction system,
-which proves \eqref{eq:omitted-feasible-update}. The true parameter belongs to
-both sets by assumption, so the candidate set is a subset of the source set
-and both contain the truth. The infimum of the target functional can only
+The set \eqref{eq:omitted-feasible-update} is defined by adding the
+equality $\udisc{k}^\top\gamma=\rho_k$ to $\ovbset$, so it is a subset of
+$\ovbset$. The true parameter satisfies this equality by
+\eqref{eq:omitted-contrast} and belongs to $\ovbset$ by assumption, so it
+belongs to both sets. The infimum of the target functional can only
 increase and its supremum can only decrease after intersecting with this
 hyperplane, proving \eqref{eq:omitted-monotonicity}. If $\udisc{k}=0$, the
 contrast is zero under the model and the added equality is redundant, so the
 sets and widths are equal. If the hyperplane cuts a target-relevant direction,
 one of the endpoint programs changes strictly.
-\end{proof}
 
-\subsection{Proof of \texorpdfstring{\cref{thm:monotone}}{Theorem 1}}
-\label{app:proof-monotone}
-
-\begin{proof}
-By \cref{prop:refinement}, $\feasset'$ is either $\feasset$ or
-$\feasset$ intersected with the two hyperplanes through
-$\beta^\circ$, so $\feasset'\subseteq\feasset$ in both cases. The true
-vector $\beta^\circ$ satisfies the equality systems of both pools by
-\eqref{eq:app-normal} and lies in $\restrset$ by hypothesis, so
-$\beta^\circ\in\feasset'$ and both programs are feasible. By
-\cref{prop:refinement} the augmented-pool endpoints equal the base
-objective optimized over $\feasset'$, so shrinking the feasible set
-weakly raises the infimum and weakly lowers the supremum at every
-target, which is \eqref{eq:monotone}, with equality throughout in the
-rank-preserving case where $\feasset'=\feasset$. Since
-$\beta^\circ\in\feasset'$, the value
-$\psi_T=\bT+\ellvec^\top(\beta^\circ_1-\beta^\circ_0)$ lies between the
-augmented endpoints.
+Finally, we justify the claim at the start of \cref{sec:omitted-moderator}
+that, with affinely independent profiles, the pooled normal equation
+carries the same information as the site-level contrasts. Write
+$\tau_s=\E[Y(1)-Y(0)\mid X,C=c_s,U=u_s]-g_\Delta(X)$, which does not depend
+on $X$ under \eqref{eq:omitted-response-model}, and $p_s(x)$ for the site
+probabilities. Then
+$\cov(C,\pseudo{1}-\pseudo{0}\mid X)=\sum_sp_s(X)(c_s-\muC(X))(\tau_s-\tau_1)$,
+so $\dmom{1}-\dmom{0}=M\Delta\tau$ with $\Delta\tau=(\tau_s-\tau_1)_{s\geq2}$
+and $M=\E_\sP[\sum_{s\geq2}p_s(X)(c_s-\muC(X))e_{s-1}^\top]$, where
+$e_1,\ldots,e_{S-1}$ are the standard basis vectors of $\R^{S-1}$ and
+the site-1 term drops out because $\sum_sp_s(X)(c_s-\muC(X))=0$. This is a linear map from
+$\R^{S-1}$ into $\Vspan$. The same computation gives
+$\CovC\theta+\CUcov\gamma=M(D\theta+D_U\gamma)$, where $D$ and $D_U$ stack
+the rows $(c_s-c_1)^\top$ and $(u_s-u_1)^\top$ for $s\geq2$. Taking
+$\gamma=0$ shows $\CovC=MD$ on $\Vspan$. The eigenvalue condition makes
+$\CovC$ invertible on $\Vspan$, and $\dim\Vspan=S-1$ under affine
+independence, so $M$ is invertible as a map onto $\Vspan$. The normal
+equation is therefore equivalent to $D\theta+D_U\gamma=\Delta\tau$, the
+$S-1$ site-level contrasts.
 \end{proof}
 
 \subsection{The dual price of the forecast}
 \label{app:dual-price}
 
-For completeness we record the sensitivity statement behind
-\eqref{eq:dual-pricing}. Fix one polyhedral branch and a target, and
-consider the lower endpoint program of \eqref{eq:width-map} as a
-function of the added right-hand side $y=(y_0,y_1)$,
+We record the sensitivity statements behind
+\eqref{eq:dual-pricing} and \eqref{eq:width-upper}. Fix one polyhedral
+branch $\{G\beta\leq h\}$ and a target, and consider the endpoint
+programs of \eqref{eq:width-map} as functions of the added right-hand
+side $y=(y_0,y_1)$,
 \[
-  v_-(y)=\bT+\min_{\beta}\bigl\{\ellvec^\top(\beta_1-\beta_0):\
+  v_\mp(y)=\bT+\operatorname*{min/max}_{\beta}\bigl\{\ellvec^\top(\beta_1-\beta_0):\
   \CovC\beta_a=\dmom{a},\
   \newdir{k}^\top\beta_a=y_a,\ a\in\{0,1\},\ G\beta\leq h\bigr\}.
 \]
-This is a linear program whose right-hand side is affine in $y$, so
-$v_-$ is a piecewise linear convex function of $y$ on its feasibility
-domain, and standard linear-programming duality gives, at any $y$ where
-the optimal basis is unique, $\partial v_-/\partial y_a
-=\lambda^{u}_{-,a}$, the optimal multiplier on the row
-$\newdir{k}^\top\beta_a=y_a$ \citep[Chapter~4]{bonnans2013perturbation}.
-The upper endpoint is the corresponding concave value with multipliers
-$\lambda^{u}_{+,a}$. At a kink, the left and right slopes are the
-extreme multipliers, and the exact range of predicted intervals over
-$|y_a-\what y_a|\leq B$ is obtained by re-solving the two programs at
-the corners, which is how the simulations and the case study evaluate
-forecast uncertainty. For a finite union of branches the value is the
-minimum or maximum of finitely many such functions and the same
-statements hold branchwise.
+Both are linear programs whose right-hand side is affine in $y$. The
+set of $y$ where they are feasible is $\mathcal Y_k$, the projection of a
+polyhedron, which is a polyhedron. Whether a linear program is bounded
+does not depend on its right-hand side once it is feasible, so on
+$\mathcal Y_k$ both values are finite or both programs are unbounded for
+every $y$. When they are finite, $v_-$ is a piecewise linear convex
+function of $y$ and $v_+$ is a piecewise linear concave function, and the
+set of optimal multipliers on the rows $\newdir{k}^\top\beta_a=y_a$ is
+the subdifferential of $v_-$ and the superdifferential of $v_+$,
+respectively \citep[Chapter~4]{bonnans2013perturbation}. Where the
+optimal multipliers are unique, the values are differentiable and
+\eqref{eq:dual-pricing} holds to first order.
+
+The width $\width_k(\ct;y)=v_+(y)-v_-(y)$ is therefore concave on
+$\mathcal Y_k$, and for any optimal multipliers at $\what y$ the vector
+$\lambda^u_{+}-\lambda^u_{-}$ is a supergradient. This gives
+\eqref{eq:width-upper} for every $y\in\mathcal Y_k$. Over a polytope
+$\mathcal B=\{y:|y_a-\what y_a|\leq B\}\cap\mathcal Y_k$, the following
+hold.
+\begin{itemize}
+\item The minimum of the concave width, the maximum of the convex $v_-$,
+  and the minimum of the concave $v_+$ are attained at vertices of
+  $\mathcal B$.
+\item The maximum of the width, the minimum of $v_-$, and the maximum of
+  $v_+$ can be attained in the interior of $\mathcal B$. They are found by
+  solving one linear program in $(\beta,y)$ jointly for each of $v_-$ and
+  $v_+$, and by maximizing the concave width, which is a convex program.
+\end{itemize}
+The vertices of $\mathcal B$ are generally not the corners of the box,
+because $\mathcal Y_k$ can cut the box.
+
+For a finite union of branches, the lower endpoint is the minimum of the
+branch values and the upper endpoint is the maximum. These are not
+convex or concave in general, so the global statements above hold for
+each branch separately but not for the union. The width of the union
+can still be computed exactly on a grid of $y$ values or by enumerating
+branches.

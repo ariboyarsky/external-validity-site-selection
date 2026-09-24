@@ -26,7 +26,9 @@ For $a\in\{0,1\}$,
 where $g_a$ is unrestricted and $\beta_a\in\R^p$ is fixed. Treatment is
 randomized within each source site, consistency holds, the same
 functions and coefficients govern the target site, and all second
-moments used below are finite.
+moments used below are finite. The target covariate law overlaps the
+source, in the sense that $\tP$ is absolutely continuous with respect to
+the source covariate law $\sP_X$.
 \end{assumption}
 
 Write $\pseudo{a}=\one\{A=a\}Y/e_a(X,C)$ for the inverse-probability
@@ -62,9 +64,9 @@ span of the centered site profiles,
   \label{eq:span}
 \end{equation}
 so $\range(\CovC)\subseteq\Vspan$ and $\rankop(\CovC)\leq S-1$. When
-$p>S-1$ the normal equations leave fixed-effect directions undetermined,
-and $\psi_T$ is point identified if and only if
-$\ellvec\in\range(\CovC)$.
+$r<p$, which always holds when $p>S-1$, the normal equations leave
+fixed-effect directions undetermined, and $\psi_T$ is point identified
+if and only if $\ellvec\in\range(\CovC)$.
 
 The key innovation of this method is that the analyst is able to encode substantive knowledge in a restriction set
 $\restrset$ for the stacked vector
@@ -98,10 +100,10 @@ $\xired{a}=\Bspan^\top\dmom{a}$. The equality system in
 $\Om\Bspan^\top\beta_a=\xired{a}$, which has full row rank when the
 smallest eigenvalue of $\Om$ is positive. We assume this eigenvalue
 condition throughout, so that
-$\range(\CovC)=\Vspan$ and $\kernel(\CovC)=\Vspan^\perp$. The second component is the estimator as defined by Algorithm 1. This algorithm first estimates the five inputs
+$\range(\CovC)=\Vspan$ and $\kernel(\CovC)=\Vspan^\perp$. The second is the estimator of Algorithm~1 in \citet{boyarsky2026}. This algorithm first estimates the five inputs
 $\Gam=(\bT,\ellvec,\CovC,\dmom{0},\dmom{1})$ with cross-fitted
 orthogonal scores, fits $\muC$ through a joint site-probability
 classifier so that every fitted residual lies in $\Vspan$ exactly, pools
 the scores, and solves each bound program once in the reduced
-coordinates. We call it the input-debiased estimator, in contrast to the one-step
-estimator also studied in \citet{boyarsky2026}. Every estimate reported in this paper uses it.
+coordinates. We call it the rank consistent estimator, as in \citet{boyarsky2026}, where it is contrasted with a one-step
+estimator. Every estimate reported in this paper uses it.

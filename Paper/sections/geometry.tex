@@ -46,6 +46,26 @@ so the model allows linear extrapolation along observed directions.
 Identification fails only in a direction that no combination of observed
 sites reaches.
 
+The same projection governs the width under any restriction. On the
+feasible set the projection of the treatment shift onto $\Vspan$ is
+fixed, so only the part of the loading outside $\Vspan$ can move the
+objective.
+
+\begin{corollary}[The width depends on the target only through its offset]
+\label{cor:width-offset}
+Under the conditions of \cref{lem:loading} and for any restriction set
+$\restrset$, the width $\width$ of \eqref{eq:endpoint-programs} depends
+on the target $(\tP,\ct)$ only through $\Pi^\perp(\ct-c_1)$. In
+particular it does not depend on the target covariate law $\tP$.
+\end{corollary}
+
+\noindent
+The endpoints themselves do depend on $\tP$ through $\bT$ and the
+in-span part of $\ellvec$, but both endpoints move by the same amount.
+\cref{cor:width-offset} is what justifies writing the width as
+$\width(\ct;\pool)$ and stating the target region below as a set of
+profiles.
+
 Without restrictions, partial identification in the response model
 reduces to a dichotomy. \citet{boyarsky2026} formalize this.
 
@@ -61,6 +81,11 @@ Let $\restrset=\R^{2p}$. Under the conditions of \cref{lem:loading},
   \label{eq:dichotomy}
 \end{equation}
 \end{proposition}
+
+\noindent
+With $\restrset=\R^{2p}$ the program is always feasible under the model,
+since $\beta^\circ$ satisfies the moment equations, so the width is never
+undefined.
 
 A candidate site enters this geometry through one object only, the
 direction its profile adds to the span.
@@ -80,9 +105,14 @@ unchanged.
 \end{proposition}
 
 Together with \cref{prop:dichotomy}, this gives the unrestricted
-selection rule. A candidate collapses an infinite width at target $\ct$ to zero exactly
-when its profile lies outside the hull in the direction of the target's
-offset from the hull. Only the direction of $\newdir{k}$ enters. How far outside the hull the candidate sits does
+selection rule. A candidate collapses an infinite width at target $\ct$
+to zero exactly when the target's offset from the hull,
+$\Pi^\perp(\ct-c_1)$, is a nonzero multiple of $\newdir{k}$. When the
+offsets of the targets span two or more directions outside $\Vspan$, no
+single candidate gives point identification, and every candidate leaves
+the unrestricted minimax width at $+\infty$. The unrestricted rule then
+cannot rank candidates, which is one reason the selection problem needs
+restrictions. Only the direction of $\newdir{k}$ enters. How far outside the hull the candidate sits does
 not change what becomes identified, because a fixed-effects model pins
 the same coefficient combination from a small step along a direction as
 from a large one. Distance along the new direction affects the precision of the added
@@ -110,10 +140,25 @@ $\tau\geq\norm{\bar\shift}_2$. Under the conditions of
 \end{proposition}
 
 \noindent
-The same formula holds for the augmented pool with
-$\affhull(\pool\cup\{k\})$ in place of $\affhull(\pool)$, so under this restriction the minimax problem \eqref{eq:minimax} says to
-choose the candidate whose profile, added to the hull, leaves no target
-in $\targset$ far from it. The relation between the moment geometry and
-the context geometry is exact, with no side condition beyond overlap,
-because \cref{lem:loading} identifies the unrestricted direction of the
-loading with the target's offset from the hull.
+The same formula holds for the augmented pool, with two changes. The
+distance is to $\affhull(\pool\cup\{k\})$, and the minimum-norm shift
+becomes $\Pi_{\Vspan'}\shift^\circ$, where $\shift^\circ$ is the true
+shift. Writing $\newdir{k}$ with unit length,
+\begin{equation}
+  \width(\ct;\pool\cup\{k\})
+  =2\sqrt{\tau^2-\norm{\bar\shift}_2^2-(\newdir{k}^\top\shift^\circ)^2}\;
+  \dist\bigl(\ct,\affhull(\pool\cup\{k\})\bigr),
+  \label{eq:width-distance-aug}
+\end{equation}
+provided the true shift satisfies the cap (\cref{app:proof-distance}).
+The first factor depends on the candidate through the unknown scalar
+$\newdir{k}^\top\shift^\circ=\reveal{1}{k}-\reveal{0}{k}$ that its
+experiment reveals. So under this restriction the ranking of candidates
+by \eqref{eq:minimax} is not a ranking by distance alone. Two statements
+do hold before the experiment. First, at the neutral forecast of
+\cref{sec:selection}, which sets this scalar to zero, the first factor is
+the same for every candidate, and the minimax rule chooses the candidate
+whose profile, added to the hull, leaves no target in $\targset$ far
+from it. Second, because the first factor is largest at zero, the
+width at the neutral forecast is an upper bound on each candidate's
+realized width under this restriction.

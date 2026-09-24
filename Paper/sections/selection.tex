@@ -9,7 +9,7 @@ feasible set passes through two scalars.
 \begin{proposition}[Adding a site adds two equality constraints]
 \label{prop:refinement}
 Suppose \cref{ass:model} holds for the pool and for candidate $k$, and
-the eigenvalue condition holds for the augmented pool. Let
+the eigenvalue condition holds for the pool and for the augmented pool. Let
 $\feasset'$ denote the feasible set \eqref{eq:feasible-set} built from
 the augmented moments. If $\cand{k}\notin\affhull(\pool)$, then, with
 $\newdir{k}$ normalized to unit length,
@@ -18,16 +18,19 @@ $\newdir{k}$ normalized to unit length,
   =\feasset\cap
   \bigl\{\beta:\ \newdir{k}^\top\beta_a=\reveal{a}{k},\ a\in\{0,1\}\bigr\},
   \qquad
-  \reveal{a}{k}=\newdir{k}^\top\beta_a,
+  \reveal{a}{k}=\newdir{k}^\top\beta_a^\circ,
   \label{eq:refinement}
 \end{equation}
-where $\reveal{a}{k}$ is identified by the augmented pool but not by
-$\pool$. If $\cand{k}\in\affhull(\pool)$, then $\feasset'=\feasset$.
-The bounds \eqref{eq:endpoint-programs} built from the augmented moments
-equal the bounds built from the base objective $(\bT,\ellvec)$ over
-$\feasset'$: the changes in $\bT$ and $\ellvec$ induced by re-pooling
-shift both endpoints by the same amount tied to the re-decomposition of
-$\psi_T$, and the target effect interval is unchanged by them.
+where $\beta^\circ=(\beta_0^\circ,\beta_1^\circ)$ is the true
+coefficient vector and $\reveal{a}{k}$ is identified by the augmented
+pool but not by $\pool$. If $\cand{k}\in\affhull(\pool)$, then
+$\feasset'=\feasset$. Re-pooling also changes $\bT$ and $\ellvec$ to
+$\bT'$ and $\ellvec'$. These changes do not affect the bounds. At every
+$\beta\in\feasset'$ the augmented objective
+$\bT'+\ellvec'^\top(\beta_1-\beta_0)$ equals the base objective
+$\bT+\ellvec^\top(\beta_1-\beta_0)$, so the bounds
+\eqref{eq:endpoint-programs} built from the augmented moments equal the
+bounds built from $(\bT,\ellvec)$ over $\feasset'$.
 \end{proposition}
 
 \cref{prop:refinement} is the basis of the design rule. The direction
@@ -46,21 +49,55 @@ Define the design-time width map
   \feasset\cap\{\newdir{k}^\top\beta_a=y_a,\ a\in\{0,1\}\},
   \label{eq:width-map}
 \end{equation}
-a pair of linear programs the investigator can solve before the
-experiment, for any conjectured $(y_0,y_1)$. Before the experiment we evaluate it at a
-forecast. The neutral forecast extends the pool's own fit. The minimum-norm
-solution $\what\beta_a$ of the estimated equality system sets the
-unidentified coordinates to zero, so its forecast is
-$\what y_a=\newdir{k}^\top\what\beta_a=0$. Any substantive prior that
-maps the candidate's context to expected outcomes can replace it. We
-call $\width_k(\ct;\what y_0,\what y_1)$ the predicted width and use it,
+which the investigator can compute before the experiment for any
+conjectured $(y_0,y_1)$. When $\restrset$ is a polyhedron this is a pair
+of linear programs. For a finite union of polyhedra it is one pair per
+polyhedron, and for the norm cap of \cref{prop:distance} it is a pair of
+second-order cone programs. Before the experiment we evaluate the map at
+a forecast.
+
+The neutral forecast extends the pool's own fit. The minimum-norm
+solution $\what\beta_a$ of the estimated equality system lies in
+$\Vspan$, so its forecast is
+$\what y_a=\newdir{k}^\top\what\beta_a=0$. In terms of outcomes, this
+forecast says that the candidate's arm means equal the pool's fit at the
+point of $\affhull(\pool)$ closest to the candidate's profile, so that
+moving off the hull along $\newdir{k}$ has no effect. The neutral forecast does not depend on where the origin of
+the context coordinates is placed, but it does depend on how the columns
+of $C$ are scaled, since rescaling a column changes which solution has
+minimum norm. It can also be incompatible with the restrictions, when no
+$\beta\in\feasset$ has $\newdir{k}^\top\beta_a=0$ for both arms. In
+that case we use the feasibility-aware neutral forecast
+\begin{equation}
+  (\what y_0,\what y_1)
+  \in\arg\min\Bigl\{|y_0|+|y_1|:\
+  (y_0,y_1)\in\mathcal Y_k\Bigr\},
+  \qquad
+  \mathcal Y_k=\bigl\{(\newdir{k}^\top\beta_0,\newdir{k}^\top\beta_1):\
+  \beta\in\feasset\bigr\},
+  \label{eq:feasible-forecast}
+\end{equation}
+the pair of revealed scalars closest to zero, in the $\ell_1$ norm, that
+the pool and the restrictions allow. The set $\mathcal Y_k$ is a
+polyhedron when $\restrset$ is a polyhedron, so
+\eqref{eq:feasible-forecast} is a small linear program. For a finite
+union of polyhedra we solve it on each polyhedron and keep the solution
+with the smallest norm. It coincides with the neutral forecast whenever zero
+is feasible. Any substantive prior that maps the candidate's context to
+expected outcomes can replace it. We call
+$\width_k(\ct;\what y_0,\what y_1)$ the predicted width and use it,
 maximized over $\targset$, as the score in \eqref{eq:minimax}.
 
 \paragraph{Pricing the forecast error.}
-The prediction is wrong only to the extent that the forecast is wrong.
-The sensitivity follows from a standard envelope argument. At a bound
-with a unique optimizer and dual, the derivative of the bound in $y_a$
-is the multiplier on the added row, so for small errors
+In population, the prediction is wrong only to the extent that the
+forecast is wrong, because by \cref{prop:refinement} the revealed
+scalars are the only unknown inputs. In a sample, the refit on the
+augmented pool also re-estimates the in-span coordinates
+$\Bspan^\top\beta_a$, so the realized interval differs from the
+prediction for a second reason as well. The sensitivity to the forecast
+follows from a standard envelope argument. At a bound whose optimal dual
+is unique, the derivative of the bound in $y_a$ is the multiplier on the
+added row, so for small errors
 \begin{equation}
   v_j(y)\approx v_j(\what y)
   +\sum_{a\in\{0,1\}}\lambda^{u}_{j,a}\,(y_a-\what y_a),
@@ -68,15 +105,40 @@ is the multiplier on the added row, so for small errors
   \label{eq:dual-pricing}
 \end{equation}
 where $\lambda^{u}_{j,a}$ is bound $j$'s dual variable on the constraint
-$\newdir{k}^\top\beta_a=y_a$. This is the same envelope argument that the inference theory of the
-companion paper uses, applied to the added rows. An investigator who can bound the forecast error, say
-$|y_a-\what y_a|\leq B$, obtains a range of predicted intervals by
-adding $\sum_a(|\lambda^{u}_{-,a}|+|\lambda^{u}_{+,a}|)\,B$ to the
-predicted width, or exactly by re-solving \eqref{eq:width-map} on a grid
-of $y$ values, since the map is piecewise linear in $y$. In our
+$\newdir{k}^\top\beta_a=y_a$. This is the same envelope argument that
+the inference theory of the companion paper uses, applied to the added
+rows.
+
+For a polyhedral $\restrset$ the approximation gives more than a local
+statement. The lower endpoint is convex in $y$ and the upper endpoint is
+concave, so the width map \eqref{eq:width-map} is concave in $y$ on the
+set $\mathcal Y_k$ where it is finite (\cref{app:dual-price}). A concave
+function lies below each of its tangent planes. The multipliers
+$\lambda^{u}_{j,a}$ at $\what y$ give such a tangent plane even when
+they are not unique, because any optimal multipliers of the upper
+program form a supergradient of $v_+$ and any optimal multipliers of the
+lower program form a subgradient of $v_-$. So for every
+$y\in\mathcal Y_k$,
+\begin{equation}
+  \width_k(\ct;y)\leq\width_k(\ct;\what y)
+  +\sum_{a\in\{0,1\}}\bigl(\lambda^{u}_{+,a}-\lambda^{u}_{-,a}\bigr)
+  (y_a-\what y_a),
+  \label{eq:width-upper}
+\end{equation}
+and an investigator who can bound the forecast error, say
+$|y_a-\what y_a|\leq B$, obtains the upper bound
+$\width_k(\ct;\what y)+B\sum_a|\lambda^{u}_{+,a}-\lambda^{u}_{-,a}|$ on
+the width at the true scalars, which lie in $\mathcal Y_k$ under the
+model. This bound holds for all errors of that size, not only small
+ones. The same argument gives no lower bound. The width can
+fall faster than the tangent plane, and it reaches its minimum over the
+error box at a vertex of the box intersected with $\mathcal Y_k$. The
+exact range of predicted widths is obtained by maximizing and minimizing
+the concave map over that polytope. The minimum is at a vertex and the
+maximum can be in the interior (\cref{app:dual-price}). In our
 simulations and in the case study the ranking of candidates is stable
-across these variants, because the ranking depends on which direction is resolved and not on
-the forecast level.
+across these variants, because the ranking depends on which direction is
+resolved and not on the forecast level.
 
 \paragraph{Three kinds of candidate.}
 The three categories from the companion paper's leave-one-out exercise
@@ -90,12 +152,14 @@ also describe what a candidate can do.
   set is unchanged, and the candidate's value is statistical. More context
 variation inside $\Vspan$ tightens the estimates and the standard errors
 of the same bounds. Interior sites add precision but not identification.
-\item \emph{Feasibility.} A candidate can also restore or destroy
-  feasibility. If the pool's program is infeasible under $\restrset$,
-  no addition restores it, since $\feasset'\subseteq\feasset$ under the
-  model. But an addition whose data conflict with the model can make a feasible
-program infeasible. An infeasible augmented program then signals that
-conflict, not a property of the candidate.
+\item \emph{Feasibility.} Under the model with $\beta^\circ\in\restrset$
+  both programs are feasible, because both feasible sets contain
+  $\beta^\circ$. An infeasible program, before or after the addition,
+  therefore means that the model fails for some site in the pool or that
+  $\beta^\circ\notin\restrset$. It is not a property of the candidate.
+  Once the model fails, $\feasset'\subseteq\feasset$ no longer holds, so
+  a conflicting addition can make a feasible program infeasible and can
+  also make an infeasible program feasible.
   \cref{sec:monotonicity} takes this up.
 \end{itemize}
 
@@ -104,7 +168,7 @@ The rule we use in \cref{sec:simulation,sec:case-study} has four steps.
 \begin{enumerate}
 \item For each candidate, test $\cand{k}$ against $\affhull(\pool)$.
 \item For each candidate that expands the hull, solve \eqref{eq:width-map}
-  at the forecast over $\targset$.
+  at the forecast \eqref{eq:feasible-forecast} over $\targset$.
 \item Report the minimax score, the resolved direction, and the dual
   prices of the forecast.
 \item Break ties, and rank interior candidates, by predicted precision

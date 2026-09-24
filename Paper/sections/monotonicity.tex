@@ -20,6 +20,10 @@ particular the augmented program is feasible and its interval still
 contains the true target effect $\psi_T$.
 \end{theorem}
 
+\cref{thm:monotone} is a statement about population bounds. Estimated
+widths can still increase after an addition because of sampling error,
+even when the model holds.
+
 The assumptions of \cref{thm:monotone} show where it can fail. Every
 assumption is a modeling commitment about the new site. The new site
 must share the response surfaces $g_a$ and the fixed effects $\beta_a$
@@ -32,24 +36,33 @@ translated slice at a different cross-section, and the width can move
 either way.
 
 \paragraph{A two-site example.}
-Take one context coordinate pair, $p=2$, and two source sites with
-profiles $c_1=(0,0)$ and $c_2=(1,1)$, the two-site configuration
-\citet{boyarsky2026} use to illustrate partial identification. The pool identifies one combination of the
-treatment shift, $\delta_1+\delta_2=2$ say, and leaves the direction
-$(1,-1)$ free. Impose the box $\shift\in[0,2]\times[-1,1]$ and take a
-target that loads on $\delta_1$ alone. The feasible segment is
-$\{(\delta_1,2-\delta_1):\delta_1\in[1,2]\}$ and the width is $1$. Now
-add a third site on the same line through the profiles whose experiment
-implies $\delta_1+\delta_2=0$, in conflict with the pool. Pooling the
-two inconsistent moment conditions with equal weight moves the
-identified value of $\delta_1+\delta_2$ to the compromise $1$. The new
-feasible segment is $\{(\delta_1,1-\delta_1):\delta_1\in[0,2]\}$ and the
-width is $2$. A rank-preserving addition doubled the width without changing the
-restriction set. Panel (A) of \cref{fig:monotonicity}
-draws this example.
+Take $p=2$ and two source sites with profiles $c_1=(0,0)$ and
+$c_2=(1,1)$, the configuration \citet{boyarsky2026} use to illustrate
+partial identification. To keep the arithmetic simple, suppose there are
+no unit covariates and the sites have equal weight, so the normal
+equations for the shift are a regression of the site treatment effects
+on the profiles. Let the effect at site 2 exceed the effect at site 1 by
+$2$. The pool then identifies $\delta_1+\delta_2=2$ and leaves the
+direction $(1,-1)$ free. Impose the box $\shift\in[0,2]\times[-1,1]$ and
+take a target that loads on $\delta_1$ alone. The feasible segment is
+$\{(\delta_1,2-\delta_1):\delta_1\in[1,2]\}$ and the width is $1$.
+
+Now add a third site with the same profile as site 2, $c_3=(1,1)$, whose
+treatment effect equals that of site 1. This site conflicts with the
+pool. With equal weights on the three sites, the regression fit at the
+profile $(1,1)$ is the average of the effects at sites 2 and 3, so the
+identified value of $\delta_1+\delta_2$ moves to the compromise $1$. The
+new feasible segment is $\{(\delta_1,1-\delta_1):\delta_1\in[0,2]\}$ and
+the width is $2$. A rank-preserving addition doubled the width without
+changing the restriction set. Panel (A) of \cref{fig:monotonicity} draws
+this example. The size and direction of the change depend on where the
+conflicting site sits. If instead $c_3=(2,2)$ with the same effect as
+site 1, the regression slope is $0$, the new segment is
+$\{(\delta_1,-\delta_1):\delta_1\in[0,1]\}$, and the width stays $1$.
 
 \paragraph{What conflict corrupts first.}
-Width is not the right measure of the damage. The translated slice can
+Width is not the right measure of the damage. Consider first a
+conflicting site inside the hull. The translated slice can
 just as easily cut a narrower cross-section of the restriction set, in
 which case the conflicted pool reports a tighter interval around a wrong
 location. The precise statement concerns whether the interval covers the true
@@ -61,9 +74,65 @@ conflict. A point prediction cannot. In the simulation of
 \cref{sec:simulation} the conflicted addition changes the worst-case
 width by only a few percent in either direction, while the population
 interval stops covering the true effect at the span-identified targets
-in every replicate. An analyst who sees a surprisingly tight interval after pooling a new
-site should treat it as a sign of conflict rather than as an
+in every replicate. An analyst who sees a surprisingly tight interval after pooling an
+interior site should treat it as a sign of conflict rather than as an
 improvement.
+
+A conflicting site outside the hull behaves differently. Its conflict
+cannot be detected from the source data at all, because the conflicted
+data are exactly what some other coefficient vector would produce under
+the model.
+
+\begin{proposition}[Conflict at a hull-expanding site is not detectable]
+\label{prop:undetectable}
+Suppose \cref{ass:model} holds for the pool with coefficients
+$\beta^\circ$, and let $\cand{k}\notin\affhull(\pool)$ with
+$h_k=\norm{\Pi^\perp(\cand{k}-c_1)}_2>0$ and $\newdir{k}$ of unit
+length. Suppose the candidate's arm means are shifted by constants,
+\begin{equation}
+  \E[Y(a)\mid X,C=\cand{k}]
+  =g_a(X)+{\cand{k}}^\top\beta_a^\circ+\Delta_a,
+  \qquad a\in\{0,1\}.
+  \label{eq:site-shift}
+\end{equation}
+Then the augmented pool satisfies \eqref{eq:response-model} exactly,
+with
+\begin{equation}
+  \widetilde\beta_a=\beta_a^\circ+\frac{\Delta_a}{h_k}\,\newdir{k},
+  \qquad
+  \widetilde g_a(X)=g_a(X)-\frac{\Delta_a}{h_k}\,c_1^\top\newdir{k}.
+  \label{eq:shift-absorbed}
+\end{equation}
+Consequently the in-span coordinates $\Bspan^\top\beta_a$ identified by
+the augmented pool equal those of the pool, the augmented feasible set
+is $\feasset\cap\{\newdir{k}^\top\beta_a=\reveal{a}{k}+\Delta_a/h_k\}$,
+and at every target in $\affhull(\pool\cup\{k\})$ the reported effect
+differs from the true effect by
+\begin{equation}
+  \frac{\Delta_1-\Delta_0}{h_k}\,\newdir{k}^\top(\ct-c_1).
+  \label{eq:shift-bias}
+\end{equation}
+\end{proposition}
+
+\cref{prop:undetectable} has three consequences. First, no check that
+uses only the source data, including the compatibility screen below, can
+detect a constant conflict at a hull-expanding site, because the
+conflicted law is the law of a model-consistent world with coefficients
+$\widetilde\beta$. The value of a hull-expanding site therefore rests on
+an assumption that its own data cannot check. Second, whenever the augmented program is feasible, the width still
+weakly shrinks, since the augmented feasible set is again $\feasset$ cut
+by two hyperplanes. The damage is in location. It falls on the targets
+that load on the new direction, which are the targets the candidate was
+chosen to help, and targets inside $\affhull(\pool)$ are not affected.
+Third, the bias \eqref{eq:shift-bias} is inversely proportional to the
+candidate's distance $h_k$ from the hull. Distance does not affect
+the identified set under the model, but a farther candidate is less
+exposed to a site-level conflict of a given size. This gives a reason to
+prefer a distant candidate among candidates that resolve the same
+direction. For an interior candidate the situation is reversed. No
+affine function of the profile can equal one at the candidate and zero
+at every pool site, so a constant conflict there cannot be absorbed into
+the coefficients, and the data carry information about it.
 
 \paragraph{Screens.}
 Two checks separate refining additions from corrupting ones.
@@ -75,17 +144,23 @@ Two checks separate refining additions from corrupting ones.
   changes no identified quantity, so any movement of the estimated set
   after adding it, beyond sampling noise, is itself evidence of
   conflict.
-\item \emph{Compatibility screen, after the experiment.} The candidate's
-  data overidentify the in-span coordinates: the projections
-  $\Bspan^\top\beta_a$ are estimated by the pool and, once the
-  experiment runs, by the candidate site jointly with the pool. Compare
-  the pool's minimum-norm fit with the augmented fit on the in-span
-  coordinates, in units of their standard errors. A large discrepancy indicates the conflict mechanism above. The check is
-an overidentification test of the kind used to detect an invalid
-instrument. The forecast
-  version of this screen, before the experiment, compares the
+\item \emph{Compatibility screen, after the experiment.} For an
+  interior candidate the data overidentify the in-span coordinates. The
+  projections $\Bspan^\top\beta_a$ are estimated by the pool and, once
+  the experiment runs, by the candidate site jointly with the pool.
+  Compare the pool's minimum-norm fit with the augmented fit on the
+  in-span coordinates. The two estimates share the pool's data, so the
+  comparison should use the variance of their difference, computed from
+  the joint influence functions of the two fits, as in a Hausman test. A
+  large discrepancy indicates the conflict mechanism above. The check is
+  an overidentification test of the kind used to detect an invalid
+  instrument. For a hull-expanding candidate the screen has no power
+  against a constant conflict (\cref{prop:undetectable}), and a
+  discrepancy can arise only from conflicts that vary with $X$. The
+  forecast version of this screen, before the experiment, compares the
   candidate's predicted outcomes under the pool's fit with whatever
-  prior information exists about outcomes there.
+  prior information exists about outcomes there. For a hull-expanding
+  candidate this prior information is the only available check.
 \end{itemize}
 When a screen fails, the analyst should report both analyses, the bounds
 with and without the new site, together with the discrepancy between

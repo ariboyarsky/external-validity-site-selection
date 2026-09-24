@@ -29,7 +29,16 @@ the rest of the paper fits the model without $U$. Define
   \label{eq:omitted-objects}
 \end{equation}
 The target now has an omitted-moderator profile $\uT$. These quantities need
-not be observed; they index the sensitivity analysis.
+not be observed; they index the sensitivity analysis. Throughout this
+section we assume that the pool's profiles $c_1,\ldots,c_S$ are affinely
+independent, so that $r=S-1$. Under this condition the pooled normal
+equations carry the same information as the $S-1$ site-level contrasts
+of conditional treatment effects, and the weights below are unique. When
+the pool's profiles are affinely dependent, the pool itself identifies
+additional contrasts of the form $\sum_s w_s u_s^\top\gamma$ with
+$\sum_s w_sc_s=0$ and $\sum_s w_s=0$, and the feasible set
+\eqref{eq:omitted-feasible-set} below, which uses only the normal
+equations, is an outer set that omits them.
 
 \begin{proposition}[Omitted-moderator bias]
 \label{prop:omitted-bias}
@@ -59,7 +68,9 @@ loading $\ellU$ is the source--target difference in the omitted moderator,
 while $\ellvec^\top\CovC^\dagger\CUcov$ is the component that the fitted
 context coefficients absorb because $U$ is associated with $C$ in the source
 pool. The formula is invariant to the choice of solution $\theta^C$ because
-$\ellvec\in\range(\CovC)$ when the target is in the affine hull.
+$\ellvec\in\range(\CovC)$ when the target is in the affine hull. A
+solution $\theta^C$ always exists, because the columns of $\CUcov$ lie in
+$\Vspan=\range(\CovC)$.
 
 The same decomposition gives a new role to sites that are interior in the
 observed context geometry. Let a candidate satisfy
@@ -70,18 +81,21 @@ contrast
   \label{eq:omitted-direction}
 \end{equation}
 The weights may be negative, as they are for affine, rather than convex,
-combinations. If $\udisc{k}\neq0$, the candidate is outside the affine hull
-of the existing profiles in the augmented $(C,U)$ space even though it is
-inside the affine hull in $C$ alone. It therefore tests a direction that the
+combinations. They are unique because the pool's profiles are affinely
+independent. If $\udisc{k}\neq0$, the candidate is outside the affine
+hull of the existing profiles in the augmented $(C,U)$ space even though
+it is inside the affine hull in $C$ alone. It therefore tests a direction that the
 maintained model treats as irrelevant.
 
 \begin{theorem}[Refinement under an omitted moderator]
 \label{thm:omitted-refinement}
 Suppose the augmented response model \eqref{eq:omitted-response-model} holds
-for the source pool and candidate $k$. Let $\rho_k$ denote the population
+for the source pool and candidate $k$, and let $\mathcal X_k$ be the set
+of covariate values at which the candidate and every source site with
+$w_s\neq0$ have positive density. Let $\rho_k$ denote the population
 contrast between the candidate's conditional treatment effect and the same
 affine combination of source-site conditional treatment effects. Then, for
-every $x$,
+every $x\in\mathcal X_k$,
 \begin{equation}
 \begin{split}
 \rho_k
@@ -104,14 +118,19 @@ and the target functional
   =\bT+\ellvec^\top\theta+\ellU^\top\gamma.
   \label{eq:omitted-target-functional}
 \end{equation}
-After the candidate experiment is observed, the feasible set is
+The contrast \eqref{eq:omitted-contrast} does not depend on $x$, so it is
+identified once $\mathcal X_k$ has positive probability. After the
+candidate experiment is observed, we update the feasible set by adding
+this contrast to the pool's system and keep the target functional
+\eqref{eq:omitted-target-functional} fixed,
 \begin{equation}
   \ovbset^{(k)}
   =\ovbset\cap\bigl\{(\theta,\gamma):\udisc{k}^\top\gamma=\rho_k\bigr\}.
   \label{eq:omitted-feasible-update}
 \end{equation}
-If the true $(\theta,\gamma)$ belongs to $\ovbset$, then the corresponding
-identified-set width satisfies, for every target,
+If the true $(\theta,\gamma)$ belongs to $\ovbset$, then it also belongs
+to $\ovbset^{(k)}$, and the width of the range of
+\eqref{eq:omitted-target-functional} satisfies, for every target,
 \begin{equation}
   \ovbwidth(\ct,\uT;\pool\cup\{k\})
   \leq \ovbwidth(\ct,\uT;\pool).
@@ -123,13 +142,31 @@ can strictly reduce the width whenever the restriction
 $\udisc{k}^\top\gamma=\rho_k$ cuts a target-relevant direction in $\ovbset$.
 \end{theorem}
 
+The update \eqref{eq:omitted-feasible-update} is a choice. A full re-pooling
+would also recompute $\CovC$, $\CUcov$, $\dmom{a}$, $\bT$, $\ellvec$, and
+$\ellU$ with the candidate's data. For the $C$ part the proof of
+\cref{prop:refinement} shows that this does not change the bounds. For
+the $U$ part the change in $\E_{\tP}[\muU(X)]$ need not lie in a direction
+that the updated set pins down, so we keep the pool's objective and add
+only the contrast.
+
 The theorem is the omitted-variable analogue of \cref{thm:monotone}. Under the
 maintained model, a candidate outside the observed affine hull is valuable
 because it identifies a new context direction. Under the augmented model, an
 interior candidate is valuable when it is outside the affine hull after the
 omitted moderator is included. The design criterion is therefore to seek
-sites for which $\udisc{k}$ is large in directions of $\gamma$ that matter for
-$\ellU$. If $U$ is not measured, this direction must be supplied by a proxy,
+sites whose contrast $\udisc{k}$ points in directions of $\gamma$ that matter
+for $\ellU$. As with $\newdir{k}$ in \cref{sec:selection}, only the
+direction of $\udisc{k}$ enters the updated set, since the constraint
+$\udisc{k}^\top\gamma=\rho_k$ is unchanged when both sides are rescaled. A
+larger $\udisc{k}$ makes the contrast easier to estimate precisely but
+does not change what is identified.
+
+The contrast $\rho_k$ can be estimated from the data whether or not $U$ is
+measured. Under the maintained model without $U$, $\rho_k=0$ for every
+interior candidate. An estimate of $\rho_k$ far from zero is therefore
+the conflict that the compatibility screen of \cref{sec:monotonicity}
+looks for, and an omitted moderator is one concrete source of it. If $U$ is not measured, this direction must be supplied by a proxy,
 substantive prior, or sensitivity range. Without such information, an
 unrestricted omitted moderator remains unconstrained by any site-selection
 rule based on $C$ alone.

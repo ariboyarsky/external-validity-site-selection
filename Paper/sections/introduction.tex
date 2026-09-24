@@ -47,7 +47,8 @@ outside that hull. Whether it does is checkable at design time, before
 any data are collected. How far outside it lies does not matter for
 identification, because any experiment along the new direction pins down
 the same coordinate of the fixed effects. Distance affects precision but
-not the identified set.
+not the identified set. It also affects robustness, since a farther site
+is less exposed to a site-level conflict with the model.
 
 Second, the value of a candidate experiment is computable in advance up
 to one scalar per treatment arm (\cref{sec:selection}). Under the
@@ -69,12 +70,16 @@ conflict with the shared response model moves the pooled moment
 conditions to a compromise between the sites. The identified slice then
 translates, and the width can grow or shrink, or the program can become
 infeasible. We
-give a two-site example where one conflicting addition doubles the
-width. The effect of the conflict on correctness is more important than its
+give an example with two source sites where one conflicting addition
+doubles the width. The effect of the conflict on correctness is more important than its
 effect on the width. The translated set stops covering the true effect
-exactly at the targets the pool point identifies. The screens we propose, a rank
-test on profiles and a compatibility check on outcomes, separate the
-additions that refine the set from the additions that corrupt it.
+exactly at the targets the pool point identifies. The screens we
+propose, a rank test on profiles and a compatibility check on outcomes,
+separate the interior additions that refine the set from those that
+corrupt it. For a site outside the hull no such check exists. We show
+that a constant conflict at such a site is exactly what a different
+coefficient vector would produce under the model, so the source data
+cannot reveal it.
 
 We verify each claim with the estimator the companion paper recommends,
 not only with population calculations. The simulations in
