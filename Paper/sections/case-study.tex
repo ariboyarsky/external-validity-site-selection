@@ -3,11 +3,14 @@
 
 The microcredit data let us test the design rule against experiments
 that have already been run. All seven country experiments were run, so we can
-hide one, score it as a candidate from its lending terms alone, and then
-reveal its data to check the prediction. This is the forward version of
-the leave-one-out exercise in \citet{boyarsky2026}, and it gives a
-design rule for future experiments a test it rarely gets, because the
-future data already exist.
+hide some of them, score them as candidates from their lending terms
+alone, and then reveal their data to check the prediction. This is the
+forward version of the leave-one-out exercise in \citet{boyarsky2026},
+and it gives a design rule for future experiments a test it rarely
+gets, because the future data already exist. We run two exercises. The
+first checks the predicted width of a single candidate. The second
+checks the choice between two candidates, which is the selection
+problem \eqref{eq:minimax}.
 
 \subsection{Specification}
 \label{subsec:case-spec}
@@ -25,56 +28,88 @@ the companion paper's: a magnitude cap of $M=888$ revenue units, one
 standard deviation of the outcome, on the control surface and on the
 treatment shift, then effect ordering at $\kappa=1$, then the sign
 restrictions on the interest-rate terms of the treatment shift. We
-report the final rung. Coding is frozen at each target's full six-site
-source pool, so that removing a source site changes only whose data enter the
-moments, and the held-out benchmarks are the covariate-adjusted
-design-based estimates with clustering at each country's randomization
-unit.
+report the final rung unless we say otherwise. Coding is frozen at each
+target's full six-site source pool, so that removing a source site
+changes only whose data enter the moments. The coding uses the lending
+terms of the hidden countries, which a designer knows before any
+experiment is run, but none of their outcome data. The held-out
+benchmarks are the covariate-adjusted design-based estimates with
+clustering at each country's randomization unit.
 
-For each target country, Bosnia and Morocco as in the companion paper,
-the exercise runs over the six five-site source pools. The missing sixth country is the candidate. Its coded profile is known
-and its data are hidden. At design time we run the rank test of \cref{sec:selection},
-forecast the revealed scalars with the feasibility-aware neutral
-forecast, and solve the width map \eqref{eq:width-map} for the
-predicted interval. The neutral forecast sets the new coordinate of the
-fixed effects to the value closest to zero that the pool's own
-restrictions allow, which applies to two of the Bosnia pools, where the sign restrictions
-pin the coordinate away from zero. Then we reveal the
-candidate's experiment, refit the estimator on all six source sites, and
-compare.
+At design time we run the rank test of \cref{sec:selection}, forecast
+the revealed scalars with the feasibility-aware neutral forecast
+\eqref{eq:feasible-forecast}, and solve the width map
+\eqref{eq:width-map} for the predicted interval. The forecast differs
+from zero in two of the Bosnia pools of the first exercise, where the
+sign restrictions pin the new coordinate away from zero. Then we reveal
+the candidate's experiment, refit the estimator on the augmented pool,
+and compare.
 
-\subsection{Bosnia: a predictable collapse}
+Every candidate in both exercises expands the hull. This is not
+informative about the candidates. With nine basis terms, the affine
+hull of four or five profiles has dimension at most four, and a further
+profile lies outside it unless it satisfies special linear relations. So
+in this application the rank test always passes, and the content of the
+design rule is the predicted width.
+
+\subsection{Predicting the width of one candidate}
 \label{subsec:case-bosnia}
 
-Every five-site source pool for Bosnia gives the same result
-(\cref{tab:case,fig:case}). The centered profiles of five source sites span
-four directions against nine basis terms, the interval at the final
+For each target country, Bosnia and Morocco as in the companion paper,
+the first exercise runs over the six five-site source pools. The
+missing sixth country is the only candidate for that pool, so this
+exercise checks predicted widths. It does not involve a choice. Every
+row of \cref{tab:case} ends at the same six-site pool, so the realized
+width is the same within each target.
+
+\paragraph{Bosnia.}
+Every five-site source pool gives the same result
+(\cref{tab:case,fig:case}). The centered profiles of five source sites
+span four directions against nine basis terms, the interval at the final
 rung is wide and unsigned, with widths between $3{,}525$ and $7{,}291$
 revenue units, and no five-site pool supports a conclusion about
-Bosnia. The rank test, computed from lending terms alone, reports that
-every missing country expands the span. With five source sites and nine
-terms, each of the six countries' coded profile lies outside the
-five-site hull. The predicted intervals collapse accordingly, with
-predicted reductions of 93 to 100 percent, and the realized six-site
-interval is $[37.1,\,127.3]$, width $90$, reductions of 97 to 99
-percent. An analyst holding any five of these experiments, the lending
-terms of the sixth, and no outcome data from it would have been told that the sixth experiment removes almost all of the
-width that the restrictions leave, and the realized experiments confirm
-this.
+Bosnia. The predicted intervals collapse, with predicted reductions of
+93 to 100 percent, and the realized six-site interval is
+$[37.1,\,127.3]$, width $90$, reductions of 97 to 99 percent. An analyst
+holding any five of these experiments, the lending terms of the sixth,
+and no outcome data from it would have been told that the sixth
+experiment removes almost all of the width that the restrictions leave,
+and the realized experiments confirm this.
 
 The forecast cannot determine the location of the collapsed interval,
-and the rows differ in location. For four of the six pools the
-neutral forecast is an interior point of what the pool allows, the
-predicted intervals have widths of $121$ to $286$, and they sit just
-below and above zero. The revealed scalars then place the realized
-interval strictly above zero, which is the companion paper's signed
-conclusion for Bosnia. For the other two pools, the ones missing India
-and Morocco, the pool's sign restrictions pin the forecast coordinate
-to a boundary. The predicted intervals degenerate to near points,
-$[129.1,\,138.6]$ and $\{67.5\}$, which overstates the collapse but is correct in one respect. Once that
+and the rows differ in location. For four of the six pools the neutral
+forecast is an interior point of what the pool allows, the predicted
+intervals have widths of $121$ to $286$, and they sit just below and
+above zero. The revealed scalars then place the realized interval
+strictly above zero, which is the companion paper's signed conclusion
+for Bosnia. For these four pools the prediction is wider than the
+realized interval. For the other two pools, the ones missing India and
+Morocco, the pool's sign restrictions pin the forecast coordinate to a
+boundary. The predicted intervals degenerate to near points,
+$[129.1,\,138.6]$ and $\{67.5\}$. Here the prediction is narrower than
+the realized interval, so the neutral forecast does not always give a
+conservative prediction. It is correct in one respect. Once that
 direction is resolved, the restrictions themselves nearly determine the
-answer, and they already place it above zero. The realized interval agrees in location and adds
-back the width, $90$, that the boundary forecast removed.
+answer, and they already place it above zero. The realized interval
+agrees in location and adds back the width, $90$, that the boundary
+forecast removed.
+
+\paragraph{Morocco.}
+Morocco is the target the companion paper cannot sign, and the design
+rule explains why in advance. Even the full six-site source pool leaves
+most of Morocco's loading outside the span of the source profiles, so no
+single candidate can deliver a collapse. The predicted widths after the
+addition lie between $6{,}417$ and $6{,}487$, and the realized six-site
+width is $6{,}416$. The predicted gains run from 5.2 to 37.9 percent and
+the realized gains from 5.2 to 38.6 percent, matching row by row to
+within about one percentage point. Because every row ends at the same
+six-site pool, these gains differ across rows mainly because the base
+widths differ. They show that the predictions are accurate. They do not
+show that the rule chooses well, which is the subject of the next
+exercise. Every predicted and realized interval for Morocco stays wide
+and unsigned. Strengthening the Morocco conclusion requires a site
+outside the observed hull in Morocco's direction, not a sixth source
+site from this pool.
 
 \begin{table}[t]
 \centering
@@ -100,38 +135,17 @@ Morocco & Philippines & 8{,}165  & 6{,}487 & 20.5\% & 21.4\% \\
 \end{tabular}
 \caption{\textbf{Predicted and realized value of the missing
 experiment.} Each row hides one country's experiment from the target's
-source pool. Base width is the width of the identified set at the final
-restriction rung with five source sites. Predicted is the width after adding
-the candidate, computed before its data from the coded lending terms
-and the feasibility-aware neutral forecast. Gains are relative to the
-base width; the realized gain uses the six-site interval. Widths are
-in revenue units.}
+source pool, which leaves a five-site pool with one candidate. Base
+width is the width of the identified set at the final restriction rung
+with five source sites. Predicted is the width after adding the
+candidate, computed before its data from the coded lending terms and the
+feasibility-aware neutral forecast. Gains are relative to the base
+width; the realized gain uses the six-site interval, whose width is
+$90$ for Bosnia and $6{,}416$ for Morocco. Predicted widths are rounded
+from unrounded values, e.g., $285.5$ for Mongolia. Widths are in revenue
+units.}
 \label{tab:case}
 \end{table}
-
-\subsection{Morocco: a correct ranking of modest gains}
-\label{subsec:case-morocco}
-
-Morocco is the target the companion paper cannot sign, and the design
-rule explains why in advance. Even the full six-site source pool leaves
-most of Morocco's loading outside the span of the source profiles, so no
-single candidate can
-deliver a collapse. What the rule can do is rank the six candidates,
-and here the check is informative, because each base pool differs and
-each realized gain is a different number. The predicted gains run from 5.2
-percent for Ethiopia to 37.9 percent for Mongolia. The realized gains
-run from 5.2 to 38.6 percent, and they match the predictions candidate
-by candidate to within about one percentage point
-(\cref{tab:case}). The ranking is exact. Mongolia's experiment, which has the highest
-interest rate in the pool and the lending environment most unlike the
-others, is the one that helps Morocco most. Ethiopia's experiment, whose
-coded terms the other source sites nearly reproduce, adds almost
-nothing. An investigator with the five-country pool and the six
-candidates' lending terms would have chosen Mongolia, and she would
-have been right, for the predicted reason. The rule also reports what none of the candidates fixes. Every predicted
-and realized interval for Morocco stays wide and unsigned. Strengthening the Morocco conclusion
-requires a site outside the observed hull in Morocco's direction, not a
-sixth source site from this pool.
 
 \begin{figure}[t]
   \centering
@@ -146,21 +160,73 @@ sixth source site from this pool.
   \label{fig:case}
 \end{figure}
 
+\subsection{Choosing between two candidates}
+\label{subsec:case-choice}
+
+The second exercise poses the selection problem directly. For each
+target and each pair of the target's six source countries, we hide both
+countries. The source pool is the remaining four countries, and the two
+hidden countries are competing candidates. This gives fifteen choices
+per target. At design time we compute the predicted width after adding
+each candidate from the four-site pool alone, and the rule picks the
+candidate with the smaller predicted width. We then add each candidate's
+actual experiment, refit the estimator on the resulting five-site pool,
+and record which candidate gives the smaller realized width.
+
+The design-time pick equals the realized pick in all fifteen choices for
+Bosnia and all fifteen for Morocco (\cref{fig:case-choice}). These are
+not easy choices. The realized widths of the two candidates differ by a
+median of 9 percent of the base width for Bosnia and 14 percent for
+Morocco, and by as little as 1 percent in the closest pairs, Mexico
+against Mongolia for Bosnia and India against the Philippines for
+Morocco. The predicted differences track the realized differences, with
+a correlation of $0.97$ for Bosnia and $0.999$ for Morocco across the
+fifteen pairs. The predicted width of a single candidate is within 7
+percent of its realized width for Bosnia, with a median error of 3
+percent, and within 1.4 percent for Morocco. For Bosnia the prediction
+is too wide in half of the cases and too narrow in the other half. With
+four source sites no single addition collapses the Bosnia interval, and
+the predicted and realized gains both range from 3 to 68 percent.
+
+At the earlier rungs of the ladder the rule also picks correctly in
+every choice for Morocco. For Bosnia it picks correctly in all fifteen
+choices under the cap alone and in fourteen of fifteen after effect
+ordering is added. The one miss is Mongolia against the Philippines,
+where the two predicted widths differ by less than $3$ revenue units out
+of about $5{,}100$, so the two candidates are effectively tied.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figure4.png}
+  \caption{\textbf{Choosing between two candidates.} Each point is one
+  four-site source pool and its two hidden countries as candidates. The
+  horizontal axis is the difference between the candidates' predicted
+  widths after addition, and the vertical axis is the difference between
+  their realized widths, both as a share of the four-site width, at the
+  final restriction rung. A point in the lower-left or upper-right
+  quadrant means the design-time pick equals the realized pick, which
+  holds for all thirty choices.}
+  \label{fig:case-choice}
+\end{figure}
+
 \subsection{What the exercise does and does not show}
 \label{subsec:case-caveats}
 
-Three caveats limit the claim. First, the exercise conditions on the
+Four caveats limit the claim. First, the exercise conditions on the
 companion paper's specification: the coded basis, the frozen coding,
 and the restriction ladder. The predictions are exact statements about
 that specification, not about microcredit at large. Second, the
 predictions use estimated base-pool inputs, so they inherit sampling
-error; the near-exact match at Morocco partly reflects that base and
-augmented fits share five countries of data. Third, the exercise also tests \cref{thm:monotone}. The realized
-additions never widened an interval, which is consistent with the
-maintained model, and the compatibility screen of \cref{sec:monotonicity} raises no conflict
-at the final rung for either target, since the augmented programs
-remain feasible. When a screen does fail, as it does on these data for
-tighter caps in the supplementary appendix of the companion paper, the
-right object to report is the disagreement itself.
-
-\FloatBarrier
+error. The close match partly reflects that the base and augmented fits
+share most of their data. Third, the exercise also tests
+\cref{thm:monotone}. The realized additions never widened an interval,
+which is consistent with the maintained model but is not implied by it
+in finite samples. Fourth, the exercise cannot check the maintained
+model at the candidates. Every candidate here expands the hull, so by
+\cref{prop:undetectable} a constant conflict at a candidate would be
+absorbed into the newly identified coordinate and could not be detected
+from the source data, and the compatibility screen of
+\cref{sec:monotonicity} has no power. The augmented programs remain
+feasible, which is necessary but not sufficient for compatibility. When a screen does fail, as it does on these data for tighter caps
+in the supplementary appendix of the companion paper, the right object
+to report is the disagreement itself.
