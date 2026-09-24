@@ -1,106 +1,75 @@
-\section{The Site-Selection Problem}
+\section{The site-selection problem}
 \label{sec:problem}
 
-\subsection{Setup}
-\label{sec:problem-setup}
+\subsection{Data requirements for site-selection}
+\label{subsec:problem-setup}
 
-We observe outcomes from $S$ existing sites, pooled as
-$\mathcal{D}_\mathcal{S} = \{(Y_i, A_i, X_i, C_{m,i}, C_{r,i})\}_{i=1}^n$. A
-candidate pool $\mathcal{K} = \{1, \ldots, K\}$ consists of $K$
-prospective sites for which the site-level context $(C_m^{(k)}, C_r^{(k)})$ is
-observed but no individual-level data has been collected. For each candidate we
-assume the investigator knows (or can assume a prior on) the within-site
-distribution of the individual-level covariates $X$. This is the ``some prior on
-$X$'' in our motivating question, and it is necessary because $\Sigma$ depends
-on $\mathbb{E}_X[\mathrm{Cov}(C_\bullet, C_\bullet \mid X)]$. In the simplest
-case, the investigator assumes $X$ at candidate site $k$ is drawn from the same
-distribution as at an existing reference site. In the most refined case, the
-investigator uses a demographic prior fitted to data. This additional input is
-similar to the pre-registered prior used in two-stage adaptive designs. It is an
-assumption, not a free parameter.
+We assume the analyst holds data from the $S$ existing sites, which we call
+the source $\pool$, and faces a candidate set $\candset=\{1,\ldots,K\}$ of
+prospective sites. For each candidate $k$ we know the context profile
+$\cand{k}\in\R^p$, which has same basis as the source profiles. This context is
+site-level information. For example, in the \citet{meager2019understanding} dataset we use interest rates, program rules, administrative
+statistics. Often these data are available from public sources before any experiment is conducted.
+We also need some information about the candidate's unit-level covariate
+distribution. This can often come from a census, a survey, a prior, or the assumption that units
+there resemble units at a reference site. We do not have experimental results from the candidate sites, such as
+treatment assignments or outcome data, because no experiment has been
+conducted there.
 
-The investigator also specifies:
-\begin{itemize}
-\item a target region $\mathcal{T} \subseteq \mathbb{R}^{d_M+d_I}$ of
-  context profiles over which she cares about transportability (a discrete set of
-  ``benchmark'' profiles, or a continuous region such as a box around the
-  marginal mean of the target population);
-\item a restriction set $\mathcal{R} = \{\theta : r(\theta) \le 0\}$
-  assumed compact;
-\item optionally, a cost $c_k \ge 0$ per candidate site.
-\end{itemize}
-
-\subsection{The site-augmentation update}
-\label{sec:augmentation}
-
-When a candidate site $k$ is added, the moment matrix updates from
-$\Sigma_{\mathcal{S}}$ to
-$\Sigma_{\mathcal{S}\cup\{k\}}
- = \Sigma_{\mathcal{S}} + \Delta\Sigma_k(C_m^{(k)}, C_r^{(k)}; P_X^{(k)})$,
-where $\Delta\Sigma_k$ depends on the candidate's site-level context and on the
-investigator's assumed within-site $X$-distribution but \emph{not} on its
-outcomes. The only structural facts we use are that this update is positive
-semidefinite and of rank at most two: there is a $d_g\times 2$ factor
-$U_k$ whose columns are the residualized candidate-context directions, and a
-$2\times 2$ matrix $A_k\succeq 0$, such that
+We also state the target we care about as a set $\targset$ of context
+profiles. This can be a single profile, a list of benchmark profiles,
+or a box around a forecast of the target environment. The design
+problem is
 \begin{equation}
-\label{eq:dsigma}
-\Delta\Sigma_k \;=\; U_k\,A_k\,U_k^\top,
-\qquad A_k\succeq 0,
-\qquad \operatorname{rank}\bigl(U_k A_k U_k^\top\bigr)\le 2,
+  k^\star \in \arg\min_{k\in\candset}\;
+  \sup_{\ct\in\targset}\;
+  \width\bigl(\ct;\ \pool\cup\{k\}\bigr),
+  \label{eq:minimax}
 \end{equation}
-where $(u_m, u_r) := \bigl(C_m^{(k)}, C_r^{(k)}\bigr) - \bar C_X^{(k)}$ with
-$\bar C_X^{(k)} = \mathbb{E}_{P_X^{(k)}}[(C_m, C_r) \mid X]$ are the residuals of
-the site-level context after projecting out the individual-level covariate
-dependence at the candidate site, and the columns of $U_k$ are built from
-$(u_m,u_r)$. Positive semidefiniteness gives
-$\Sigma_{\mathcal{S}\cup\{k\}}\succeq\Sigma_\mathcal{S}$, hence
-$\mathrm{null}(\Sigma_{\mathcal{S}\cup\{k\}})\subseteq\mathrm{null}(\Sigma_\mathcal{S})$
---- the monotone-in-rank property we use throughout
-Sections~\ref{sec:hull}--\ref{sec:monotonicity}. The explicit block form of
-$U_k$ and $A_k$ implied by Equation~(A.9) of \citet{boyarsky2026}, together with
-its PSD verification, is recorded in Appendix~\ref{sec:proof-block}; the planned
-candidate sample size $n_k$ enters only through the positive scale of $A_k$.
-Throughout, the theory is stated for the \emph{unnormalized} (additive) scatter:
-the sample-averaged BEN estimator divides both $\Sigma$ and $b$ by the same
-pooled count, and this joint positive rescaling of $(\Sigma,b)$ leaves the
-solution set $\{\theta:\Sigma\theta=-b\}$, hence every feasible set and width in
-this paper, unchanged. Only the additive form supports the PSD-update calculus
-above.
+the minimax width of the identified set over the targets, evaluated as
+if candidate $k$'s experiment had been run. When candidates carry
+costs, as is often the case in practice, the investigator can add a cost term to the objective or screen
+the pool by budget first. Everything below goes through in either case because a cost
+enters separably in $k$. Choosing a
+site is a discrete choice that is only made once, and it should not depend on which single target profile turns out to be the relevant one. Hence, the minimax design is a natural encoding of this problem.
 
-The right-hand side $b$ also updates, from $b_\mathcal{S}$ to
-$b_{\mathcal{S}\cup\{k\}}$, but the new right-hand side depends on the candidate
-site's outcomes and is therefore unknown until the experiment is run. We
-return to this in Section~\ref{sec:unknown-b}. For most of our analysis the
-width depends on $b$ only through a compact-translation argument that does not
-affect the first-order ranking of candidates.
+The main obstacle is that $\width(\ct;\pool\cup\{k\})$ depends on data that
+we do not have. The following two sections show how much we can determine via the candidate's context alone.
 
-\subsection{The minimax design problem}
-\label{sec:minimax-problem}
+\subsection{What adding a site changes}
+\label{subsec:augmentation}
 
-With the site-augmentation update in hand, we define the selection problem
+Suppose the candidate experiment is run, with $n_k$ observations and a
+randomized treatment within the site, and its data are pooled with the
+existing sites. Three inputs of the bound programs change.
+
+First, the span. The centered profile span grows from $\Vspan$ to
 \begin{equation}
-\label{eq:minimax}
-k^\star \;\in\; \arg\min_{k\in\mathcal{K}}\;
- \sup_{(t_m,t_r)\in\mathcal{T}}\;
- w_r\!\bigl(t_m,t_r;\, \Sigma_{\mathcal{S}\cup\{k\}},\, b_{\mathcal{S}\cup\{k\}}\bigr).
+  \Vspan'=\Vspan+\operatorname{span}\{\cand{k}-c_1\},
+  \label{eq:span-update}
 \end{equation}
-When costs $c_k$ are specified, the natural Lagrangian form is
-\begin{equation}
-\label{eq:lagrangian}
-k^\star_\kappa \;\in\; \arg\min_{k\in\mathcal{K}}\;
- \sup_{(t_m,t_r)\in\mathcal{T}}\;
- w_r\!\bigl(t_m,t_r;\, \Sigma_{\mathcal{S}\cup\{k\}}\bigr)
- \;+\; \kappa\, c_k,
-\end{equation}
-with Lagrange multiplier $\kappa \ge 0$ reflecting the marginal willingness to
-pay for a unit reduction in worst-case width. All results below extend directly
-to \eqref{eq:lagrangian} because the cost term is separable in $k$.
+so its dimension rises by one when $\cand{k}-c_1\notin\Vspan$ and is
+unchanged otherwise. Notice that the span update is a function of the profiles
+alone. That is, we know it at ``site choice'' time.
 
-Because $b$ is not known before the candidate experiment is run, we evaluate the
-width in \eqref{eq:minimax} at a robustified $b$ that maximizes the width
-over a compact uncertainty set $\mathcal{B}$ consistent with the investigator's
-prior beliefs about candidate-site outcomes. In the simplest case, which we
-focus on from here, $\mathcal{B}$ is a symmetric norm ball around the
-existing-pool $b$. This includes the ``no-information'' prior and is what we use
-in our simulations.
+Second, the moments. The pooled law now mixes in the candidate site, so
+$\CovC$, $\dmom{a}$, $\muC$, and hence $\bT$ and $\ellvec$ all move.
+Under \cref{ass:model} the new normal equations remain consistent with
+the same $\beta_a$. In \cref{sec:selection} we show that their entire
+effect on the feasible set is captured by one scalar per arm.
+
+Third, the equality constraint rank. Whether the extra span direction becomes an extra rank
+of $\CovC$ depends on covariate overlap. The matrix $\CovC$ averages the
+conditional covariance of $C$ given $X$, and a site contributes context
+variation only at covariate values where units could have come from more
+than one site. A candidate whose covariate support is disjoint from the pool can
+contribute profile diversity but no conditional variation. In that case
+site membership is a deterministic function of $X$ on the candidate's
+support, the residual $\Ctil$ vanishes there, and the added direction is
+not identified. We therefore maintain the eigenvalue condition of
+\cref{sec:setting} for the augmented pool: the covariance of
+$\Bspan'^\top\Ctil$ has a positive smallest eigenvalue, where $\Bspan'$
+is a basis of $\Vspan'$. In words, the candidate must overlap the pool
+in unit-level covariates, in the same way the target must.
+
+Throughout, the target objects $(\tP,\ct)$ are unchanged by the addition. Only the source pool grows.

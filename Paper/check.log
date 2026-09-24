@@ -439,8 +439,8 @@ Package cleveref Info: no abbreviation of names on input line 7852.
 ef
 File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count332
-) (./main.aux)
-\openout1 = `main.aux'.
+) (./check.aux)
+\openout1 = `check.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 47.
 LaTeX Font Info:    ... okay on input line 47.
@@ -527,9 +527,9 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 Package hyperref Info: Link coloring ON on input line 47.
- (./main.out) (./main.out)
+ (./check.out) (./check.out)
 \@outlinefile=\write3
-\openout3 = `main.out'.
+\openout3 = `check.out'.
 
 LaTeX Font Info:    Trying to load font information for U+msa on input line 49.
 
@@ -549,31 +549,32 @@ LaTeX Warning: No \author given.
 (./sections/abstract.tex) (./sections/introduction.tex [1
 
 {/usr/local/texlive/2026basic/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]) (
-./sections/setting.tex [2] [3]) (./sections/site-selection-problem.tex [4]) (./
-sections/geometry.tex
-[5]) (./sections/selection.tex [6] [7]) (./sections/monotonicity.tex [8{/usr/lo
-cal/texlive/2026basic/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}])
-(./sections/omitted-moderator.tex [9] [10]) (./sections/simulation.tex [11]
-<figures/figure1.png, id=335, 896.148pt x 353.03896pt>
+./sections/setting.tex [2] [3]) (./sections/omitted-moderator.tex [4])
+(./sections/site-selection-problem.tex [5] [6]) (./sections/geometry.tex
+[7]) (./sections/selection.tex [8]) (./sections/monotonicity.tex [9{/usr/local/
+texlive/2026basic/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
+[10]) (./sections/simulation.tex [11]
+<figures/figure1.png, id=336, 896.148pt x 353.03896pt>
 File: figures/figure1.png Graphic file (type png)
 <use figures/figure1.png>
 Package pdftex.def Info: figures/figure1.png  used on input line 70.
 (pdftex.def)             Requested size: 469.75502pt x 185.06271pt.
-
-[12 <./figures/figure1.png>]
+ [12 <./figures/figure1.png>]
 <figures/figure2.png, id=348, 967.33395pt x 308.95425pt>
 File: figures/figure2.png Graphic file (type png)
 <use figures/figure2.png>
 Package pdftex.def Info: figures/figure2.png  used on input line 116.
 (pdftex.def)             Requested size: 469.75502pt x 150.0359pt.
-) (./sections/case-study.tex [13 <./figures/figure2.png>] [14]
+)
+(./sections/case-study.tex [13 <./figures/figure2.png>] [14]
 <figures/figure3.png, id=371, 917.1063pt x 324.13095pt>
 File: figures/figure3.png Graphic file (type png)
 <use figures/figure3.png>
 Package pdftex.def Info: figures/figure3.png  used on input line 138.
 (pdftex.def)             Requested size: 469.75502pt x 166.02173pt.
- [15]) (./sections/discussion.tex) [16 <./figures/figure3.png>]
-(./main.bbl) (./appendix/appendix-proofs.tex [17]
+ [15])
+(./sections/discussion.tex) [16 <./figures/figure3.png>] (./check.bbl)
+(./appendix/appendix-proofs.tex [17]
 Underfull \hbox (badness 10000) in paragraph at lines 44--52
 
  []
@@ -613,22 +614,26 @@ Underfull \hbox (badness 10000) in paragraph at lines 242--258
 
  []
 
-) [20] [21] (./main.aux)
+) [20] [21] (./check.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
-Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 27EDF392F1A06C3C56E6094B0AF98350;5551.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+Package rerunfilecheck Info: File `check.out' has not changed.
+(rerunfilecheck)             Checksum: 957A843C9359DFA33541B54889268477;5551.
  ) 
 Here is how much of TeX's memory you used:
- 14999 strings out of 469006
- 243478 string characters out of 5454814
- 702644 words of memory out of 5000000
+ 15000 strings out of 469006
+ 243504 string characters out of 5454814
+ 702646 words of memory out of 5000000
  43350 multiletter control sequences out of 15000+600000
  640375 words of font info for 87 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
- 75i,15n,84p,759b,572s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,15n,84p,759b,578s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx1
 0.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/c
 mbx12.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/
@@ -645,7 +650,7 @@ fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2026basic/texmf-di
 st/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2026basic/texm
 f-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2026b
 asic/texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb>
-Output written on main.pdf (21 pages, 704018 bytes).
+Output written on check.pdf (21 pages, 703784 bytes).
 PDF statistics:
  544 PDF objects out of 1000 (max. 8388607)
  476 compressed objects within 5 object streams

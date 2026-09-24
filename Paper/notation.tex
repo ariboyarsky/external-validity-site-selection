@@ -1,0 +1,74 @@
+% !TEX root = main.tex
+%% ---------------------------------------------------------------------------
+%% Notation shared with the companion paper "A Sensitivity Framework for
+%% Assessing External Validity" (Boyarsky, Egami, and Namkoong 2026),
+%% plus the site-selection objects of this paper.
+%%
+%% Loaded AFTER statistics-macros.sty, which supplies \E, \var, \cov,
+%% \what, \R, \norm, \cp, and the theorem environments.
+%% ---------------------------------------------------------------------------
+
+\makeatletter
+\@ifundefined{remark}{\newtheorem{remark}{Remark}}{}
+\makeatother
+
+%% ---- data and design (companion-paper names) -------------------------------
+\newcommand{\sP}{P}                      % source law
+\newcommand{\tP}{Q_T}                    % target covariate law
+\newcommand{\ct}{c_T}                    % target context profile
+\newcommand{\muC}{m_C}                   % E[C | X]
+\newcommand{\Ctil}{\widetilde C}         % C - m_C(X)
+\newcommand{\pseudo}[1]{R_{#1}}          % IPW pseudo-outcome
+
+%% ---- omitted-moderator sensitivity ---------------------------------------
+\newcommand{\Uvar}{U}                    % omitted site-level moderator
+\newcommand{\uT}{u_T}                    % target moderator profile
+\newcommand{\muU}{m_U}                   % E[U | X]
+\newcommand{\CUcov}{\Sigma_{CU}}        % E[cov(C,U | X)]
+\newcommand{\ellU}{\ell_{U,T}}           % target loading on U
+\newcommand{\udisc}[1]{d_{U,#1}}         % omitted-profile contrast
+\newcommand{\ovbset}{\mathcal F_U}       % omitted-moderator feasible set
+\newcommand{\ovbwidth}{W_U}              % omitted-moderator interval width
+
+%% ---- moments ---------------------------------------------------------------
+\newcommand{\CovC}{\Sigma_C}             % E_P[cov(C | X)]
+\newcommand{\dmom}[1]{d_{#1}}            % E_P[cov(C, R_a | X)]
+\newcommand{\bT}{b_T}                    % transported baseline (scalar)
+\newcommand{\ellvec}{\ell_T}             % target loading
+\newcommand{\Gam}{\Gamma}                % bound inputs (b_T, ell_T, Sigma_C, d_0, d_1)
+
+%% ---- reduced coordinates ---------------------------------------------------
+\newcommand{\Vspan}{\mathcal V_C}        % span of centered site profiles
+\newcommand{\Bspan}{B_C}                 % orthonormal basis of V_C
+\newcommand{\Om}{\Omega}                 % B_C^T Sigma_C B_C
+\newcommand{\xired}[1]{\xi_{#1}}         % B_C^T d_a
+
+%% ---- program objects -------------------------------------------------------
+\newcommand{\restrset}{\mathcal R}
+\newcommand{\feasset}{\mathcal F}
+\newcommand{\vminus}{v_{-}}
+\newcommand{\vplus}{v_{+}}
+\newcommand{\shift}{\delta}              % treatment shift beta_1 - beta_0
+
+%% ---- site-selection objects ------------------------------------------------
+\newcommand{\pool}{\mathcal S}           % existing pool of sites
+\newcommand{\candset}{\mathcal K}        % candidate pool
+\newcommand{\targset}{\mathcal T}        % target region
+\newcommand{\cand}[1]{c^{(#1)}}          % candidate context profile
+\newcommand{\newdir}[1]{u_{#1}}          % direction a candidate adds
+\newcommand{\reveal}[2]{y_{#1,#2}}       % revealed scalar y_{a,k}
+\newcommand{\width}{W}                   % width of the identified set
+\newcommand{\affhull}{\operatorname{aff}}
+\newcommand{\convhull}{\operatorname{conv}}
+\providecommand{\dist}{}\renewcommand{\dist}{\operatorname{dist}}
+
+%% ---- operators -------------------------------------------------------------
+\DeclareMathOperator{\rankop}{rank}
+\DeclareMathOperator{\rangeop}{range}
+\DeclareMathOperator{\kernelop}{ker}
+\newcommand{\range}{\rangeop}
+\newcommand{\kernel}{\kernelop}
+\newcommand{\pr}{\mathbb{P}}
+\providecommand{\one}{\mathbf{1}}
+
+\providecommand{\Eqref}[1]{Equation~\eqref{#1}}

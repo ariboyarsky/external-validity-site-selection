@@ -1,107 +1,107 @@
 \section{Introduction}
 \label{sec:intro}
 
-A multi-site experiment supports its external-validity claim through the
-cross-site variation in site-level context. If the treatment effect is
-stable across sites that differ substantially in their moderating attributes,
-then it is credible that the effect will transport to a new site whose
-moderators lie within the observed range. Conversely, when the observed sites
-cover only a small part of the space of site-level moderators, the cross-site
-moment identity $\Sigma\theta + b = 0$ is rank-deficient. The target-site
-treatment effect at a moderator profile $(t_m,t_r)$ outside the span of observed
-sites is then only partially identified, no matter how large the
-individual-level samples are \citep*{boyarsky2026}.
+Randomized experiments are often run in sites to establish evidence of an intervention applied in another site. When site-level context changes the treatment response, a
+pool of internally valid experiments identifies the effect at a new site
+only in part. \citet{boyarsky2026} formalize this problem. Site context
+enters each potential-outcome surface through linear fixed effects, the
+observed sites determine those fixed effects only inside the span of
+their centered context profiles, and the target effect is reported as an
+interval: the smallest and largest values consistent with the source
+experiments and with restrictions the analyst is willing to state. A wide interval means that the data and the stated restrictions do not
+settle the target conclusion. An infinite interval means that some
+direction of extrapolation is not controlled at all.
 
-An investigator facing this situation has two options. She may tighten the
-identification set by imposing additional substantive restrictions
-$r(\theta)\le 0$ (effect-ordering, sign or monotonicity constraints, norm
-bounds, etc.). This trades a sharper bound for additional untestable
-assumptions. Or she
-may expand the evidence base by running a new experiment in an additional
-site. The first option is the subject of \citet{boyarsky2026}. In this paper
-we address the second.
+An analyst facing a wide interval has two options. She can impose stronger restrictions, which tightens the set at the cost
+of assumptions that the data cannot check. She can also collect more
+evidence by running an experiment in a new site. The companion paper studies the first option.
+This paper studies the second. The question is concrete because site
+context is observable before any experiment is run. A funder choosing
+among candidate countries already knows each country's interest rates,
+loan sizes, and program rules. What she does not know is what an
+experiment there would find. We ask which candidate site, if its
+experiment were run, would most strengthen the external validity of the
+pooled evidence, and how much of that answer is available before the
+experiment.
 
-Specifically, we consider the situation in which the investigator has a small
-pool $\mathcal{K} = \{1, \ldots, K\}$ of candidate sites. For each
-candidate site the investigator knows the site-level context $(C_m^{(k)},
-C_r^{(k)})$ in advance, cheaply obtained from administrative data, public
-statistics, a pilot survey, or an established literature, but has no
-individual-level experimental data. Running the
-experiment in any one candidate site carries an investigator-specified cost
-$c_k$ (monetary, logistical, ethical). The question is:
+We use the microcredit experiments harmonized by
+\citet{meager2019understanding} as a running example. Seven countries ran nominally similar
+expansions of credit access under very different lending terms. The
+companion paper's case study holds out one country at a time and asks
+what the other six imply for it. Its leave-one-out exercise shows the reverse of our question. Dropping
+any one of Bosnia's six source sites leaves Bosnia's interval unsigned.
+That finding also says that the sixth experiment was worth running. We ask whether an analyst who had only five
+source sites could have known this in advance, from lending terms alone, and
+could have chosen the right country to add.
 
-\begin{quote}
-Given the existing pool of $S$ sites and a range $\mathcal{T}$ of target
-profiles to which the investigator wishes to transport the effect, which
-candidate site $k^\star \in \mathcal{K}$ most improves external-validity claims,
-in the sense of most shrinking the partial-identification width over
-$\mathcal{T}$?
-\end{quote}
+The paper has three main findings. Each follows from the identification
+geometry of the companion paper.
 
-We cast the problem as a minimax design:
-\[
-k^\star \;\in\; \arg\min_{k\in \mathcal{K}}\; \sup_{(t_m,t_r)\in\mathcal{T}}\;
-w_r\!\bigl(t_m,t_r;\; \Sigma_{\mathcal{S}\cup\{k\}}\bigr),
-\]
-where $w_r(t_m,t_r;\Sigma)$ is the width of the partial-identification interval
-under restriction $r$ evaluated at target $(t_m,t_r)$. The key observation is
-that the width $w_r$ depends on the candidate site through $\Sigma$, the
-design matrix of the moment condition, and $\Sigma$ is a function of
-known site-level quantities $(C_m, C_r)$ only. This is what makes the design
-problem tractable without running the candidate experiments. The right-hand side
-$b$ would move once the experiment is run. The site-level context determines the
-rank and moment-range geometry, and therefore determines unrestricted
-finiteness of the width, conditional on feasibility. Under compact restrictions,
-however, $b$ also matters: it translates the moment-implied affine slice through
-the restriction set and can change the width (Section~\ref{sec:counterexample}).
-We therefore treat the context-driven geometry as the design-time object and
-evaluate candidates using either an outcome forecast or a robust uncertainty set
-for $\Delta b_k$ (Section~\ref{sec:unknown-b}).
+First, site selection is a question about the affine hull of the site
+profiles. In the companion framework the observed sites identify the
+fixed effects only inside the span of their centered profiles, and we
+show that the target effect is point identified exactly when the target
+profile lies in the affine hull of the observed profiles
+(\cref{sec:geometry}). A candidate site changes what is identified only if its profile lies
+outside that hull. Whether it does is checkable at design time, before
+any data are collected. How far outside it lies does not matter for
+identification, because any experiment along the new direction pins down
+the same coordinate of the fixed effects. Distance affects precision but
+not the identified set.
 
-\paragraph{Contributions.}
-(1) We formalize the site-selection problem in the partial-identification framework of \citet{boyarsky2026}. We show that the partial-identification
-width depends on the candidate through a low-rank update of $\Sigma$ (rank at
-most two) that is known before the experiment is run. (2) We establish that, in
-the unrestricted limit $r \equiv 0$ with mild regularization, the minimax rule
-selects the candidate whose addition most reduces the worst-case distance from
-the target functional $c(t)$ to the enlarged moment range
-(Proposition~\ref{prop:dist}). Under a balanced isometric embedding this becomes
-a weighted affine-span expansion rule in site-context space
-(Corollary~\ref{cor:hulldist}), with the weighting determined by $\mathcal{T}$.
-Convex-hull expansion is the right design intuition exactly when the target set
-lies outside the existing affine span in target-relevant directions.
-(3) Under compact affine restrictions $r(\theta)\le 0$, we derive a tractable
-surrogate, a finite LP over the candidate pool, that has the same three-regime
-structure as the leave-one-site-out diagnostic of \citet{boyarsky2026}: candidates are coverage-expanding (reduce rank-deficiency),
-location-improving (shift the affine subspace at fixed rank), or
-feasibility-restoring (make a previously incompatible restriction set
-feasible). (4) We show that the minimax design is not automatically
-monotone in site addition. A rank-preserving candidate whose outcome conflicts
-with the existing-pool fit can shift the moment-implied affine subspace to a
-less favorable cross-section of the restriction polyhedron, and it can strictly
-increase the worst-case width. We isolate two screens,
-rank expansion (M1) and outcome-consistency (M2), and prove
-(Theorem~\ref{thm:monotone}) that the worst-case width is monotone-nonincreasing
-under (M2) in the rank-preserving case, and under (M1) whenever the augmented
-feasible set remains non-empty --- a condition guaranteed by pairing (M1) with
-an outcome-feasibility check, not by (M1) alone. (5) A synthetic
-simulation with eight existing sites and six candidates, including a
-deliberately conflicting one, confirms both the hull-expansion result and the
-non-monotonicity (with $16\%$ of replicates showing strict worsening from the
-unscreened candidate, and none from any screened candidate). (6) We sketch
-extensions to the
-mixed-integer effect-ordering formulation and to cost-weighted objectives, and
-defer complete proofs to Appendix~\ref{sec:appendix}.
+Second, the value of a candidate experiment is computable in advance up
+to one scalar per treatment arm (\cref{sec:selection}). Under the
+maintained model, adding site $k$ replaces the feasible set
+$\feasset$ by $\feasset$ intersected with two equality constraints,
+$\newdir{k}^\top\beta_a=\reveal{a}{k}$ for $a\in\{0,1\}$, where the
+direction $\newdir{k}$ is known from the candidate's context and the
+scalars $\reveal{a}{k}$ are what the experiment reveals. The whole map
+from those scalars to the post-addition bounds can be solved before the
+experiment. Forecasting the scalars from the existing pool gives a predicted
+interval, and the dual variable of the added constraint gives the effect
+of a forecast error on the bounds. This is the design rule we apply in
+the simulations and the case study.
 
-\paragraph{Positioning.}
-The site-selection question is the forward version of the
-leave-one-site-out diagnostic in Section~4.4 of \citet{boyarsky2026}, which asks which existing donor sites are essential to a reported bound. Our problem
-has the same three-regime taxonomy as that diagnostic, but we apply it to a
-counterfactual addition rather than a realized removal. It also
-complements classical optimal experimental design (D-, G-, and I-optimality),
-which operates within a single population under point identification \citep{atkinson2007optimum, pukelsheim2006optimal}. In our setting the design object is
-not an individual-level allocation of treatment but a site-level choice of
-context, and the loss is the width of a partial-identification interval
-rather than the variance of a point estimator. The minimax objective is natural
-here because site selection is a discrete, one-time decision that should do well
-across the different target profiles the investigator cares about.
+Third, under the maintained model a new site can never hurt. Every width
+weakly shrinks, at every target (\cref{sec:monotonicity}). This may seem
+obvious, but it fails once the model is wrong. A site whose outcomes
+conflict with the shared response model moves the pooled moment
+conditions to a compromise between the sites. The identified slice then
+translates, and the width can grow or shrink, or the program can become
+infeasible. We
+give a two-site example where one conflicting addition doubles the
+width. The effect of the conflict on correctness is more important than its
+effect on the width. The translated set stops covering the true effect
+exactly at the targets the pool point identifies. The screens we propose, a rank
+test on profiles and a compatibility check on outcomes, separate the
+additions that refine the set from the additions that corrupt it.
+
+We verify each claim with the estimator the companion paper recommends,
+not only with population calculations. The simulations in
+\cref{sec:simulation} generate multi-site data from the fixed-effects
+model, estimate the bounds with the cross-fitted rank consistent
+estimator, and show that the estimated selection recovers the
+population-optimal candidate in every replicate, that the design-time
+predictions match the realized widths, and that the conflict mechanism
+behaves as the theory says. The case study in \cref{sec:case-study}
+runs the same exercise on the microcredit data. For each five-country
+source pool, the rule scores the missing country from its lending terms,
+and the realized experiment confirms the prediction.
+
+\paragraph{Related work.}
+The site-selection question is the forward version of the leave-one-out
+exercise in the case study of \citet{boyarsky2026}, which asks which observed
+sites a reported bound depends on. We ask which unobserved site a future
+bound would benefit from, and we use the same three categories of what a site can do: expand
+identification, add precision, or break feasibility. The problem is also related to classical optimal experimental design \citep{atkinson2007optimum,pukelsheim2006optimal}. There the
+design variable is an allocation of observations inside one population
+and the loss is a variance. Here the design variable is a site-level
+context profile and the loss is the width of a partial-identification
+interval, which variance reduction alone cannot shrink. Submodular
+coverage arguments for sensor placement and subset selection
+\citep{nemhauser1978analysis} appear when several sites are added at
+once (\cref{sec:discussion}). Distributionally robust formulations of
+worst-case effects \citep{jeong2020assessing} and structural
+transportability conditions \citep{bareinboim2016causal} address what
+can be learned from fixed data. Our contribution is to treat the data
+that do not yet exist as the design object.

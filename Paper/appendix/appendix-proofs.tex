@@ -1,534 +1,284 @@
-\section{Theoretical Results}
-\label{sec:appendix}
+\section{Proofs}
+\label{app:proofs}
 
-We give proofs of the propositions stated in
-Sections~\ref{sec:hull}--\ref{sec:monotonicity}. Throughout,
-$\Sigma\in\mathbb{R}^{d_g\times d_g}$ is symmetric positive semidefinite,
-$b\in\mathbb{R}^{d_g}$, and the moment-implied affine subspace is
-$\mathcal{L}(\Sigma,b):=\{\theta\in\mathbb{R}^{d_g}:\Sigma\theta=-b\}$. The
-restriction polyhedron is $\mathcal{R}:=\{\theta:r(\theta)\le 0\}$, which is
-compact and convex unless explicitly stated otherwise. The target functional is
-$c(t)\in\mathbb{R}^{d_g}$, the partial-ID interval at target $t$ has endpoints
-$v_\ell(t),v_u(t)$ given by the LP pair \eqref{eq:bounds}, and the width is
-$w_r(t;\Sigma,b)=v_u(t)-v_\ell(t)$. We assume the consistency condition
-$b\in\mathrm{range}(\Sigma)$ throughout (otherwise
-$\mathcal{L}(\Sigma,b)=\emptyset$).
+Throughout the appendix, \cref{ass:model} holds for every site that
+appears, including candidate sites unless the text says otherwise, and
+the eigenvalue condition of \cref{sec:setting} holds for the pool and,
+where an augmented pool appears, for the augmented pool. We write
+$\Pi_V$ and $\Pi^\perp$ for the orthogonal projections onto $\Vspan$ and
+$\Vspan^\perp$, and $\beta^\circ=(\beta_0^\circ,\beta_1^\circ)$ for the
+true coefficient vector of \eqref{eq:response-model}. Recall from
+\eqref{eq:span} that $\Vspan$ is the span of the centered site profiles
+and that $\affhull(\pool)=c_1+\Vspan$.
 
-\subsection{Proof of Proposition~\ref{prop:dichotomy} (unrestricted dichotomy)}
-\label{sec:proof-prop1}
-
-Claim. With $\mathcal{R}=\mathbb{R}^{d_g}$ and any
-$b\in\mathrm{range}(\Sigma)$,
-\[
-w_{\rm unr}(t;\Sigma,b) \;=\;
- \begin{cases} 0, & c(t)\in\mathrm{range}(\Sigma^\top)\\ +\infty,
- & c(t)\notin\mathrm{range}(\Sigma^\top).\end{cases}
-\]
-
-\begin{proof}
-Let $\theta_0$ be any solution to $\Sigma\theta_0=-b$. Such a $\theta_0$ exists
-by the consistency hypothesis. Every solution to $\Sigma\theta=-b$ has the form
-$\theta=\theta_0+\nu$ with $\nu\in\mathrm{null}(\Sigma)$. The linear functional
-evaluates to $c(t)^\top\theta=c(t)^\top\theta_0+c(t)^\top\nu$. Since
-$\mathcal{R}=\mathbb{R}^{d_g}$, $\nu$ ranges over all of $\mathrm{null}(\Sigma)$, a
-linear subspace.
-
-Case 1: $c(t)\perp\mathrm{null}(\Sigma)$. Then $c(t)^\top\nu=0$ for every
-$\nu\in\mathrm{null}(\Sigma)$, so $c(t)^\top\theta=c(t)^\top\theta_0$ identically
-and $v_u=v_\ell=c(t)^\top\theta_0$, giving width $0$. By the orthogonal
-decomposition
-$\mathbb{R}^{d_g}=\mathrm{range}(\Sigma^\top)\oplus\mathrm{null}(\Sigma)$ (valid
-for any matrix, here in fact $\mathrm{range}(\Sigma)$ since $\Sigma=\Sigma^\top$),
-this is equivalent to $c(t)\in\mathrm{range}(\Sigma^\top)$.
-
-Case 2: $c(t)\not\perp\mathrm{null}(\Sigma)$. Pick
-$\nu_0\in\mathrm{null}(\Sigma)$ with $c(t)^\top\nu_0\ne 0$, and consider the
-one-parameter family $\theta_0+\alpha\nu_0$ for $\alpha\in\mathbb{R}$. Then
-$c(t)^\top(\theta_0+\alpha\nu_0)=c(t)^\top\theta_0+\alpha c(t)^\top\nu_0\to\pm\infty$
-as $\alpha\to\pm\infty$, so $v_u=+\infty$ and $v_\ell=-\infty$. Width is
-$+\infty$.
-\end{proof}
-
-\subsection{Proof of Proposition~\ref{prop:hull}
-(rank-expansion $\Leftrightarrow$ hull-expansion)}
-\label{sec:proof-prop2}
-
-Claim. In the centered coordinates of Proposition~\ref{prop:hull} --- with
-$\tilde C$ the matrix of centered rows $\tilde c^{(s)}=c^{(s)}-\bar c$,
-$\tilde\Sigma_\mathcal{S}=\tilde C^\top\tilde C$, and candidate residual
-$\tilde u=c^{(k)}-\bar c$ --- one has
-\[
-\mathrm{rank}(\Sigma_{\mathcal{S}\cup\{k\}})>\mathrm{rank}(\Sigma_\mathcal{S})
- \iff \tilde u\notin\mathrm{range}(\tilde C^\top)=\mathrm{range}(\tilde\Sigma_\mathcal{S})
- \iff (C_m^{(k)},C_r^{(k)})\notin\mathrm{aff}(\mathcal{H}_\mathcal{S}).
-\]
-The general block form \eqref{eq:dsigma} replaces $\tilde c^{(s)}\tilde c^{(s)\top}$
-by its residualized analogue; the row-space argument is identical.
-
-\begin{proof}
-Work in the centered coordinates of the statement, so
-$\Sigma_{\mathcal{S}\cup\{k\}}=\tilde\Sigma_\mathcal{S}+\tilde u\tilde u^\top
- =\tilde C^\top\tilde C+\tilde u\tilde u^\top$. For any $x$,
-\[
-x^\top\bigl(\tilde C^\top\tilde C+\tilde u\tilde u^\top\bigr)x
- \;=\; \|\tilde C x\|_2^2 + (\tilde u^\top x)^2 \;\ge\; 0,
-\]
-and the right-hand side is zero iff $\tilde C x=0$ and $\tilde u^\top x=0$. Since
-$\mathrm{null}(\tilde C^\top\tilde C)=\mathrm{null}(\tilde C)$, this gives the
-identity
+Two facts from \citet{boyarsky2026} are used repeatedly. First, the
+normal equations: under \cref{ass:model}, for any pooled source law
+whose sites obey \eqref{eq:response-model} with the same coefficients,
 \begin{equation}
-\label{eq:nullid}
-\mathrm{null}\bigl(\tilde C^\top\tilde C+\tilde u\tilde u^\top\bigr)
- \;=\; \mathrm{null}(\tilde C)\,\cap\,\{x:\tilde u^\top x=0\}.
+  \cov(C,\pseudo{a}\mid X)=\cov(C\mid X)\,\beta_a^\circ
+  \quad\text{almost surely, so}\quad
+  \dmom{a}=\CovC\beta_a^\circ.
+  \label{eq:app-normal}
 \end{equation}
-The intersection is a proper subspace of $\mathrm{null}(\tilde C)$ iff the
-hyperplane $\{\tilde u^\top x=0\}$ does not contain $\mathrm{null}(\tilde C)$,
-i.e.\ iff $\tilde u\notin\mathrm{null}(\tilde C)^\perp=\mathrm{range}(\tilde C^\top)
- =\mathrm{range}(\tilde\Sigma_\mathcal{S})$. By rank--nullity this is exactly a
-strict increase of rank, proving the first equivalence. For the second, the
-centered row space $\mathrm{range}(\tilde C^\top)=\mathrm{span}\{\tilde c^{(s)}\}$
-is the linear subspace parallel to $\mathrm{aff}(\mathcal{H}_\mathcal{S})$, and
-$\tilde u$ lies in it iff $(C_m^{(k)},C_r^{(k)})\in\mathrm{aff}(\mathcal{H}_\mathcal{S})$.
-\end{proof}
+Second, under the eigenvalue condition, $\range(\CovC)=\Vspan$ and
+$\kernel(\CovC)=\Vspan^\perp$, so the solution set of the equality
+system in \eqref{eq:feasible-set} is
+$\{\beta_a:\ \CovC\beta_a=\dmom{a}\}
+=\beta^\circ_a+\Vspan^\perp$.
 
-\paragraph{Remark (Why centering is essential).}
-The equivalence with affine-hull membership fails for the \emph{uncentered}
-Gram matrix $C^\top C$, whose range is the linear span $\mathrm{span}\{c^{(s)}\}$,
-not the direction space of the affine hull. For $c^{(1)}=(1,0)$, $c^{(2)}=(0,1)$
-the affine hull is the line $\{x_1+x_2=1\}$ while
-$\mathrm{span}\{c^{(1)},c^{(2)}\}=\mathbb{R}^2$; the candidate $u=(2,2)$ lies
-outside the hull yet $C^\top C=I_2$ is already full rank, so $C^\top C+uu^\top$
-does not increase rank. The affine-hull reading of Proposition~\ref{prop:hull} is
-therefore a statement about the \emph{centered} (conditional-covariance) moment
-of \eqref{eq:dsigma}, not the raw second-moment matrix.
-
-\subsection{Proof of Proposition~\ref{prop:dist} (width $=$ distance $\times 2\tau$)}
-\label{sec:proof-prop3}
-
-Claim. We prove Proposition~\ref{prop:dist} and
-Corollary~\ref{cor:hulldist}: with $\theta_0$ the minimum-norm solution of
-$\Sigma_\mathcal{S}\theta=-b$ and
-$\delta_\mathcal{S}(t)=\|P_{\mathrm{null}(\Sigma_\mathcal{S})}c(t)\|_2$, for every
-$\tau\ge\|\theta_0\|_2$,
-\[
-w_r^\tau(t;\Sigma_\mathcal{S},b)
- \;=\; 2\sqrt{\tau^2-\|\theta_0\|_2^2}\;\delta_\mathcal{S}(t)
- \;=\; 2\tau\,\delta_\mathcal{S}(t)(1+o_\tau(1)),
-\qquad\tau\to\infty,
-\]
-and, under the balanced embedding of Corollary~\ref{cor:hulldist},
-$\delta_\mathcal{S}(t)=\sqrt{\kappa}\,\mathrm{dist}((t_m,t_r),\mathrm{aff}(\mathcal{H}_\mathcal{S}))$.
+\subsection{Proof of \texorpdfstring{\cref{lem:loading}}{Lemma 1}}
+\label{app:proof-loading}
 
 \begin{proof}
-Decompose $c(t)=c_\parallel(t)+c_\perp(t)$ with
-$c_\parallel(t)\in\mathrm{range}(\Sigma_\mathcal{S}^\top)$ and
-$c_\perp(t)\in\mathrm{null}(\Sigma_\mathcal{S})$, so $\|c_\perp(t)\|_2=\delta_\mathcal{S}(t)$.
-Take $\theta_0$ the minimum-norm particular solution, so
-$\theta_0\in\mathrm{range}(\Sigma_\mathcal{S}^\top)$ and
-$\theta_0\perp\mathrm{null}(\Sigma_\mathcal{S})$. Every feasible point is
-$\theta=\theta_0+\nu$, $\nu\in\mathrm{null}(\Sigma_\mathcal{S})$, with
-$c(t)^\top\theta=c_\parallel(t)^\top\theta_0+c_\perp(t)^\top\nu$ since
-$c_\parallel(t)^\top\nu=0$ and $c_\perp(t)^\top\theta_0=0$.
+Write $p_s(x)=\pr_\sP(C=c_s\mid X=x)$, so
+$\muC(x)=\sum_{s=1}^S p_s(x)\,c_s$ with $p_s(x)\geq0$ and
+$\sum_s p_s(x)=1$ for $\sP$-almost every $x$, hence for $\tP$-almost
+every $x$ by overlap. Then
+$q:=\E_{\tP}[\muC(X)]=\sum_s \bar w_s c_s$ with $\bar w_s=\E_{\tP}[p_s(X)]\geq0$
+and $\sum_s\bar w_s=1$, so $q\in\convhull\{c_1,\ldots,c_S\}\subseteq
+\affhull(\pool)$. Since $\affhull(\pool)=c_1+\Vspan$, we have
+$q-c_1\in\Vspan$ and therefore
+\[
+  \Pi^\perp\ellvec=\Pi^\perp(\ct-q)
+  =\Pi^\perp(\ct-c_1)-\Pi^\perp(q-c_1)=\Pi^\perp(\ct-c_1).
+\]
+The distance from a point to the affine set $c_1+\Vspan$ is the norm of
+the component of the offset orthogonal to $\Vspan$, which gives
+\eqref{eq:loading-distance}. Finally, under the eigenvalue condition
+$\range(\CovC)=\Vspan$, so $\ellvec\in\range(\CovC)$ if and only if
+$\Pi^\perp\ellvec=0$, if and only if $\Pi^\perp(\ct-c_1)=0$, if and only
+if $\ct\in c_1+\Vspan=\affhull(\pool)$.
+\end{proof}
 
-Because $\theta_0\perp\nu$, the ball constraint reads
-$\|\theta\|_2^2=\|\theta_0\|_2^2+\|\nu\|_2^2\le\tau^2$, i.e.\
-$\|\nu\|_2\le\sqrt{\tau^2-\|\theta_0\|_2^2}=:\rho_\tau$. This is the exact
-radius, not $\tau-\|\theta_0\|_2$. Maximizing and minimizing the linear
-functional $c_\perp(t)^\top\nu$ over the radius-$\rho_\tau$ ball in
-$\mathrm{null}(\Sigma_\mathcal{S})$ gives $\pm\rho_\tau\|c_\perp(t)\|_2$ by
-Cauchy--Schwarz, attained at $\nu=\pm\rho_\tau c_\perp(t)/\|c_\perp(t)\|_2$.
+\subsection{Proof of \texorpdfstring{\cref{prop:dichotomy}}{Proposition 1}}
+\label{app:proof-dichotomy}
+
+\begin{proof}
+With $\restrset=\R^{2p}$ the feasible set is the product of the two
+equality solution sets, $\feasset=\prod_{a\in\{0,1\}}
+(\beta^\circ_a+\Vspan^\perp)$, which contains $\beta^\circ$. For
+$\beta_a=\beta^\circ_a+z_a$ with $z_a\in\Vspan^\perp$,
+\[
+  \ellvec^\top(\beta_1-\beta_0)
+  =\ellvec^\top(\beta^\circ_1-\beta^\circ_0)
+  +(\Pi^\perp\ellvec)^\top(z_1-z_0),
+\]
+because $z_1-z_0\in\Vspan^\perp$. If $\ct\in\affhull(\pool)$, then
+$\Pi^\perp\ellvec=0$ by \cref{lem:loading}, the objective is constant on
+$\feasset$, and both endpoints equal $\psi_T$, so the width is zero. If
+$\ct\notin\affhull(\pool)$, then $\Pi^\perp\ellvec\neq0$. Taking
+$z_1=t\,\Pi^\perp\ellvec$ and $z_0=0$ with $t\to\pm\infty$ drives the
+objective to $\pm\infty$, so the width is infinite.
+\end{proof}
+
+\subsection{Proof of \texorpdfstring{\cref{prop:hull}}{Proposition 2}}
+\label{app:proof-hull}
+
+\begin{proof}
+Write $u=\Pi^\perp(\cand{k}-c_1)$, so
+$\cand{k}-c_1=\Pi_V(\cand{k}-c_1)+u$ and
+\[
+  \Vspan'=\Vspan+\operatorname{span}\{\cand{k}-c_1\}
+  =\Vspan+\operatorname{span}\{u\}.
+\]
+If $u=0$ the two spans coincide. If $u\neq0$ the sum is orthogonal and
+$\dim\Vspan'=r+1$; moreover $u=0$ exactly when
+$\cand{k}\in c_1+\Vspan=\affhull(\pool)$, which proves the equivalences.
+For the complement, $x\in\Vspan'^{\perp}$ if and only if $x\perp\Vspan$
+and $x\perp u$, that is $\Vspan'^\perp=\Vspan^\perp\cap\{u\}^\perp$.
+Finally, every residual $C-\muC'(X)$ of the augmented pool lies in
+$\Vspan'$, because $\muC'(x)$ is a convex combination of the augmented
+profiles, so $\range(\CovC')\subseteq\Vspan'$ always, and the augmented
+eigenvalue condition states that
+$\Bspan'^\top\CovC'\Bspan'$ is positive definite, which forces
+$\range(\CovC')=\Vspan'$ and, by symmetry of $\CovC'$,
+$\kernel(\CovC')=\Vspan'^{\perp}$.
+\end{proof}
+
+\subsection{Proof of \texorpdfstring{\cref{prop:distance}}{Proposition 3}}
+\label{app:proof-distance}
+
+\begin{proof}
+Only the shift $\shift=\beta_1-\beta_0$ enters the objective and the
+restriction, and the pair of equality systems constrains it through
+$\CovC\shift=\dmom{1}-\dmom{0}$: given any such $\shift$, choosing
+$\beta_0$ with $\CovC\beta_0=\dmom{0}$ and $\beta_1=\beta_0+\shift$
+satisfies both systems. The solution set for the shift is
+$\bar\shift+\Vspan^\perp$, where $\bar\shift$ is the minimum-norm
+solution and lies in $\Vspan$. For $\shift=\bar\shift+\nu$ with
+$\nu\in\Vspan^\perp$, orthogonality gives
+$\norm{\shift}_2^2=\norm{\bar\shift}_2^2+\norm{\nu}_2^2$, so the cap
+$\norm{\shift}_2\leq\tau$ is exactly
+$\norm{\nu}_2\leq\rho_\tau:=(\tau^2-\norm{\bar\shift}_2^2)^{1/2}$, and
+the objective is
+$\ellvec^\top\shift=\ellvec^\top\bar\shift+(\Pi^\perp\ellvec)^\top\nu$.
+By the Cauchy--Schwarz inequality, the supremum and infimum of
+$(\Pi^\perp\ellvec)^\top\nu$ over the ball of radius $\rho_\tau$ in
+$\Vspan^\perp$ are $\pm\rho_\tau\norm{\Pi^\perp\ellvec}_2$, attained at
+$\nu=\pm\rho_\tau\,\Pi^\perp\ellvec/\norm{\Pi^\perp\ellvec}_2$ when
+$\Pi^\perp\ellvec\neq0$ and trivially when it is zero. The width is
+therefore $2\rho_\tau\norm{\Pi^\perp\ellvec}_2$, and
+\cref{lem:loading} identifies the last factor with
+$\dist(\ct,\affhull(\pool))$.
+\end{proof}
+
+\subsection{Proof of \texorpdfstring{\cref{prop:refinement}}{Proposition 4}}
+\label{app:proof-refinement}
+
+\begin{proof}
+Apply \eqref{eq:app-normal} to the augmented pool: because the candidate
+site obeys \eqref{eq:response-model} with the same coefficients,
+$\dmom{a}'=\CovC'\beta^\circ_a$, so the augmented equality solution set
+is $\beta^\circ_a+\kernel(\CovC')$, and by \cref{prop:hull} this kernel
+is $\Vspan^\perp\cap\{\newdir{k}\}^\perp$ in the hull-expanding case and
+$\Vspan^\perp$ in the rank-preserving case.
+
+In the rank-preserving case the solution sets coincide with the pool's,
+so $\feasset'=\feasset$ after intersecting with $\restrset$. In the
+hull-expanding case, for $\beta_a=\beta^\circ_a+z_a$ with
+$z_a\in\Vspan^\perp$ we have
+$\newdir{k}^\top\beta_a=\newdir{k}^\top\beta^\circ_a
++\newdir{k}^\top z_a$, and $z_a\in\{\newdir{k}\}^\perp$ exactly when
+$\newdir{k}^\top\beta_a=\newdir{k}^\top\beta^\circ_a=\reveal{a}{k}$.
 Hence
 \[
-w_r^\tau(t;\Sigma_\mathcal{S},b)
- \;=\; 2\rho_\tau\,\|c_\perp(t)\|_2
- \;=\; 2\sqrt{\tau^2-\|\theta_0\|_2^2}\,\delta_\mathcal{S}(t)
- \;=\; 2\tau\,\delta_\mathcal{S}(t)\bigl(1+O(\tau^{-2})\bigr),
+  \beta^\circ_a+\kernel(\CovC')
+  =\bigl(\beta^\circ_a+\Vspan^\perp\bigr)
+  \cap\bigl\{\beta_a:\ \newdir{k}^\top\beta_a=\reveal{a}{k}\bigr\},
 \]
-which is \eqref{eq:prop3}. The dominance claim follows since
-$\delta_{\mathcal{S}\cup\{k\}}(t)\le\delta_\mathcal{S}(t)$: the PSD update only
-enlarges the range, $\mathrm{range}(\Sigma_{\mathcal{S}\cup\{k\}}^\top)\supseteq
-\mathrm{range}(\Sigma_\mathcal{S}^\top)$, so the distance to it cannot grow, with
-equality iff $c(t)$'s null-space component is unchanged --- by
-Proposition~\ref{prop:hull}, iff $\tilde u\in\mathrm{range}(\tilde\Sigma_\mathcal{S})$.
+and intersecting both arms' sets with $\restrset$ gives
+\eqref{eq:refinement}. The scalar $\reveal{a}{k}$ is a linear functional
+of $\Bspan'^\top\beta^\circ_a$, which the augmented pool identifies
+through its normal equations because $\newdir{k}\in\Vspan'$; it is not
+identified by the pool alone because moving $\beta_a$ along
+$\newdir{k}\in\Vspan^\perp$ leaves every pool moment unchanged.
 
-For Corollary~\ref{cor:hulldist}, write $x:=(t_m,t_r)-\bar c=x_V+x_\perp$ with
-$x_V\in V:=\mathrm{span}\{\tilde c^{(s)}\}$ and $x_\perp\perp V$. The assumed
-range identity $\mathrm{range}(\Sigma_\mathcal{S}^\top)=LV$ is what licenses the
-pullback --- without it, the distance from $c(t)$ to
-$\mathrm{range}(\Sigma_\mathcal{S}^\top)$ need not correspond to any distance in
-context space. Given it, $Lx_V\in LV=\mathrm{range}(\Sigma_\mathcal{S}^\top)$,
-and $L^\top L=\kappa I$ makes $Lx_\perp\perp LV$ (since
-$(Lx_\perp)^\top(Lv)=\kappa\,x_\perp^\top v=0$), so
-$\delta_\mathcal{S}(t)=\|Lx_\perp\|_2=\sqrt{\kappa}\,\|x_\perp\|_2
- =\sqrt{\kappa}\,\mathrm{dist}\bigl((t_m,t_r),\mathrm{aff}(\mathcal{H}_\mathcal{S})\bigr)$,
-as claimed. $V$ is the direction space of $\mathrm{aff}(\mathcal{H}_\mathcal{S})$.
+For the last claim, compare the augmented-pool endpoint programs, which
+use $(\bT',\ellvec')$, with the base-objective programs over
+$\feasset'$. Write $q=\E_{\tP}[\muC(X)]$ and $q'=\E_{\tP}[\muC'(X)]$ for
+the two mixture points. As in the proof of \cref{lem:loading}, $q$ lies
+in $\affhull(\pool)$ and $q'$ in $\affhull(\pool\cup\{k\})$, so
+$\ellvec-\ellvec'=q'-q\in\Vspan'$, and for every $\beta\in\feasset'$,
+writing $\shift=\beta_1-\beta_0=\shift^\circ+\nu$ with
+$\nu\in\Vspan'^\perp$,
+\[
+  (\ellvec-\ellvec')^\top\shift
+  =(\ellvec-\ellvec')^\top\shift^\circ
+\]
+is constant on $\feasset'$. Both decompositions represent the same
+target effect, $\psi_T=\bT+\ellvec^\top\shift^\circ
+=\bT'+\ellvec'^\top\shift^\circ$, so
+$\bT'-\bT=(\ellvec-\ellvec')^\top\shift^\circ$, and for every
+$\beta\in\feasset'$,
+\[
+  \bT'+\ellvec'^\top\shift
+  =\bT+(\ellvec-\ellvec')^\top\shift^\circ
+  +\ellvec^\top\shift-(\ellvec-\ellvec')^\top\shift
+  =\bT+\ellvec^\top\shift .
+\]
+The two programs have the same objective value at every feasible point,
+hence the same endpoints.
 \end{proof}
 
-\subsection{Proof of Theorem~\ref{thm:monotone}
-(monotone improvement under (M1) or (M2))}
-\label{sec:proof-thm1}
-
-We first establish the algebraic identity that drives the proof. Let
-$u:=(u_m^{(k)},u_r^{(k)})$ be the residualized context of the candidate and $y_k$
-its scalar outcome forecast. Then, in the simplified moment formulation
-$\Sigma_{\mathcal{S}\cup\{k\}}=\Sigma_\mathcal{S}+uu^\top$ and
-$b_{\mathcal{S}\cup\{k\}}=b_\mathcal{S}-u y_k$, we have for every $\theta$:
-\begin{equation}
-\label{eq:identity}
-\Sigma_{\mathcal{S}\cup\{k\}}\theta+b_{\mathcal{S}\cup\{k\}}
- \;=\; \Sigma_\mathcal{S}\theta+b_\mathcal{S}
- \;+\; u\cdot(u^\top\theta-y_k).
-\end{equation}
-Direct verification:
-$\Sigma_{\mathcal{S}\cup\{k\}}\theta=\Sigma_\mathcal{S}\theta+u(u^\top\theta)$ and
-$b_{\mathcal{S}\cup\{k\}}=b_\mathcal{S}-uy_k$; summing gives \eqref{eq:identity}.
+\subsection{Proof of \texorpdfstring{\cref{prop:omitted-bias}}{Proposition on omitted-moderator bias}}
+\label{app:proof-omitted-bias}
 
 \begin{proof}
-Recall the identity \eqref{eq:identity}:
-$\Sigma_{\mathcal{S}\cup\{k\}}\theta+b_{\mathcal{S}\cup\{k\}}
- =\Sigma_\mathcal{S}\theta+b_\mathcal{S}+u(u^\top\theta-y_k)$.
-
-(ii) Rank-expanding case, $u\notin\mathrm{range}(\Sigma_\mathcal{S})$.
-Let $P^\perp$ project orthogonally onto $\mathrm{null}(\Sigma_\mathcal{S})$, so
-$u_\perp:=P^\perp u\ne 0$. Applying $P^\perp$ to \eqref{eq:identity} and using
-$b_\mathcal{S}\in\mathrm{range}(\Sigma_\mathcal{S})$ (which kills
-$\Sigma_\mathcal{S}\theta+b_\mathcal{S}$) gives
-$P^\perp[\Sigma_{\mathcal{S}\cup\{k\}}\theta+b_{\mathcal{S}\cup\{k\}}]
- =u_\perp(u^\top\theta-y_k)$. Hence
-$\theta\in\mathcal{L}(\Sigma_{\mathcal{S}\cup\{k\}},b_{\mathcal{S}\cup\{k\}})$
-forces $u^\top\theta=y_k$ (as $u_\perp\ne0$), and then \eqref{eq:identity} forces
-$\Sigma_\mathcal{S}\theta+b_\mathcal{S}=0$; conversely any
-$\theta\in\mathcal{L}(\Sigma_\mathcal{S},b_\mathcal{S})$ with $u^\top\theta=y_k$
-satisfies $\Sigma_{\mathcal{S}\cup\{k\}}\theta+b_{\mathcal{S}\cup\{k\}}=0$.
-Intersecting with $\mathcal{R}$,
+Write $\widetilde C=C-\muC(X)$ and
+$\widetilde U=U-\muU(X)$. Randomization and
+\eqref{eq:omitted-response-model} imply
 \[
-\mathcal{F}_{\mathcal{S}\cup\{k\}}
- \;=\; \mathcal{F}_\mathcal{S}\cap\{\theta:u^\top\theta=y_k\}.
+  \cov\bigl(C,\pseudo{1}-\pseudo{0}\mid X\bigr)
+  =\cov(C\mid X)\theta+\cov(C,U\mid X)\gamma.
 \]
-If this set is non-empty it is contained in $\mathcal{F}_\mathcal{S}$, so for
-every $t$ the supremum (resp.\ infimum) of $c(t)^\top\theta$ over it is no larger
-(resp.\ no smaller), giving the pointwise width inequality. Under (M2),
-$y_k=u^\top\theta_\mathcal{S}^\star$, the hyperplane passes through
-$\theta_\mathcal{S}^\star\in\mathcal{L}(\Sigma_\mathcal{S},b_\mathcal{S})$, which
-lies in $\mathcal{F}_\mathcal{S}$ as soon as $\theta_\mathcal{S}^\star\in\mathcal{R}$;
-then $\theta_\mathcal{S}^\star\in\mathcal{F}_{\mathcal{S}\cup\{k\}}$ and
-non-emptiness holds. Absent such a guarantee the augmented set may be empty (see
-the Remark below), and the inequality is vacuous.
-
-(i) Rank-preserving case, $u\in\mathrm{range}(\Sigma_\mathcal{S})$, (M2).
-Here $u\perp\mathrm{null}(\Sigma_\mathcal{S})$. For $\theta\in\mathcal{F}_\mathcal{S}$,
-write $\theta=\theta_\mathcal{S}^\star+\nu$, $\nu\in\mathrm{null}(\Sigma_\mathcal{S})$;
-then $u^\top\theta-y_k=u^\top\nu=0$, so by \eqref{eq:identity}
-$\theta\in\mathcal{L}(\Sigma_{\mathcal{S}\cup\{k\}},b_{\mathcal{S}\cup\{k\}})$. The
-two affine subspaces share $\theta_\mathcal{S}^\star$ (by (M2)) and the same
-direction subspace --- by \eqref{eq:nullid},
-$\mathrm{null}(\Sigma_\mathcal{S}+uu^\top)=\mathrm{null}(\Sigma_\mathcal{S})\cap\{u^\top x=0\}
- =\mathrm{null}(\Sigma_\mathcal{S})$ since $u\perp\mathrm{null}(\Sigma_\mathcal{S})$ ---
-hence coincide. Intersecting with $\mathcal{R}$ gives
-$\mathcal{F}_{\mathcal{S}\cup\{k\}}=\mathcal{F}_\mathcal{S}$, so the width is
-unchanged target by target. Taking suprema over $t\in\mathcal{T}$ in either case
-proves the worst-case statement.
+Taking expectations gives \eqref{eq:omitted-moment-shift}. Let
+$q=\CUcov\gamma$. Every solution of \eqref{eq:omitted-normal-equation} has
+the form
+\[
+  \theta^C=\theta+\CovC^\dagger q+z,
+  \qquad z\in\kernel(\CovC),
+\]
+because $q\in\Vspan=\range(\CovC)$. The true target effect is
+\[
+  \psi_T=\bT+\ellvec^\top\theta+\ellU^\top\gamma,
+\]
+which follows by averaging \eqref{eq:omitted-response-model} over the target
+covariate law. If $\ct\in\affhull(\pool)$, then
+$\ellvec\in\range(\CovC)$ by \cref{lem:loading}, so
+$\ellvec^\top z=0$. Subtracting
+$\psi_T^C=\bT+\ellvec^\top\theta^C$ gives
+\eqref{eq:omitted-bias}.
 \end{proof}
 
-\paragraph{Remark (Feasibility is needed: (M1) alone can break it).}
-The hypothesis $\mathcal{F}_{\mathcal{S}\cup\{k\}}\ne\varnothing$ in (ii) is not
-implied by (M1) and consistency. Take $\Sigma_\mathcal{S}=\mathrm{diag}(1,0)$,
-$b_\mathcal{S}=0$, $\mathcal{R}=[-1,1]^2$, $u=(0,1)$, $y_k=100$. Then
-$u\notin\mathrm{range}(\Sigma_\mathcal{S})$ (so (M1) holds) and
-$b_\mathcal{S}\in\mathrm{range}(\Sigma_\mathcal{S})$, with
-$\mathcal{F}_\mathcal{S}=\{0\}\times[-1,1]\ne\varnothing$. But
-$\Sigma_{\mathcal{S}\cup\{k\}}=I$ and $b_{\mathcal{S}\cup\{k\}}=(0,-100)$ force
-$\theta=(0,100)\notin\mathcal{R}$, so $\mathcal{F}_{\mathcal{S}\cup\{k\}}=\varnothing$
-and the augmented interval is empty (failure mode (F3)). This is why (ii) is
-conditional on non-emptiness, and why the safe screen pairs (M1) with the outcome
-control (M2)/$\theta_\mathcal{S}^\star\in\mathcal{R}$.
-
-\subsection{Proof of Proposition~\ref{prop:envelope} (rank-2 envelope)}
-\label{sec:proof-prop4}
-
-Proposition~\ref{prop:envelope} is a special case of the Bonnans--Shapiro
-directional derivative theorem for the value function of a perturbed convex
-program. We sketch the specialization to \eqref{eq:bounds} to make the constants
-explicit.
-
-Setup. For the upper endpoint define
-\[
-v_u(h):=\max_\theta\bigl\{c(t)^\top\theta:(\Sigma_\mathcal{S}+h_\Sigma)\theta
- =-(b_\mathcal{S}+h_b),\;r(\theta)\le 0\bigr\},
-\]
-with perturbation $h=(h_\Sigma,h_b)$ and KKT triple
-$(\theta_u^\star,\lambda_u^\star,\nu_u^\star)$ at $h=0$; stationarity reads
-$c(t)=\Sigma_\mathcal{S}\lambda_u^\star+\partial r(\theta_u^\star)^\top\nu_u^\star$.
-Define $v_\ell(h)$ symmetrically with the $\min$ Lagrangian and triple
-$(\theta_\ell^\star,\lambda_\ell^\star,\nu_\ell^\star)$.
-
-Directional derivative. Under Robinson's constraint qualification
-(Assumption~6 of \citealp{boyarsky2026}) and strict complementarity, each value
-function is directionally differentiable with
-\[
-D v_u\cdot h=-\lambda_u^{\star\top}\bigl(h_\Sigma\theta_u^\star+h_b\bigr),
-\qquad
-D v_\ell\cdot h=-\lambda_\ell^{\star\top}\bigl(h_\Sigma\theta_\ell^\star+h_b\bigr),
-\]
-each evaluated at its own optimizer and multiplier (Theorem~4.24 of
-\citealp{bonnans2013perturbation}). Without strict complementarity the
-derivatives are Gol'shtein-type minimax values over the optimal primal--dual
-sets: for the upper ($\max$) problem the multiplier is selected by an inner
-minimum (its value function is concave in the right-hand side), and for
-the lower ($\min$) problem by an inner maximum (convex value function),
-as stated in Proposition~\ref{prop:envelope}.
-
-Application to site augmentation. Set $h_\Sigma=\Delta\Sigma_k$,
-$h_b=\Delta b_k$ to obtain \eqref{eq:envelope}; subtracting,
-$D w_k=D v_u-D v_\ell$. The endpoints share an optimizer --- so that
-$D w_k=-(\lambda_u^\star-\lambda_\ell^\star)^\top(\Delta\Sigma_k\theta^\star+\Delta b_k)$
---- only in the degenerate zero-width case $\theta_u^\star=\theta_\ell^\star$; in
-general the optimizers, active sets, and multipliers differ and are kept
-separate.
-
-Rank-2 reduction. By \eqref{eq:dsigma}, $\Delta\Sigma_k=U_kA_kU_k^\top$
-with $U_k$ a $d_g\times 2$ factor, so $\Delta\Sigma_k\theta^\star_\bullet
-=U_k(A_kU_k^\top\theta^\star_\bullet)$ lies in the two-dimensional column space of
-$U_k$, and each endpoint derivative reduces to the two scalars
-$\lambda_\bullet^{\star\top}U_k$. The minimax \eqref{eq:minimax} over
-$k\in\mathcal{K}$ therefore reduces to evaluating two scalars per candidate after
-the existing-pool LPs have been solved once; this is the $O(|\mathcal{T}|K)$ cost
-claimed in Section~\ref{sec:surrogate}.
-
-\subsection{Extension to the block (BEN) moment}
-\label{sec:proof-block}
-
-The proofs of Appendices~\ref{sec:proof-prop1}, \ref{sec:proof-prop2}, and
-\ref{sec:proof-thm1} use only three facts: $\Sigma$ is symmetric PSD, the update
-$\Delta\Sigma_k$ is PSD of rank at most two, and the algebraic identity
-\eqref{eq:identity}. We record the block form that supplies the first two.
-
-With $w:=(u_m,u_r)\in\mathbb{R}^{d_M+d_I}$ and $ww^\top$ the corresponding
-$(d_M+d_I)\times(d_M+d_I)$ outer product, the update implied by Equation~(A.9) of
-\citet{boyarsky2026} is
-\begin{equation}
-\label{eq:dsigma-block}
-\Delta\Sigma_k
- \;=\; n_k\,\rho
- \begin{bmatrix} ww^\top & ww^\top\\[2pt] ww^\top & \rho^{-1}ww^\top\end{bmatrix}
- \;=\; U_k A_k U_k^\top,
-\qquad
-U_k=\begin{bmatrix} w & 0\\ 0 & w\end{bmatrix},
-\quad
-A_k=n_k\rho\begin{bmatrix} 1 & 1\\ 1 & \rho^{-1}\end{bmatrix},
-\end{equation}
-where the four row/column blocks have sizes $(d_M,d_I,d_M,d_I)$ to match
-$\theta=(\beta_1,\beta_2,\gamma_1,\gamma_2)$, and each displayed $ww^\top$ is the
-symmetric block
-$\bigl[\begin{smallmatrix} u_m u_m^\top & u_m u_r^\top\\ u_r u_m^\top & u_r u_r^\top\end{smallmatrix}\bigr]$.
-(Two corrections to the earlier display: its top-right and bottom-left blocks had
-the off-diagonal sub-blocks transposed --- dimensionally consistent only when
-$d_M=d_I$ --- and the prefactor is $+n_k\rho$, not $n_k(-\rho)$.) For a constant
-propensity $\rho\in(0,1]$ the $2\times2$ core has trace $1+\rho^{-1}>0$ and
-determinant $\rho^{-1}-1\ge0$, so $A_k\succeq0$; hence $\Delta\Sigma_k\succeq0$,
-$\Sigma_{\mathcal{S}\cup\{k\}}\succeq\Sigma_\mathcal{S}$, and
-$\mathrm{rank}(\Delta\Sigma_k)\le\mathrm{rank}(U_k)\le2$.
-
-Given \eqref{eq:dsigma-block}, the identity \eqref{eq:identity} holds in the
-block model with the rank-one term $u(u^\top\theta-y_k)$ replaced by
-$U_kA_k(U_k^\top\theta-\eta_k)$, where $\eta_k$ is the block-residualized outcome
-moment: for the rank-$r$ update
-$\Sigma'=\Sigma+U_kA_kU_k^\top$, $b'=b-U_kA_k\eta_k$,
-\begin{equation}
-\label{eq:identity-block}
-\Sigma'\theta+b' \;=\; \Sigma\theta+b+U_kA_k\bigl(U_k^\top\theta-\eta_k\bigr).
-\end{equation}
-The rank-one monotonicity proof extends under the sufficient condition
-\begin{equation}
-\label{eq:range-transversality}
-\mathrm{range}(U_kA_k)\cap\mathrm{range}(\Sigma_\mathcal{S})=\{0\},
-\qquad\text{equivalently}\qquad
-\ker\bigl(P_{\mathrm{null}(\Sigma_\mathcal{S})}U_kA_k\bigr)\subseteq\ker(U_kA_k).
-\end{equation}
-Indeed, for $\theta\in\mathcal{L}(\Sigma',b')$, projecting
-\eqref{eq:identity-block} onto $\mathrm{null}(\Sigma_\mathcal{S})$ (using
-$b_\mathcal{S}\in\mathrm{range}(\Sigma_\mathcal{S})$) gives
-$P_{\mathrm{null}(\Sigma_\mathcal{S})}U_kA_k(U_k^\top\theta-\eta_k)=0$, and
-\eqref{eq:range-transversality} upgrades this to
-$U_kA_k(U_k^\top\theta-\eta_k)=0$, hence $\Sigma_\mathcal{S}\theta+b_\mathcal{S}=0$.
-Therefore
-\[
-\mathcal{F}_{\mathcal{S}\cup\{k\}}
- \;=\; \mathcal{F}_\mathcal{S}\cap
- \bigl\{\theta:U_kA_k(U_k^\top\theta-\eta_k)=0\bigr\},
-\]
-and, whenever this intersection is non-empty, every support-function width
-weakly decreases, exactly as in Theorem~\ref{thm:monotone}(ii). We emphasize
-that \eqref{eq:range-transversality} is a condition on the whole update
-range: requiring merely that each column of $U_k$ lie outside
-$\mathrm{range}(\Sigma_\mathcal{S})$ is not sufficient, since a linear
-combination of the columns can fall inside $\mathrm{range}(\Sigma_\mathcal{S})$
-(e.g.\ columns $e_1\pm e_2$ with $\mathrm{range}(\Sigma_\mathcal{S})=
-\mathrm{span}(e_1)$), and then the projection step above no longer pins down the
-old moment. If the update has a component inside
-$\mathrm{range}(\Sigma_\mathcal{S})$, that component requires an (M2)-type
-consistency condition on the matching coordinates of $\eta_k$; otherwise it
-translates the old affine slice and monotonicity can fail as in
-Section~\ref{sec:counterexample}. Pinning down the exact constants $n_k,\rho$
-from the BEN estimator is left to their Appendix~A.9; nothing in
-Sections~\ref{sec:hull}--\ref{sec:monotonicity} uses more than the PSD,
-rank-$\le2$, identity, and transversality properties verified here.
-
-\subsection{Proof of Theorem \ref{thm:adverse-no-shrink-ri}}
+\subsection{Proof of \texorpdfstring{\cref{thm:omitted-refinement}}{Theorem on omitted-moderator refinement}}
+\label{app:proof-omitted-refinement}
 
 \begin{proof}
-Fix $\mathcal F_0$ and suppose $K^\star=k$. Because
-$K^\star=\kappa(\mathcal F_0)$, conditioning on the selected site does not use
-the selected site's realized assignment or post-treatment outcomes. The remaining
-randomness is the treatment assignment $A_k$ generated by $Q_k$.
+Subtract the affine combination of the source conditional treatment
+responses from the candidate response. The $g_\Delta(x)$ terms cancel because
+$\sum_s w_s=1$, and the context terms cancel because
+$\cand{k}=\sum_s w_sc_s$. The remaining term is
+\[
+  \left(u_k-\sum_s w_su_s\right)^\top\gamma
+  =\udisc{k}^\top\gamma,
+\]
+which proves \eqref{eq:omitted-contrast}.
 
-Let $q_k(a):=Q_k(A_k=a)$. By the group-invariance assumption,
-\[
-q_k(ga)=q_k(a)
-\qquad
-\forall g\in G_k,\ a\in\Omega_k.
-\]
-Therefore $q_k$ is constant on each orbit. Indeed, if
-$a'\in\mathcal O_k(a)$, then $a'=ga$ for some $g\in G_k$, and hence
-\[
-q_k(a')=q_k(ga)=q_k(a).
-\]
-It follows that, conditional on the event $A_k\in\mathcal O_k(a)$, the assignment
-is uniform over the orbit:
-\[
-\Pr(A_k=a'\mid A_k\in\mathcal O_k(a),\mathcal F_0,K^\star=k)
-=
-\frac{1}{|\mathcal O_k(a)|}
-\qquad
-\forall a'\in\mathcal O_k(a).
-\tag{6.13}
-\]
-
-The group-average and orbit-average forms are equivalent by the
-orbit-stabilizer theorem. For any $a\in\Omega_k$, let
-\[
-\operatorname{Stab}_{G_k}(a)
-:=
-\{g\in G_k:ga=a\}
-\]
-be the stabilizer of $a$. The orbit-stabilizer theorem gives
-\[
-|G_k|
-=
-|\mathcal O_k(a)|\,|\operatorname{Stab}_{G_k}(a)|.
-\]
-Moreover, for any $a'\in\mathcal O_k(a)$, the set
-$\{g\in G_k:ga=a'\}$ is a coset of $\operatorname{Stab}_{G_k}(a)$ and therefore
-has cardinality $|\operatorname{Stab}_{G_k}(a)|$. Hence, for any function $h$ on
-$\Omega_k$,
-\[
-\frac{1}{|G_k|}
-\sum_{g\in G_k}h(ga)
-=
-\frac{1}{|\mathcal O_k(a)|}
-\sum_{a'\in\mathcal O_k(a)}h(a').
-\tag{6.14}
-\]
-Thus averaging over random group elements is the same as averaging uniformly over
-the orbit.
-
-Now impose the sharp benchmark $H_0(\eta_0)$. Sharpness implies that, conditional
-on $\mathcal F_0$, $K^\star=k$, and the orbit
-$\mathcal O_k(A_k^{\mathrm{obs}})$, the values
-\[
-\widehat W_k(a;\eta_0),
-\qquad
-\widehat G_k(a;\eta_0),
-\qquad
-\mathbf 1\{\mathcal A_{k,q}(a;\eta_0)\}
-\]
-are fixed for every $a\in\mathcal O_k(A_k^{\mathrm{obs}})$. By the uniformity
-result in (6.13),
-\[
-\begin{aligned}
-&
-\Pr_{\eta_0}
-\left(
-\mathcal A_{k,q}(A_k;\eta_0)
-\mid
-\mathcal F_0,\,
-K^\star=k,\,
-\mathcal O_k(A_k^{\mathrm{obs}})
-\right)
-\\
-&\qquad
-=
-\frac{1}{|\mathcal O_k(A_k^{\mathrm{obs}})|}
-\sum_{a\in\mathcal O_k(A_k^{\mathrm{obs}})}
-\mathbf 1\{\mathcal A_{k,q}(a;\eta_0)\}
-=
-\widehat\pi_{k,q}^{\mathrm{RI}}(\eta_0).
-\end{aligned}
-\]
-This proves (6.7), and the no-shrink statement (6.8) follows by setting $q=0$.
-
-It remains to prove the validity of the randomization $p$-value. Write the orbit
-as
-\[
-\mathcal O_k(A_k^{\mathrm{obs}})
-=
-\{a_1,\ldots,a_N\},
-\]
-and define
-\[
-T_j
-:=
-T_{k,q}^{\mathrm{adv}}(a_j;\eta_0),
-\qquad
-p_j
-:=
-\frac{1}{N}
-\sum_{\ell=1}^N
-\mathbf 1\{T_\ell\ge T_j\}.
-\]
-By (6.13), the realized assignment index $J$ is uniform on
-$\{1,\ldots,N\}$ conditional on
-$\mathcal F_0$, $K^\star=k$, and the orbit. The observed randomization $p$-value
-is $p_J$.
-
-For any $j$, let
-\[
-R_j:=\#\{\ell:T_\ell\ge T_j\},
-\]
-so that $p_j=R_j/N$. If $p_j\le\alpha$, then
-$R_j\le \alpha N$. Let $m=\lfloor \alpha N\rfloor$. The number of indices $j$
-with $R_j\le \alpha N$ is at most $m$: these indices must correspond to the
-$m$ largest values of the statistic, and ties can only increase $R_j$, making the
-test conservative. Therefore
-\[
-\#\{j:p_j\le \alpha\}
-\le
-\lfloor \alpha N\rfloor.
-\]
-Since $J$ is uniform,
-\[
-\begin{aligned}
-&
-\Pr_{\eta_0}
-\left(
-p_{k,q}^{\mathrm{adv}}(\eta_0)\le \alpha
-\mid
-\mathcal F_0,\,
-K^\star=k,\,
-\mathcal O_k(A_k^{\mathrm{obs}})
-\right)
-\\
-&\qquad
-=
-\frac{1}{N}
-\#\{j:p_j\le\alpha\}
-\le
-\frac{\lfloor \alpha N\rfloor}{N}
-\le
-\alpha.
-\end{aligned}
-\]
-This proves (6.11). Taking conditional expectations over the orbit gives the
-first inequality in (6.12), and taking expectations again gives the unconditional
-inequality. 
+The candidate's observed contrast therefore adds exactly the equality
+$\udisc{k}^\top\gamma=\rho_k$ to the source moment and restriction system,
+which proves \eqref{eq:omitted-feasible-update}. The true parameter belongs to
+both sets by assumption, so the candidate set is a subset of the source set
+and both contain the truth. The infimum of the target functional can only
+increase and its supremum can only decrease after intersecting with this
+hyperplane, proving \eqref{eq:omitted-monotonicity}. If $\udisc{k}=0$, the
+contrast is zero under the model and the added equality is redundant, so the
+sets and widths are equal. If the hyperplane cuts a target-relevant direction,
+one of the endpoint programs changes strictly.
 \end{proof}
+
+\subsection{Proof of \texorpdfstring{\cref{thm:monotone}}{Theorem 1}}
+\label{app:proof-monotone}
+
+\begin{proof}
+By \cref{prop:refinement}, $\feasset'$ is either $\feasset$ or
+$\feasset$ intersected with the two hyperplanes through
+$\beta^\circ$, so $\feasset'\subseteq\feasset$ in both cases. The true
+vector $\beta^\circ$ satisfies the equality systems of both pools by
+\eqref{eq:app-normal} and lies in $\restrset$ by hypothesis, so
+$\beta^\circ\in\feasset'$ and both programs are feasible. By
+\cref{prop:refinement} the augmented-pool endpoints equal the base
+objective optimized over $\feasset'$, so shrinking the feasible set
+weakly raises the infimum and weakly lowers the supremum at every
+target, which is \eqref{eq:monotone}, with equality throughout in the
+rank-preserving case where $\feasset'=\feasset$. Since
+$\beta^\circ\in\feasset'$, the value
+$\psi_T=\bT+\ellvec^\top(\beta^\circ_1-\beta^\circ_0)$ lies between the
+augmented endpoints.
+\end{proof}
+
+\subsection{The dual price of the forecast}
+\label{app:dual-price}
+
+For completeness we record the sensitivity statement behind
+\eqref{eq:dual-pricing}. Fix one polyhedral branch and a target, and
+consider the lower endpoint program of \eqref{eq:width-map} as a
+function of the added right-hand side $y=(y_0,y_1)$,
+\[
+  v_-(y)=\bT+\min_{\beta}\bigl\{\ellvec^\top(\beta_1-\beta_0):\
+  \CovC\beta_a=\dmom{a},\
+  \newdir{k}^\top\beta_a=y_a,\ a\in\{0,1\},\ G\beta\leq h\bigr\}.
+\]
+This is a linear program whose right-hand side is affine in $y$, so
+$v_-$ is a piecewise linear convex function of $y$ on its feasibility
+domain, and standard linear-programming duality gives, at any $y$ where
+the optimal basis is unique, $\partial v_-/\partial y_a
+=\lambda^{u}_{-,a}$, the optimal multiplier on the row
+$\newdir{k}^\top\beta_a=y_a$ \citep[Chapter~4]{bonnans2013perturbation}.
+The upper endpoint is the corresponding concave value with multipliers
+$\lambda^{u}_{+,a}$. At a kink, the left and right slopes are the
+extreme multipliers, and the exact range of predicted intervals over
+$|y_a-\what y_a|\leq B$ is obtained by re-solving the two programs at
+the corners, which is how the simulations and the case study evaluate
+forecast uncertainty. For a finite union of branches the value is the
+minimum or maximum of finitely many such functions and the same
+statements hold branchwise.

@@ -1,0 +1,115 @@
+\section{Scoring candidates under restrictions}
+\label{sec:selection}
+
+Applied bounds are computed under substantive restrictions, so the selection rule must handle a polyhedral $\restrset$, where widths
+are finite and the dichotomy of \cref{prop:dichotomy} no longer holds. The
+key structural fact is that the candidate's entire effect on the
+feasible set passes through two scalars.
+
+\begin{proposition}[Adding a site adds two equality constraints]
+\label{prop:refinement}
+Suppose \cref{ass:model} holds for the pool and for candidate $k$, and
+the eigenvalue condition holds for the augmented pool. Let
+$\feasset'$ denote the feasible set \eqref{eq:feasible-set} built from
+the augmented moments. If $\cand{k}\notin\affhull(\pool)$, then, with
+$\newdir{k}$ normalized to unit length,
+\begin{equation}
+  \feasset'
+  =\feasset\cap
+  \bigl\{\beta:\ \newdir{k}^\top\beta_a=\reveal{a}{k},\ a\in\{0,1\}\bigr\},
+  \qquad
+  \reveal{a}{k}=\newdir{k}^\top\beta_a,
+  \label{eq:refinement}
+\end{equation}
+where $\reveal{a}{k}$ is identified by the augmented pool but not by
+$\pool$. If $\cand{k}\in\affhull(\pool)$, then $\feasset'=\feasset$.
+The bounds \eqref{eq:endpoint-programs} built from the augmented moments
+equal the bounds built from the base objective $(\bT,\ellvec)$ over
+$\feasset'$: the changes in $\bT$ and $\ellvec$ induced by re-pooling
+shift both endpoints by the same amount tied to the re-decomposition of
+$\psi_T$, and the target effect interval is unchanged by them.
+\end{proposition}
+
+\cref{prop:refinement} is the basis of the design rule. The direction
+$\newdir{k}$ is computable from the profiles before the experiment. The scalars
+$\reveal{0}{k}$ and $\reveal{1}{k}$ are what the candidate experiment
+reveals: the projection of each arm's fixed effects on the new
+direction. Everything else about the candidate's data (its sample size, its noise
+level, and its covariate mix) affects only how precisely those two
+scalars are estimated. It does not affect the identified set.
+
+\paragraph{The predicted interval.}
+Define the design-time width map
+\begin{equation}
+  \width_k(\ct;\,y_0,y_1)
+  =\text{width of \eqref{eq:endpoint-programs} over }
+  \feasset\cap\{\newdir{k}^\top\beta_a=y_a,\ a\in\{0,1\}\},
+  \label{eq:width-map}
+\end{equation}
+a pair of linear programs the investigator can solve before the
+experiment, for any conjectured $(y_0,y_1)$. Before the experiment we evaluate it at a
+forecast. The neutral forecast extends the pool's own fit. The minimum-norm
+solution $\what\beta_a$ of the estimated equality system sets the
+unidentified coordinates to zero, so its forecast is
+$\what y_a=\newdir{k}^\top\what\beta_a=0$. Any substantive prior that
+maps the candidate's context to expected outcomes can replace it. We
+call $\width_k(\ct;\what y_0,\what y_1)$ the predicted width and use it,
+maximized over $\targset$, as the score in \eqref{eq:minimax}.
+
+\paragraph{Pricing the forecast error.}
+The prediction is wrong only to the extent that the forecast is wrong.
+The sensitivity follows from a standard envelope argument. At a bound
+with a unique optimizer and dual, the derivative of the bound in $y_a$
+is the multiplier on the added row, so for small errors
+\begin{equation}
+  v_j(y)\approx v_j(\what y)
+  +\sum_{a\in\{0,1\}}\lambda^{u}_{j,a}\,(y_a-\what y_a),
+  \qquad j\in\{-,+\},
+  \label{eq:dual-pricing}
+\end{equation}
+where $\lambda^{u}_{j,a}$ is bound $j$'s dual variable on the constraint
+$\newdir{k}^\top\beta_a=y_a$. This is the same envelope argument that the inference theory of the
+companion paper uses, applied to the added rows. An investigator who can bound the forecast error, say
+$|y_a-\what y_a|\leq B$, obtains a range of predicted intervals by
+adding $\sum_a(|\lambda^{u}_{-,a}|+|\lambda^{u}_{+,a}|)\,B$ to the
+predicted width, or exactly by re-solving \eqref{eq:width-map} on a grid
+of $y$ values, since the map is piecewise linear in $y$. In our
+simulations and in the case study the ranking of candidates is stable
+across these variants, because the ranking depends on which direction is resolved and not on
+the forecast level.
+
+\paragraph{Three kinds of candidate.}
+The three categories from the companion paper's leave-one-out exercise
+also describe what a candidate can do.
+\begin{itemize}
+\item \emph{Identification.} If $\cand{k}\notin\affhull(\pool)$, the
+  candidate adds the equality constraints \eqref{eq:refinement}. This is
+  the only way a candidate changes the identified set, and it is
+  checkable from profiles alone.
+\item \emph{Precision.} If $\cand{k}\in\affhull(\pool)$, the identified
+  set is unchanged, and the candidate's value is statistical. More context
+variation inside $\Vspan$ tightens the estimates and the standard errors
+of the same bounds. Interior sites add precision but not identification.
+\item \emph{Feasibility.} A candidate can also restore or destroy
+  feasibility. If the pool's program is infeasible under $\restrset$,
+  no addition restores it, since $\feasset'\subseteq\feasset$ under the
+  model. But an addition whose data conflict with the model can make a feasible
+program infeasible. An infeasible augmented program then signals that
+conflict, not a property of the candidate.
+  \cref{sec:monotonicity} takes this up.
+\end{itemize}
+
+\paragraph{Scoring procedure.}
+The rule we use in \cref{sec:simulation,sec:case-study} has four steps.
+\begin{enumerate}
+\item For each candidate, test $\cand{k}$ against $\affhull(\pool)$.
+\item For each candidate that expands the hull, solve \eqref{eq:width-map}
+  at the forecast over $\targset$.
+\item Report the minimax score, the resolved direction, and the dual
+  prices of the forecast.
+\item Break ties, and rank interior candidates, by predicted precision
+  at fixed identification.
+\end{enumerate}
+The whole computation reuses the base-pool estimate $\what\Gam$ and adds two rows per
+candidate, so scoring a pool of $K$ candidates costs $K$ pairs of linear
+programs per target beyond the base fit.

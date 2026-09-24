@@ -1,0 +1,135 @@
+\section{Site selection for omitted moderators}
+\label{sec:omitted-moderator}
+
+The fixed-effects response model is a statement about which site-level
+variables modify the response. It can fail because a relevant moderator is
+omitted from $C$. Omitted-variable bias is especially useful here because it
+separates two quantities that are often conflated: the strength of the omitted
+moderator in the treatment effect and the extent to which the moderator is
+imbalanced between the source sites and the target.
+
+Let $U\in\R^q$ be a site-level moderator with profile $u_s$ at site $s$.
+For this section, suppose the treatment-effect contrast obeys the augmented
+response model
+\begin{equation}
+  \E_\sP[Y(1)-Y(0)\mid X,C,U]
+  =g_\Delta(X)+C^\top\theta+U^\top\gamma,
+  \qquad
+  \theta=\beta_1-\beta_0,
+  \label{eq:omitted-response-model}
+\end{equation}
+where $\gamma\in\R^q$ is the effect of the omitted moderator. The analysis in
+the rest of the paper fits the model without $U$. Define
+\begin{equation}
+  \muU(x)=\E_\sP[U\mid X=x],
+  \qquad
+  \CUcov=\E_\sP[\cov(C,U\mid X)],
+  \qquad
+  \ellU=\uT-\E_{X\sim\tP}[\muU(X)].
+  \label{eq:omitted-objects}
+\end{equation}
+The target now has an omitted-moderator profile $\uT$. These quantities need
+not be observed; they index the sensitivity analysis.
+
+\begin{proposition}[Omitted-moderator bias]
+\label{prop:omitted-bias}
+Let $\theta^C$ solve the normal equations from fitting the response model
+without $U$, so that
+\begin{equation}
+  \CovC\theta^C=\dmom{1}-\dmom{0}.
+  \label{eq:omitted-normal-equation}
+\end{equation}
+Under \eqref{eq:omitted-response-model},
+\begin{equation}
+  \dmom{1}-\dmom{0}=\CovC\theta+\CUcov\gamma.
+  \label{eq:omitted-moment-shift}
+\end{equation}
+If $\ct\in\affhull(\pool)$, then the target value reported by the
+misspecified model, $\psi_T^C=\bT+\ellvec^\top\theta^C$, differs from the
+true target effect by
+\begin{equation}
+  \psi_T-\psi_T^C
+  =\bigl(\ellU-\ellvec^\top\CovC^\dagger\CUcov\bigr)^\top\gamma.
+  \label{eq:omitted-bias}
+\end{equation}
+\end{proposition}
+
+The two terms in \eqref{eq:omitted-bias} have a direct interpretation. The
+loading $\ellU$ is the source--target difference in the omitted moderator,
+while $\ellvec^\top\CovC^\dagger\CUcov$ is the component that the fitted
+context coefficients absorb because $U$ is associated with $C$ in the source
+pool. The formula is invariant to the choice of solution $\theta^C$ because
+$\ellvec\in\range(\CovC)$ when the target is in the affine hull.
+
+The same decomposition gives a new role to sites that are interior in the
+observed context geometry. Let a candidate satisfy
+$\cand{k}=\sum_s w_s c_s$ with $\sum_s w_s=1$, and define its omitted-profile
+contrast
+\begin{equation}
+  \udisc{k}=u_k-\sum_s w_su_s.
+  \label{eq:omitted-direction}
+\end{equation}
+The weights may be negative, as they are for affine, rather than convex,
+combinations. If $\udisc{k}\neq0$, the candidate is outside the affine hull
+of the existing profiles in the augmented $(C,U)$ space even though it is
+inside the affine hull in $C$ alone. It therefore tests a direction that the
+maintained model treats as irrelevant.
+
+\begin{theorem}[Refinement under an omitted moderator]
+\label{thm:omitted-refinement}
+Suppose the augmented response model \eqref{eq:omitted-response-model} holds
+for the source pool and candidate $k$. Let $\rho_k$ denote the population
+contrast between the candidate's conditional treatment effect and the same
+affine combination of source-site conditional treatment effects. Then, for
+every $x$,
+\begin{equation}
+\begin{split}
+\rho_k
+&=\E[Y(1)-Y(0)\mid X=x,C=\cand{k},U=u_k]\\
+&\quad-\sum_s w_s\E[Y(1)-Y(0)\mid X=x,C=c_s,U=u_s]
+=\udisc{k}^\top\gamma.
+\end{split}
+\label{eq:omitted-contrast}
+\end{equation}
+Consider an omitted-moderator sensitivity set
+\begin{equation}
+  \ovbset
+  =\bigl\{(\theta,\gamma):\CovC\theta+\CUcov\gamma
+  =\dmom{1}-\dmom{0},\ (\theta,\gamma)\in\restrset_U\bigr\},
+  \label{eq:omitted-feasible-set}
+\end{equation}
+and the target functional
+\begin{equation}
+  \psi_T(\theta,\gamma)
+  =\bT+\ellvec^\top\theta+\ellU^\top\gamma.
+  \label{eq:omitted-target-functional}
+\end{equation}
+After the candidate experiment is observed, the feasible set is
+\begin{equation}
+  \ovbset^{(k)}
+  =\ovbset\cap\bigl\{(\theta,\gamma):\udisc{k}^\top\gamma=\rho_k\bigr\}.
+  \label{eq:omitted-feasible-update}
+\end{equation}
+If the true $(\theta,\gamma)$ belongs to $\ovbset$, then the corresponding
+identified-set width satisfies, for every target,
+\begin{equation}
+  \ovbwidth(\ct,\uT;\pool\cup\{k\})
+  \leq \ovbwidth(\ct,\uT;\pool).
+  \label{eq:omitted-monotonicity}
+\end{equation}
+If $\udisc{k}=0$, then $\rho_k=0$ and the candidate adds no omitted-moderator
+restriction, so the two widths are equal. If $\udisc{k}\neq0$, the candidate
+can strictly reduce the width whenever the restriction
+$\udisc{k}^\top\gamma=\rho_k$ cuts a target-relevant direction in $\ovbset$.
+\end{theorem}
+
+The theorem is the omitted-variable analogue of \cref{thm:monotone}. Under the
+maintained model, a candidate outside the observed affine hull is valuable
+because it identifies a new context direction. Under the augmented model, an
+interior candidate is valuable when it is outside the affine hull after the
+omitted moderator is included. The design criterion is therefore to seek
+sites for which $\udisc{k}$ is large in directions of $\gamma$ that matter for
+$\ellU$. If $U$ is not measured, this direction must be supplied by a proxy,
+substantive prior, or sensitivity range. Without such information, an
+unrestricted omitted moderator remains unconstrained by any site-selection
+rule based on $C$ alone.

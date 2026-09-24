@@ -13,7 +13,8 @@ Anthony~C. Atkinson, Alexander~N. Donev, and Randall~D. Tobias.
 \bibitem[Bareinboim and Pearl(2016)]{bareinboim2016causal}
 Elias Bareinboim and Judea Pearl.
 \newblock Causal inference and the data-fusion problem.
-\newblock \emph{Proceedings of the National Academy of Sciences}, 113\penalty0 (27):\penalty0 7345--7352, 2016.
+\newblock \emph{Proceedings of the National Academy of Sciences}, 113\penalty0
+  (27):\penalty0 7345--7352, 2016.
 
 \bibitem[Bonnans and Shapiro(2013)]{bonnans2013perturbation}
 J~Fr{\'e}d{\'e}ric Bonnans and Alexander Shapiro.
@@ -32,22 +33,29 @@ Sookyo Jeong and Hongseok Namkoong.
 
 \bibitem[Meager(2019)]{meager2019understanding}
 Rachael Meager.
-\newblock Understanding the average impact of microcredit expansions: A bayesian hierarchical analysis of seven randomized experiments.
-\newblock \emph{American Economic Journal: Applied Economics}, 11\penalty0 (1):\penalty0 57--91, 2019.
+\newblock Understanding the average impact of microcredit expansions: A
+  bayesian hierarchical analysis of seven randomized experiments.
+\newblock \emph{American Economic Journal: Applied Economics}, 11\penalty0
+  (1):\penalty0 57--91, 2019.
 
-\bibitem[Nemhauser et~al.(1978)Nemhauser, Wolsey, and Fisher]{nemhauser1978analysis}
+\bibitem[Nemhauser et~al.(1978)Nemhauser, Wolsey, and
+  Fisher]{nemhauser1978analysis}
 George~L. Nemhauser, Laurence~A. Wolsey, and Marshall~L. Fisher.
-\newblock An analysis of approximations for maximizing submodular set functions---{I}.
-\newblock \emph{Mathematical Programming}, 14\penalty0 (1):\penalty0 265--294, 1978.
+\newblock An analysis of approximations for maximizing submodular set
+  functions---{I}.
+\newblock \emph{Mathematical Programming}, 14\penalty0 (1):\penalty0 265--294,
+  1978.
 
 \bibitem[Pukelsheim(2006)]{pukelsheim2006optimal}
 Friedrich Pukelsheim.
 \newblock \emph{Optimal Design of Experiments}.
-\newblock Classics in Applied Mathematics. Society for Industrial and Applied Mathematics, 2006.
+\newblock Classics in Applied Mathematics. Society for Industrial and Applied
+  Mathematics, 2006.
 
 \bibitem[Robinson(1988)]{robinson1988root}
 Peter~M Robinson.
 \newblock Root-n-consistent semiparametric regression.
-\newblock \emph{Econometrica: Journal of the Econometric Society}, pages 931--954, 1988.
+\newblock \emph{Econometrica: Journal of the Econometric Society}, pages
+  931--954, 1988.
 
 \end{thebibliography}

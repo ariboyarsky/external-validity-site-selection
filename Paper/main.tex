@@ -1,10 +1,11 @@
 %% =====================================================================
-%%  Where to Go Next: A Minimax Site-Selection Criterion
-%%  for External Validity
+%%  Where to Go Next: Site Selection for External Validity
 %%
 %%  Main file.  Body sections live in sections/, proofs in appendix/.
-%%  Style is inherited from the External Validity helper packages
-%%  (formatting.sty, statistics-macros.sty, editing-macros.sty).
+%%  Notation and style follow the companion paper "A Sensitivity
+%%  Framework for Assessing External Validity" (Boyarsky, Egami, and
+%%  Namkoong 2026); shared helper packages are statistics-macros.sty,
+%%  formatting.sty, editing-macros.sty.
 %% =====================================================================
 \documentclass[11pt]{article}
 
@@ -19,6 +20,7 @@
 \usepackage{array}
 \usepackage{booktabs}
 \usepackage{enumitem}
+\usepackage{placeins}
 
 %% ---- Citations (loaded before formatting.sty, which patches natbib) --
 \usepackage{natbib}
@@ -30,12 +32,17 @@
 
 %% ---- Cross-references (last) ----------------------------------------
 \usepackage[colorlinks=true,allcolors=NavyBlue]{hyperref}
+\usepackage[capitalize,noabbrev]{cleveref}
+
+\crefname{assumption}{Assumption}{Assumptions}
+\Crefname{assumption}{Assumption}{Assumptions}
+
+\input{notation}
 
 \graphicspath{{figures/}}
 
-\title{\bf Where to Go Next: Minimax Site-Selection for
-External Validity}
-\date{Draft --- April 2026}
+\title{\bf Where to Go Next: Site Selection for External Validity via Sensitivity Analysis}
+\date{Draft, \today}
 
 \begin{document}
 \maketitle
@@ -43,21 +50,22 @@ External Validity}
 \input{sections/abstract}
 
 \input{sections/introduction}
-\input{sections/preliminaries}
+\input{sections/setting}
 \input{sections/site-selection-problem}
-\input{sections/convex-hull}
-\input{sections/affine-restrictions}
+\input{sections/geometry}
+\input{sections/selection}
 \input{sections/monotonicity}
+\input{sections/omitted-moderator}
 \input{sections/simulation}
-\input{sections/extensions}
+\input{sections/case-study}
+\input{sections/discussion}
+
+\bibliographystyle{plainnat}
+\bibliography{external_validity}
 
 \appendix
 \input{appendix/appendix-proofs}
 
-% Works in the draft's reference list that are not \cite-d in the body:
-\nocite{bareinboim2016causal,manski2026copinginductiverisktheories}
 
-\bibliographystyle{plainnat}
-\bibliography{external_validity}
 
 \end{document}

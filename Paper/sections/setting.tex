@@ -1,0 +1,107 @@
+\section{Setting}
+\label{sec:setting}
+
+Throughout this paper we use the setting and sensitivity framework of \citet{boyarsky2026}. This section restates this setting.
+
+The source sample pools $S$ sites. An observation is $O=(Y,A,X,C)$, where
+$A\in\{0,1\}$ is treatment, $X$ contains unit-level covariates, and
+$C\in\R^p$ is the site-level context vector, constant within a site. The
+basis of $C$ is fixed before the analysis and may contain raw site
+characteristics and their transformations. Site $s$ carries the profile
+$c_s\in\R^p$. The source law $\sP$ mixes the sites, and treatment is
+randomized within each site with known probability
+$e_a(x,c)=\pr_\sP(A=a\mid X=x,C=c)$ bounded away from zero. A target site is defined by a
+pair $(\tP,\ct)$: a covariate law we can sample and a context profile
+$\ct\in\R^p$. Treatment and outcome data exist only for the source sites.
+
+The framework rests on a site-level fixed-effects response model.
+
+\begin{assumption}[Site-level fixed effects, \citealp{boyarsky2026}]
+\label{ass:model}
+For $a\in\{0,1\}$,
+\begin{equation}
+  \E_\sP[Y(a)\mid X,C]=g_a(X)+C^\top\beta_a,
+  \label{eq:response-model}
+\end{equation}
+where $g_a$ is unrestricted and $\beta_a\in\R^p$ is fixed. Treatment is
+randomized within each source site, consistency holds, the same
+functions and coefficients govern the target site, and all second
+moments used below are finite.
+\end{assumption}
+
+Write $\pseudo{a}=\one\{A=a\}Y/e_a(X,C)$ for the inverse-probability
+pseudo-outcome, $\muC(x)=\E_\sP[C\mid X=x]$, and
+$\Ctil=C-\muC(X)$. Averaging \eqref{eq:response-model} over the target
+population expresses the target average treatment effect as
+\begin{equation}
+  \psi_T=\bT+\ellvec^\top(\beta_1-\beta_0),
+  \qquad
+  \begin{aligned}
+    \bT&=\E_{X\sim \tP}\bigl[\E_\sP[\pseudo{1}-\pseudo{0}\mid X]\bigr],\\
+    \ellvec&=\ct-\E_{X\sim \tP}\bigl[\muC(X)\bigr].
+  \end{aligned}
+  \label{eq:target-coefficients}
+\end{equation}
+The scalar $\bT$ is the covariate-transported part and is identified
+under overlap in $X$. The loading $\ellvec$ multiplies the fixed-effect
+contrast, which is the only unknown. Each $\beta_a$ satisfies the normal
+equations of a partially linear regression \citep{robinson1988root},
+\begin{equation}
+  \CovC\,\beta_a=\dmom{a},
+  \qquad
+  \CovC=\E_\sP\bigl[\cov(C\mid X)\bigr],
+  \quad
+  \dmom{a}=\E_\sP\bigl[\cov(C,\pseudo{a}\mid X)\bigr].
+  \label{eq:normal-equations}
+\end{equation}
+Because $C$ takes only $S$ values, every residual $\Ctil$ lies in the
+span of the centered site profiles,
+\begin{equation}
+  \Vspan=\operatorname{span}\{c_s-c_1:\ s=2,\ldots,S\},
+  \qquad r=\dim\Vspan\leq S-1,
+  \label{eq:span}
+\end{equation}
+so $\range(\CovC)\subseteq\Vspan$ and $\rankop(\CovC)\leq S-1$. When
+$p>S-1$ the normal equations leave fixed-effect directions undetermined,
+and $\psi_T$ is point identified if and only if
+$\ellvec\in\range(\CovC)$.
+
+The key innovation of this method is that the analyst is able to encode substantive knowledge in a restriction set
+$\restrset$ for the stacked vector
+$\beta=(\beta_0^\top,\beta_1^\top)^\top$ as a polyhedron or a finite union
+of polyhedra. \citet{boyarsky2026} provide several such candidate restrictions: magnitude caps, effect ordering, sign restrictions, and
+budgets. The moments and the restriction define
+\begin{equation}
+  \feasset
+  =\bigl\{\beta:\ \CovC\beta_a=\dmom{a},\ a\in\{0,1\},
+  \ \beta\in\restrset\bigr\},
+  \label{eq:feasible-set}
+\end{equation}
+and the sensitivity interval is $[\vminus,\vplus]$ with
+\begin{equation}
+  \vminus=\bT+\inf_{\beta\in\feasset}\ellvec^\top(\beta_1-\beta_0),
+  \qquad
+  \vplus=\bT+\sup_{\beta\in\feasset}\ellvec^\top(\beta_1-\beta_0).
+  \label{eq:endpoint-programs}
+\end{equation}
+
+In this paper, we additionally define $\width=\vplus-\vminus$ as the width of the identified set at the
+target. An infeasible program means the restriction contradicts the
+source moments. An unbounded program means the restriction leaves a
+direction that matters for the target uncontrolled. When $\width$ is a finite value it gives us a natural tool to characterize the generalizability of a particular set of experiments to a new target site.
+
+Two more objects from \citet{boyarsky2026} are used in this paper. The
+first is the reduced coordinates. Given a fixed orthonormal basis $\Bspan\in\R^{p\times
+r}$ of $\Vspan$, write $\Om=\Bspan^\top\CovC\Bspan$ and
+$\xired{a}=\Bspan^\top\dmom{a}$. The equality system in
+\eqref{eq:feasible-set} is equivalent to
+$\Om\Bspan^\top\beta_a=\xired{a}$, which has full row rank when the
+smallest eigenvalue of $\Om$ is positive. We assume this eigenvalue
+condition throughout, so that
+$\range(\CovC)=\Vspan$ and $\kernel(\CovC)=\Vspan^\perp$. The second component is the estimator as defined by Algorithm 1. This algorithm first estimates the five inputs
+$\Gam=(\bT,\ellvec,\CovC,\dmom{0},\dmom{1})$ with cross-fitted
+orthogonal scores, fits $\muC$ through a joint site-probability
+classifier so that every fitted residual lies in $\Vspan$ exactly, pools
+the scores, and solves each bound program once in the reduced
+coordinates. We call it the input-debiased estimator, in contrast to the one-step
+estimator also studied in \citet{boyarsky2026}. Every estimate reported in this paper uses it.

@@ -1,0 +1,166 @@
+\section{Case study: which microcredit experiment was worth running}
+\label{sec:case-study}
+
+The microcredit data let us test the design rule against experiments
+that have already been run. All seven country experiments were run, so we can
+hide one, score it as a candidate from its lending terms alone, and then
+reveal its data to check the prediction. This is the forward version of
+the leave-one-out exercise in \citet{boyarsky2026}, and it gives a
+design rule for future experiments a test it rarely gets, because the
+future data already exist.
+
+\subsection{Specification}
+\label{subsec:case-spec}
+
+The specification is the one fixed in the companion paper's case study,
+and the replication code reproduces every number. The outcome is household revenues. The context basis holds nine
+coded terms: promotion, the annual interest rate, and the average loan
+size as a share of income, each coded on the source pool's rank scale,
+plus their squares and pairwise products, with every column scaled by
+its source-pool standard deviation. Unit-level covariates are the six
+standardized household variables. Estimation uses the rank consistent
+estimator with three folds, boosted outcome and density-ratio fits, and
+the regularized multinomial site classifier. The restriction ladder is
+the companion paper's: a magnitude cap of $M=888$ revenue units, one
+standard deviation of the outcome, on the control surface and on the
+treatment shift, then effect ordering at $\kappa=1$, then the sign
+restrictions on the interest-rate terms of the treatment shift. We
+report the final rung. Coding is frozen at each target's full six-site
+source pool, so that removing a source site changes only whose data enter the
+moments, and the held-out benchmarks are the covariate-adjusted
+design-based estimates with clustering at each country's randomization
+unit.
+
+For each target country, Bosnia and Morocco as in the companion paper,
+the exercise runs over the six five-site source pools. The missing sixth country is the candidate. Its coded profile is known
+and its data are hidden. At design time we run the rank test of \cref{sec:selection},
+forecast the revealed scalars with the feasibility-aware neutral
+forecast, and solve the width map \eqref{eq:width-map} for the
+predicted interval. The neutral forecast sets the new coordinate of the
+fixed effects to the value closest to zero that the pool's own
+restrictions allow, which applies to two of the Bosnia pools, where the sign restrictions
+pin the coordinate away from zero. Then we reveal the
+candidate's experiment, refit the estimator on all six source sites, and
+compare.
+
+\subsection{Bosnia: a predictable collapse}
+\label{subsec:case-bosnia}
+
+Every five-site source pool for Bosnia gives the same result
+(\cref{tab:case,fig:case}). The centered profiles of five source sites span
+four directions against nine basis terms, the interval at the final
+rung is wide and unsigned, with widths between $3{,}525$ and $7{,}291$
+revenue units, and no five-site pool supports a conclusion about
+Bosnia. The rank test, computed from lending terms alone, reports that
+every missing country expands the span. With five source sites and nine
+terms, each of the six countries' coded profile lies outside the
+five-site hull. The predicted intervals collapse accordingly, with
+predicted reductions of 93 to 100 percent, and the realized six-site
+interval is $[37.1,\,127.3]$, width $90$, reductions of 97 to 99
+percent. An analyst holding any five of these experiments, the lending
+terms of the sixth, and no outcome data from it would have been told that the sixth experiment removes almost all of the
+width that the restrictions leave, and the realized experiments confirm
+this.
+
+The forecast cannot determine the location of the collapsed interval,
+and the rows differ in location. For four of the six pools the
+neutral forecast is an interior point of what the pool allows, the
+predicted intervals have widths of $121$ to $286$, and they sit just
+below and above zero. The revealed scalars then place the realized
+interval strictly above zero, which is the companion paper's signed
+conclusion for Bosnia. For the other two pools, the ones missing India
+and Morocco, the pool's sign restrictions pin the forecast coordinate
+to a boundary. The predicted intervals degenerate to near points,
+$[129.1,\,138.6]$ and $\{67.5\}$, which overstates the collapse but is correct in one respect. Once that
+direction is resolved, the restrictions themselves nearly determine the
+answer, and they already place it above zero. The realized interval agrees in location and adds
+back the width, $90$, that the boundary forecast removed.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{llrrrrr}
+\toprule
+target & candidate & base width & predicted & pred.\ gain & realized gain \\
+\midrule
+Bosnia & Ethiopia    & 4{,}606 & 229 & 95.0\% & 98.0\% \\
+Bosnia & India       & 7{,}291 & 10  & 99.9\% & 98.8\% \\
+Bosnia & Mexico      & 4{,}109 & 235 & 94.3\% & 97.8\% \\
+Bosnia & Mongolia    & 4{,}171 & 286 & 93.2\% & 97.8\% \\
+Bosnia & Morocco     & 4{,}398 & 0   & 100.0\% & 97.9\% \\
+Bosnia & Philippines & 3{,}525 & 121 & 96.6\% & 97.4\% \\
+\midrule
+Morocco & Bosnia      & 7{,}770  & 6{,}485 & 16.5\% & 17.4\% \\
+Morocco & Ethiopia    & 6{,}767  & 6{,}417 &  5.2\% &  5.2\% \\
+Morocco & India       & 8{,}074  & 6{,}482 & 19.7\% & 20.5\% \\
+Morocco & Mexico      & 8{,}425  & 6{,}480 & 23.1\% & 23.8\% \\
+Morocco & Mongolia    & 10{,}453 & 6{,}487 & 37.9\% & 38.6\% \\
+Morocco & Philippines & 8{,}165  & 6{,}487 & 20.5\% & 21.4\% \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{Predicted and realized value of the missing
+experiment.} Each row hides one country's experiment from the target's
+source pool. Base width is the width of the identified set at the final
+restriction rung with five source sites. Predicted is the width after adding
+the candidate, computed before its data from the coded lending terms
+and the feasibility-aware neutral forecast. Gains are relative to the
+base width; the realized gain uses the six-site interval. Widths are
+in revenue units.}
+\label{tab:case}
+\end{table}
+
+\subsection{Morocco: a correct ranking of modest gains}
+\label{subsec:case-morocco}
+
+Morocco is the target the companion paper cannot sign, and the design
+rule explains why in advance. Even the full six-site source pool leaves
+most of Morocco's loading outside the span of the source profiles, so no
+single candidate can
+deliver a collapse. What the rule can do is rank the six candidates,
+and here the check is informative, because each base pool differs and
+each realized gain is a different number. The predicted gains run from 5.2
+percent for Ethiopia to 37.9 percent for Mongolia. The realized gains
+run from 5.2 to 38.6 percent, and they match the predictions candidate
+by candidate to within about one percentage point
+(\cref{tab:case}). The ranking is exact. Mongolia's experiment, which has the highest
+interest rate in the pool and the lending environment most unlike the
+others, is the one that helps Morocco most. Ethiopia's experiment, whose
+coded terms the other source sites nearly reproduce, adds almost
+nothing. An investigator with the five-country pool and the six
+candidates' lending terms would have chosen Mongolia, and she would
+have been right, for the predicted reason. The rule also reports what none of the candidates fixes. Every predicted
+and realized interval for Morocco stays wide and unsigned. Strengthening the Morocco conclusion
+requires a site outside the observed hull in Morocco's direction, not a
+sixth source site from this pool.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figure3.png}
+  \caption{\textbf{Predict, then check, on the microcredit
+  experiments.} For each target and each hidden country: the width of
+  the identified set at the final restriction rung with five source sites,
+  the width predicted at design time from the hidden country's lending
+  terms, and the realized width once its experiment is added. The
+  Bosnia panel uses a logarithmic scale because its widths span two
+  orders of magnitude, with the near-point predictions labeled.}
+  \label{fig:case}
+\end{figure}
+
+\subsection{What the exercise does and does not show}
+\label{subsec:case-caveats}
+
+Three caveats limit the claim. First, the exercise conditions on the
+companion paper's specification: the coded basis, the frozen coding,
+and the restriction ladder. The predictions are exact statements about
+that specification, not about microcredit at large. Second, the
+predictions use estimated base-pool inputs, so they inherit sampling
+error; the near-exact match at Morocco partly reflects that base and
+augmented fits share five countries of data. Third, the exercise also tests \cref{thm:monotone}. The realized
+additions never widened an interval, which is consistent with the
+maintained model, and the compatibility screen of \cref{sec:monotonicity} raises no conflict
+at the final rung for either target, since the augmented programs
+remain feasible. When a screen does fail, as it does on these data for
+tighter caps in the supplementary appendix of the companion paper, the
+right object to report is the disagreement itself.
+
+\FloatBarrier

@@ -1,3 +1,16 @@
 \begin{abstract}
-A multi-site experiment supports its external-validity claim through a cross-site moment identity $\Sigma\theta + b = 0$. When the number of sites $S$ is small relative to the site-level covariate dimension, this identity is rank-deficient and leaves the target-site treatment effect only partially identified. In recent work, \citet*{boyarsky2026} formalize this partial identification and derive debiased bounds on $\psi(\theta;\gamma)$ at a user-chosen target profile $(t_m,t_r)$ under analyst-specified affine restrictions $r(\theta)\le 0$. In this work we study the inverse design question. Given a pool of candidate sites with known site-level context $(C_m^{(k)},C_r^{(k)})$ but no experimental data, which site should an investigator go and run to most strengthen external-validity claims about a population of target profiles? We formulate the problem as a minimax design over the width of the partial-identification region. We establish a geometric characterization that, without restrictions, reduces to an ``expand-the-affine-span'' rule: the optimal candidate most reduces the worst-case distance from the target functional to the enlarged moment range, which under a balanced embedding is a weighted affine-hull expansion rule for the site-level context vectors, with convex-hull expansion the special case in which targets lie outside the existing affine span. Under compact affine restrictions, we derive a tractable surrogate. The criterion has the same three-regime structure as the leave-one-site-out diagnostic of \citet{boyarsky2026}: candidate sites either (i) strictly reduce the null space of $\Sigma$ and can collapse unbounded widths to finite ones, (ii) translate the moment-implied affine subspace closer to the target profile at fixed rank, or (iii) restore feasibility of substantive restrictions that were incompatible with the existing pool.  We also give sufficient conditions under which adding a site does not increase the worst-case width. We illustrate these findings on synthetic data. In our simulations, candidate sites that satisfy our conditions reduce the minimax width. Together, these results give practitioners a simple rule for choosing the next site to strengthen the external validity of experimental findings.
+A set of randomized experiments identifies the treatment effect at a new
+site only in part. \citet{boyarsky2026} develop a sensitivity framework
+for this problem. Under a site-level fixed-effects response model, the
+observed sites determine the fixed effects only inside the span of their
+centered context profiles, and the framework reports the smallest and
+largest target effects consistent with the source experiments and with
+restrictions the analyst states. This paper studies the natural next question. Given several candidate sites whose contexts are known but whose
+experiments have not been run, which site would most strengthen the
+external validity claim of the multi-site study. We show that the benefit a new site provides depends on the affine hull
+of the site profiles. The target effect is
+point identified exactly when the target profile lies in the affine hull
+of the observed profiles, and a candidate site tightens the identified
+set only if its profile lies outside that hull. We show how we can forecast the benefit that a new site provides through the vector of site-level data. We apply the method to the multi-site credit expansion data of
+\citet{meager2019understanding}.
 \end{abstract}

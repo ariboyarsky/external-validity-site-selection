@@ -1,0 +1,119 @@
+\section{The geometry of adding a site}
+\label{sec:geometry}
+
+This section describes what identification looks like in the space of
+site profiles. Every identification statement in the
+selection problem reduces to a statement about the affine hull
+\begin{equation}
+  \affhull(\pool)
+  =\Bigl\{\textstyle\sum_{s=1}^S w_s c_s:\ \sum_{s=1}^S w_s=1\Bigr\},
+  \label{eq:affine-hull}
+\end{equation}
+the set of affine combinations of the observed profiles. Its direction
+space is exactly $\Vspan$, the span of the centered profiles from
+\eqref{eq:span}.
+
+The first step relates the target loading to the hull. The loading
+$\ellvec=\ct-\E_{\tP}[\muC(X)]$ subtracts from the target profile a
+point that is always a mixture of observed profiles, because
+$\muC(x)=\sum_s \pr(C=c_s\mid X=x)\,c_s$ is a convex combination of them
+at every $x$. The unidentified part of the loading is therefore the part of the target
+profile itself that lies outside the hull.
+
+\begin{lemma}[The loading and the affine hull]
+\label{lem:loading}
+Under \cref{ass:model} and the eigenvalue condition of
+\cref{sec:setting}, $\ellvec\in\range(\CovC)$ if and only if
+$\ct\in\affhull(\pool)$. Moreover, for the orthogonal projection
+$\Pi^\perp$ onto $\Vspan^\perp$,
+\begin{equation}
+  \Pi^\perp\ellvec=\Pi^\perp(\ct-c_1),
+  \qquad
+  \norm{\Pi^\perp\ellvec}_2=\dist\bigl(\ct,\affhull(\pool)\bigr).
+  \label{eq:loading-distance}
+\end{equation}
+\end{lemma}
+
+\noindent
+See \cref{app:proofs} for all proofs. \cref{lem:loading} turns the point-identification condition of the
+companion paper into a statement an investigator can check from the
+profiles alone. The pooled experiments determine the target effect
+exactly when the target's context is an affine combination of the
+observed contexts. The relevant set is the affine hull, not the convex
+hull. A target outside the convex hull but inside the affine hull is
+still point identified, because the fixed effects are linear in context,
+so the model allows linear extrapolation along observed directions.
+Identification fails only in a direction that no combination of observed
+sites reaches.
+
+Without restrictions, partial identification in the response model
+reduces to a dichotomy. \citet{boyarsky2026} formalize this.
+
+\begin{proposition}[Unrestricted dichotomy]
+\label{prop:dichotomy}
+Let $\restrset=\R^{2p}$. Under the conditions of \cref{lem:loading},
+\begin{equation}
+  \width(\ct;\pool)=
+  \begin{cases}
+    0 & \text{if } \ct\in\affhull(\pool),\\
+    +\infty & \text{otherwise.}
+  \end{cases}
+  \label{eq:dichotomy}
+\end{equation}
+\end{proposition}
+
+A candidate site enters this geometry through one object only, the
+direction its profile adds to the span.
+
+\begin{proposition}[Span expansion is affine-hull expansion]
+\label{prop:hull}
+Let $\newdir{k}$ be the component of $\cand{k}-c_1$ orthogonal to
+$\Vspan$. Then $\Vspan'$ of \eqref{eq:span-update} satisfies
+$\dim\Vspan'=r+1$ if and only if $\newdir{k}\neq0$, which holds if and
+only if $\cand{k}\notin\affhull(\pool)$. In that case
+$\Vspan'^{\perp}=\Vspan^\perp\cap\{\newdir{k}\}^\perp$, and under the
+augmented eigenvalue condition of \cref{subsec:augmentation} the
+augmented covariance satisfies $\range(\CovC')=\Vspan'$ and
+$\kernel(\CovC')=\Vspan'^\perp$. If instead
+$\cand{k}\in\affhull(\pool)$, the span, the range, and the kernel are
+unchanged.
+\end{proposition}
+
+Together with \cref{prop:dichotomy}, this gives the unrestricted
+selection rule. A candidate collapses an infinite width at target $\ct$ to zero exactly
+when its profile lies outside the hull in the direction of the target's
+offset from the hull. Only the direction of $\newdir{k}$ enters. How far outside the hull the candidate sits does
+not change what becomes identified, because a fixed-effects model pins
+the same coefficient combination from a small step along a direction as
+from a large one. Distance along the new direction affects the precision of the added
+constraint, through the context variance the new site contributes. A
+farther site therefore improves precision but not identification.
+
+Restrictions replace the dichotomy with finite widths. In that case the
+distance from the target to the hull is the right continuous measure of
+what remains unidentified. The simplest statement uses a cap on the size
+of the treatment shift $\shift=\beta_1-\beta_0$.
+
+\begin{proposition}[Width equals distance under a norm cap]
+\label{prop:distance}
+Let the restriction be $\norm{\shift}_2\leq\tau$ with no restriction on
+$\beta_0$, let $\bar\shift$ be the minimum-norm solution of
+$\CovC\shift=\dmom{1}-\dmom{0}$, and assume
+$\tau\geq\norm{\bar\shift}_2$. Under the conditions of
+\cref{lem:loading},
+\begin{equation}
+  \width(\ct;\pool)
+  =2\sqrt{\tau^2-\norm{\bar\shift}_2^2}\;
+  \dist\bigl(\ct,\affhull(\pool)\bigr).
+  \label{eq:width-distance}
+\end{equation}
+\end{proposition}
+
+\noindent
+The same formula holds for the augmented pool with
+$\affhull(\pool\cup\{k\})$ in place of $\affhull(\pool)$, so under this restriction the minimax problem \eqref{eq:minimax} says to
+choose the candidate whose profile, added to the hull, leaves no target
+in $\targset$ far from it. The relation between the moment geometry and
+the context geometry is exact, with no side condition beyond overlap,
+because \cref{lem:loading} identifies the unrestricted direction of the
+loading with the target's offset from the hull.

@@ -1,0 +1,44 @@
+\section{Discussion}
+\label{sec:discussion}
+
+The sensitivity framework of \citet{boyarsky2026} separates what pooled
+experiments identify from what must be assumed. This paper adds the design question. When the answer is a wide interval,
+where should the next experiment go? The question is answerable before
+the experiment to a larger degree than we expected. Identification
+gains are a property of the candidate's context profile relative to the
+affine hull of the observed profiles. The bounds after the addition are
+computable in advance up to one revealed scalar per treatment arm, with
+the forecast error priced by the dual of the added constraint. Under the
+maintained model a new site can only refine the set, and when a new site
+instead moves conclusions the pool had pinned down, that movement is
+evidence against the pooled model, concentrated exactly where the pool
+claimed precision. The microcredit exercise suggests that these statements also hold in
+finite samples. Computed from lending terms with the companion paper's
+estimator, the predictions matched the realized experiments.
+
+Several extensions follow the same lines. Costs enter separably, so a
+budgeted rule ranks candidates by predicted gain per unit cost within
+the screened pool. Choosing several sites at once is a coverage problem. The identification
+gain of a set of candidates is the rank added by their profiles, which
+is a matroid rank function, so greedy selection has the usual submodular
+guarantee for the identification part. The width objective itself should
+be re-solved at the chosen set.
+When the candidate's covariate distribution is unknown, the overlap condition of \cref{subsec:augmentation} is the input most
+likely to fail, and a
+worst-case treatment of the candidate's covariate law would make the
+precision part of the score conservative without changing the span
+part. Inference for the selected design, as opposed to inference for
+the bounds at a fixed design, remains open. The selection is a minimum of a maximum of estimated
+program values, and the tools in the
+companion paper cover each fixed program but not the selection event.
+
+Two practical lessons follow. First, the design question depends on the choice of context basis. Every statement in this paper is
+relative to the chosen context basis, and a candidate that expands the
+hull in one coding can be interior in another. The companion paper's
+sweeps show how much coding moves identification geometry, and a
+selection exercise should be run over the same codings the final
+analysis will report. Second, the most useful output of the rule can be a negative result. At Morocco the rule reports that no available candidate
+delivers a signed conclusion, and that the useful experiment is one
+nobody has run, in a lending environment beyond the observed hull in
+Morocco's direction. A design rule that can report that no available candidate helps, and
+which direction would help, gives a concrete request for the next trial.
