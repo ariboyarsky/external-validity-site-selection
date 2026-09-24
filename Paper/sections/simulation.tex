@@ -29,14 +29,16 @@ than nuisance error. Exact population moments and widths come from
 finite enumeration of the discrete covariates. Each experiment runs 40
 replicates that redraw the data with the geometry fixed.
 
-\subsection{Selecting among four candidates}
+\subsection{Selecting among five candidates}
 \label{subsec:sim-selection}
 
-Four candidate sites cover the three categories of \cref{sec:selection}: $k_1$
-inside the convex hull of the existing profiles, $k_2$ inside the affine
-hull but outside the convex hull, and $k_3$ and $k_4$ outside the
-affine hull along two different directions, $k_3$ far outside along the
-first and $k_4$ a short step along the second. For each candidate we
+Five candidate sites cover the three categories of \cref{sec:selection}:
+$k_1$ inside the convex hull of the existing profiles, $k_2$ inside the
+affine hull but outside the convex hull, and $k_3$, $k_4$, and $k_5$
+outside the affine hull. The candidate $k_3$ lies far outside along a
+first direction, $k_4$ a short step outside along a second direction,
+and $k_5$ a short step outside along the same direction as $k_3$, at one
+third of its distance. For each candidate we
 compute the design-time prediction from the existing pool alone, then
 simulate the candidate experiment from the same model, refit the
 estimator on the seven-site pool, and record the realized worst-case
@@ -46,24 +48,33 @@ width over $\targset$.
 width is $18.31$ for the existing pool and stays exactly $18.31$ when
 $k_1$ or $k_2$ is added: sites inside the affine hull change nothing
 about identification, whether or not they are inside the convex hull.
-The two hull-expanding candidates cut the population worst-case width to
-$14.63$ ($k_3$) and $13.54$ ($k_4$), reductions of 20 and 26 percent.
-The estimated widths track the population values to within sampling
-noise in every cell, with mean estimates of $18.31$, $18.31$, $18.29$,
-$14.63$, and $13.59$. The estimated selection picks $k_4$, the
-population-optimal candidate, in all 40 replicates, and so does the
-design-time selection computed before the candidate data exist. The
-design-time predictions are conservative, $16.49$ against a realized
-$14.63$ for $k_3$ and $14.04$ against $13.59$ for $k_4$, because the
-neutral forecast slices the restriction box through its widest
-cross-section, and they preserve the ranking.
+The hull-expanding candidates cut the population worst-case width to
+$14.63$ ($k_3$ and $k_5$) and $13.54$ ($k_4$), reductions of 20 and 26
+percent. The estimated widths track the population values to within
+sampling noise in every cell, with mean estimates of $18.31$, $18.31$,
+$18.29$, $14.63$, $13.59$, and $14.60$. The estimated selection picks
+$k_4$, the population-optimal candidate, in all 40 replicates, and so
+does the design-time selection computed before the candidate data exist.
+In this design the predictions are conservative, with predicted widths
+of $16.49$ for $k_3$ and $k_5$ against a population width of $14.63$,
+and $14.04$ for $k_4$ against $13.54$. Here the neutral forecast happens
+to cut the restriction box near its widest cross-section. This is a
+feature of the design and not a general property, since the width map
+can reach its maximum away from the forecast (\cref{app:dual-price}),
+and the case study has pools where the prediction is too narrow. The
+predictions preserve the ranking.
 
-The comparison between $k_3$ and $k_4$ makes the geometry of
-\cref{sec:geometry} concrete. The nearby candidate beats the distant
-one because the worst-case targets load more on the direction $k_4$
-resolves than on the direction $k_3$ resolves. Distance to the hull does not enter the identified set. The identified
-set depends on which direction a candidate resolves and how much the
-target region loads on it.
+The candidates $k_3$ and $k_5$ make the geometry of \cref{sec:geometry}
+concrete. They resolve the same direction at different distances, and
+their population widths are equal to every digit, as are their
+design-time predictions. Distance to the hull does not enter the
+identified set. It enters precision. The standard deviation of the
+estimated worst-case width across replicates is $0.28$ for the near
+candidate $k_5$ and $0.11$ for the far candidate $k_3$. The comparison
+between $k_3$ and $k_4$ shows what does matter. The nearby $k_4$ beats
+the distant $k_3$ because the worst-case targets load more on the
+direction $k_4$ resolves. The identified set depends on which direction
+a candidate resolves and how much the target region loads on it.
 
 \begin{figure}[t]
   \centering
@@ -74,26 +85,28 @@ target region loads on it.
   target region for the existing pool and after each candidate, showing
   the mean and standard deviation of the estimated widths across 40
   replicates, the exact population width, and the design-time
-  prediction computed before the candidate experiment.}
+  prediction computed before the candidate experiment. The candidates
+  $k_3$ and $k_5$ resolve the same direction at different distances.}
   \label{fig:selection}
 \end{figure}
 
 \subsection{The conflict mechanism}
 \label{subsec:sim-monotonicity}
 
-The second experiment tests \cref{thm:monotone} and its failure mode.
-Two profiles are reused, the in-span candidate $k_2$ and the
-hull-expanding candidate $k_3$, and each is added twice: once with
-outcomes drawn from the maintained model, labels $a_1$ and $a_3$, and
-once with the candidate site's treated-arm mean shifted by a conflict
-of size $0.75$ whose sign is drawn at random each replicate, labels
-$a_2$ and $a_4$. The restriction box is re-centered at random each
+The second experiment tests \cref{thm:monotone,prop:undetectable}. Two
+profiles are reused, the in-span candidate $k_2$ and the hull-expanding
+candidate $k_3$, and each is added twice: once with outcomes drawn from
+the maintained model, labels $a_1$ and $a_3$, and once with the
+candidate site's treated-arm mean shifted by a conflict of size $0.75$
+whose sign is drawn at random each replicate, labels $a_2$ and $a_4$. A
+fifth addition, $a_5$, adds the same conflict at the nearer profile
+$k_5$. The restriction box is re-centered at random each
 replicate so that it is generically asymmetric around the identified
 slice, which is when the translation mechanism of
 \cref{sec:monotonicity} can move widths. Population widths and truth
 coverage are computed exactly for every drawn box.
 
-\Cref{fig:monotonicity} and its underlying table say three things.
+\Cref{fig:monotonicity} and its underlying table say four things.
 First, the model-consistent additions behave exactly as
 \cref{thm:monotone} requires: $a_1$ leaves the population worst-case
 width unchanged in all 40 replicates, $a_3$ strictly shrinks it in all
@@ -106,10 +119,25 @@ point of the counterexample. Third, and most important, $a_2$ removes the true t
 population identified set at the span-identified targets in every
 replicate, while its worst-case width moves by at most a few percent.
 The width does not show the damage, and the interval no longer covers
-the true effect. The conflicted hull-expanding addition
-$a_4$ still shrinks widths here, and its bias lies in the directions that remain unidentified. This is
-why the compatibility screen of \cref{sec:monotonicity}, and not the
-width, is the right check for it.
+the true effect. This is why the compatibility screen of
+\cref{sec:monotonicity}, and not the width, is the right check for an
+interior addition. In population, the conflicted interior addition
+$a_2$ moves the in-span coordinates of the fitted shift by $0.42$ in
+Euclidean norm on average, which is what the screen detects.
+
+Fourth, the conflicted hull-expanding additions $a_4$ and $a_5$ behave
+exactly as \cref{prop:undetectable} says. In population they move the
+in-span coordinates by zero, up to numerical error of order $10^{-15}$,
+so the compatibility screen has nothing to detect. They move the new
+coordinate $\newdir{k}^\top\shift$ by exactly $\Delta/h_k$ in every
+replicate, three times as much for the near site $a_5$ as for the far
+site $a_4$. Both still shrink the population worst-case width in every
+replicate, by $0.90$ to $7.82$ for $a_4$ and $1.56$ to $10.98$ for $a_5$.
+The interval still covers the truth at every target in this design,
+because the added direction leaves each target with other unidentified
+directions and hence a positive width. The bias sits in the direction
+the candidate was added to resolve. It would remove the truth from any
+target whose offset from the hull lies along that direction.
 
 \begin{figure}[t]
   \centering
@@ -123,7 +151,8 @@ width, is the right check for it.
   replicate. Open markers are replicates whose population identified
   set no longer covers the true effect at every target: all 40
   replicates of the conflicted in-span addition $a_2$, and none of the
-  model-consistent additions.}
+  other additions. The conflicted hull-expanding additions $a_4$ and
+  $a_5$ shrink every width while shifting the resolved coordinate.}
   \label{fig:monotonicity}
 \end{figure}
 
