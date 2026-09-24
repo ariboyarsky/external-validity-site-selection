@@ -88,7 +88,8 @@ the model.
 Suppose \cref{ass:model} holds for the pool with coefficients
 $\beta^\circ$, and let $\cand{k}\notin\affhull(\pool)$ with
 $h_k=\norm{\Pi^\perp(\cand{k}-c_1)}_2>0$ and $\newdir{k}$ of unit
-length. Suppose the candidate's arm means are shifted by constants,
+length, and suppose the eigenvalue condition holds for the augmented
+pool. Suppose the candidate's arm means are shifted by constants,
 \begin{equation}
   \E[Y(a)\mid X,C=\cand{k}]
   =g_a(X)+{\cand{k}}^\top\beta_a^\circ+\Delta_a,
@@ -106,8 +107,9 @@ with
 Consequently the in-span coordinates $\Bspan^\top\beta_a$ identified by
 the augmented pool equal those of the pool, the augmented feasible set
 is $\feasset\cap\{\newdir{k}^\top\beta_a=\reveal{a}{k}+\Delta_a/h_k\}$,
-and at every target in $\affhull(\pool\cup\{k\})$ the reported effect
-differs from the true effect by
+and, whenever this set is nonempty, at every target in
+$\affhull(\pool\cup\{k\})$ the reported effect differs from the true
+effect by
 \begin{equation}
   \frac{\Delta_1-\Delta_0}{h_k}\,\newdir{k}^\top(\ct-c_1).
   \label{eq:shift-bias}
@@ -118,7 +120,9 @@ differs from the true effect by
 uses only the source data, including the compatibility screen below, can
 detect a constant conflict at a hull-expanding site, because the
 conflicted law is the law of a model-consistent world with coefficients
-$\widetilde\beta$. The value of a hull-expanding site therefore rests on
+$\widetilde\beta$. Only the restrictions can reveal it, when
+$\widetilde\beta\notin\restrset$ and the augmented program becomes
+infeasible. The value of a hull-expanding site therefore rests on
 an assumption that its own data cannot check. Second, whenever the augmented program is feasible, the width still
 weakly shrinks, since the augmented feasible set is again $\feasset$ cut
 by two hyperplanes. The damage is in location. It falls on the targets
@@ -131,8 +135,12 @@ exposed to a site-level conflict of a given size. This gives a reason to
 prefer a distant candidate among candidates that resolve the same
 direction. For an interior candidate the situation is reversed. No
 affine function of the profile can equal one at the candidate and zero
-at every pool site, so a constant conflict there cannot be absorbed into
-the coefficients, and the data carry information about it.
+at every pool site. So if there are covariate values at which the
+candidate and every pool site in its affine representation have positive
+density, a constant conflict there cannot be absorbed into the
+coefficients, and the data carry information about it. Without such
+overlap, $\widetilde g_a$ can differ across regions of covariate values
+and a conflict can still be absorbed.
 
 \paragraph{Screens.}
 Two checks separate refining additions from corrupting ones.

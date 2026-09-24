@@ -62,10 +62,11 @@ $\Vspan$, so its forecast is
 $\what y_a=\newdir{k}^\top\what\beta_a=0$. In terms of outcomes, this
 forecast says that the candidate's arm means equal the pool's fit at the
 point of $\affhull(\pool)$ closest to the candidate's profile, so that
-moving off the hull along $\newdir{k}$ has no effect. The neutral forecast does not depend on where the origin of
-the context coordinates is placed, but it does depend on how the columns
-of $C$ are scaled, since rescaling a column changes which solution has
-minimum norm. It can also be incompatible with the restrictions, when no
+moving off the hull along $\newdir{k}$ has no effect. The forecast $\what y_a=0$ holds in any coordinate system, but
+the outcome forecast it implies does not. It does not depend on where
+the origin of the context coordinates is placed, but it does depend on
+how the columns of $C$ are scaled, since rescaling a column changes which
+solution has minimum norm and which point of the hull is closest. It can also be incompatible with the restrictions, when no
 $\beta\in\feasset$ has $\newdir{k}^\top\beta_a=0$ for both arms. In
 that case we use the feasibility-aware neutral forecast
 \begin{equation}
@@ -129,7 +130,12 @@ and an investigator who can bound the forecast error, say
 $|y_a-\what y_a|\leq B$, obtains the upper bound
 $\width_k(\ct;\what y)+B\sum_a|\lambda^{u}_{+,a}-\lambda^{u}_{-,a}|$ on
 the width at the true scalars, which lie in $\mathcal Y_k$ under the
-model. This bound holds for all errors of that size, not only small
+model. When the forecast lies on the boundary of $\mathcal Y_k$, as the
+feasibility-aware forecast does whenever zero is infeasible, the optimal
+multipliers are not unique, \eqref{eq:dual-pricing} does not apply, and
+the bound depends on which multipliers are used. The tightest choice
+minimizes $\sum_a|\lambda^{u}_{+,a}-\lambda^{u}_{-,a}|$ over the optimal
+multipliers, which is a linear program. This bound holds for all errors of that size, not only small
 ones. The same argument gives no lower bound. The width can
 fall faster than the tangent plane, and it reaches its minimum over the
 error box at a vertex of the box intersected with $\mathcal Y_k$. The

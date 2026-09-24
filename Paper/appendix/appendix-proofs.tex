@@ -287,7 +287,9 @@ $(\Delta_1-\Delta_0)(\alpha+\ct^\top\gamma)
 For the last claim in the text, suppose $\cand{k}=\sum_sw_sc_s$ with
 $\sum_sw_s=1$. Any affine function $f$ of $c$ then satisfies
 $f(\cand{k})=\sum_sw_sf(c_s)$, so $f$ cannot equal one at $\cand{k}$ and
-zero at every $c_s$. A constant shift at an interior candidate is
+zero at every $c_s$. If there is a set of covariate values of positive
+probability at which the candidate and every site with $w_s\neq0$ have
+positive density, then on that set a constant shift at the candidate is
 therefore not of the form \eqref{eq:response-model}.
 \end{proof}
 
@@ -386,9 +388,10 @@ side $y=(y_0,y_1)$,
 Both are linear programs whose right-hand side is affine in $y$. The
 set of $y$ where they are feasible is $\mathcal Y_k$, the projection of a
 polyhedron, which is a polyhedron. Whether a linear program is bounded
-does not depend on its right-hand side once it is feasible, so on
-$\mathcal Y_k$ both values are finite or both programs are unbounded for
-every $y$. When they are finite, $v_-$ is a piecewise linear convex
+does not depend on its right-hand side once it is feasible, because its
+recession cone does not. So each of the two programs is bounded for
+every $y\in\mathcal Y_k$ or unbounded for every $y\in\mathcal Y_k$, and
+the width is finite on all of $\mathcal Y_k$ or infinite on all of it. When they are finite, $v_-$ is a piecewise linear convex
 function of $y$ and $v_+$ is a piecewise linear concave function, and the
 set of optimal multipliers on the rows $\newdir{k}^\top\beta_a=y_a$ is
 the subdifferential of $v_-$ and the superdifferential of $v_+$,
@@ -418,5 +421,5 @@ For a finite union of branches, the lower endpoint is the minimum of the
 branch values and the upper endpoint is the maximum. These are not
 convex or concave in general, so the global statements above hold for
 each branch separately but not for the union. The width of the union
-can still be computed exactly on a grid of $y$ values or by enumerating
-branches.
+can still be computed exactly at any given $y$ by enumerating branches,
+and evaluated on a grid of $y$ values.
